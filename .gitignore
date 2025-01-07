@@ -26,3 +26,5 @@ replay_pid*
 .gradle/
 .vscode/
 .idea/ # please do not use IntelliJ!
+build/
+gradlew
