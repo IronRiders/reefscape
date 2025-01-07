@@ -2,13 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package org.ironriders.core;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import org.ironriders.drive.DriveCommands;
+import org.ironriders.drive.DriveConstants;
+import org.ironriders.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -21,9 +21,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
   private final CommandXboxController primaryController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+      new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -42,10 +43,21 @@ public class RobotContainer {
    */
   private void configureBindings() {
     driveSubsystem.setDefaultCommand(
-        DriveCommands.driveTeleop(
-            () -> Utils.controlCurve(primaryController.getLeftY()),
-            () -> Utils.controlCurve(primaryController.getLeftX()),
-            () -> Utils.controlCurve(primaryController.getRightX())));
+        driveCommands.driveTeleop(
+            () -> Utils.controlCurve(
+              primaryController.getLeftX(), 
+              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
+              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
+            () -> Utils.controlCurve(
+              primaryController.getLeftY(), 
+              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
+              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
+            () -> Utils.controlCurve(
+              primaryController.getLeftX(), 
+              DriveConstants.ROTATION_CONTROL_EXPONENT, 
+              DriveConstants.ROTATION_CONTROL_DEADBAND)
+        )
+    );
   }
 
   /**
@@ -54,7 +66,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Command.empty;
+    // An example command will be run in autonomous. THIS IS A PLACEHOLDER!
+    return Commands.none();
   }
 }

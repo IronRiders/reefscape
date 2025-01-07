@@ -1,3 +1,5 @@
+package org.ironriders.core;
+
 public class Utils {
 
     /**

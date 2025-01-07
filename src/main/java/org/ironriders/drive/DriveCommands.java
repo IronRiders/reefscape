@@ -31,10 +31,10 @@ public class DriveCommands {
 			// Run the drive method with the inputs multiplied by the max speed.
 			driveSubsystem.drive(
 				new Translation2d(
-					inputTranslationX.getAsDouble() * swerveDrive.getMaximumVelocity(), 
-					inputTranslationY.getAsDouble() * swerveDrive.getMaximumVelocity()
+					inputTranslationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(), 
+					inputTranslationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()
 				),
-				inputRotation.getAsDouble() * swerveDrive.getMaximumAngularVelocity(),
+				inputRotation.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
 				true // Gus likes it this way
 			);
 		});

@@ -10,7 +10,6 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.ironriders.lib.Constants;
 
 /**
  * The SwerveSubsystem encompasses everything that the Swerve Drive needs to function.
@@ -28,8 +27,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 		try {
 			swerveDrive = 
-				new SwerveParser(Constants.Drive.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
-					.createSwerveDrive(Constants.Drive.SWERVE_MAXIMUM_SPEED);
+				new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
+					.createSwerveDrive(DriveConstants.SWERVE_MAXIMUM_SPEED);
 		} catch(IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException(e);
 		}
@@ -49,7 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
 			swerveDrive::resetOdometry,
 			swerveDrive::getRobotVelocity,
 			(speeds, feedforwards) -> swerveDrive.setChassisSpeeds(speeds),
-			Constants.Drive.HOLONOMIC_CONFIG,
+			DriveConstants.HOLONOMIC_CONFIG,
 			robotConfig,
 			() -> {
 				var alliance = DriverStation.getAlliance();
