@@ -4,8 +4,6 @@ import java.io.File;
 import edu.wpi.first.wpilibj.Filesystem;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.config.PIDConstants;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 
 public class DriveConstants {
 
