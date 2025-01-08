@@ -7,9 +7,9 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import org.ironriders.vision.VisionCommands;
+import org.ironriders.vision.VisionSubsystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -30,8 +30,8 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
-  // Auto support
-  private final SendableChooser<Command> autoChooser;
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  private final VisionCommands visionCommands = visionSubsystem.getCommands();
 
   private final CommandXboxController primaryController =
       new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
@@ -79,7 +79,9 @@ public class RobotContainer {
               DriveConstants.ROTATION_CONTROL_EXPONENT, 
               DriveConstants.ROTATION_CONTROL_DEADBAND)
         )
-  );
+        
+    );
+    primaryController.a().onTrue(visionCommands.alignCoral());
   }
 
   /**
