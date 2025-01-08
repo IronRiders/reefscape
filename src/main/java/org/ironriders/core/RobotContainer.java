@@ -7,6 +7,9 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
+import org.ironriders.vision.VisionCommands;
+import org.ironriders.vision.VisionSubsystem;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,6 +25,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
+
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem();
+  private final VisionCommands visionCommands = visionSubsystem.getCommands();
 
   private final CommandXboxController primaryController =
       new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
@@ -57,7 +63,9 @@ public class RobotContainer {
               DriveConstants.ROTATION_CONTROL_EXPONENT, 
               DriveConstants.ROTATION_CONTROL_DEADBAND)
         )
+        
     );
+    primaryController.a().onTrue(visionCommands.alignCoral());
   }
 
   /**
