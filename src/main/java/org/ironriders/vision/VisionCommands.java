@@ -1,5 +1,6 @@
 package org.ironriders.vision;
 
+
 import java.util.List;
 
 import org.ironriders.drive.DriveSubsystem;
@@ -11,12 +12,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.photonvision.*;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionCommands {
     private final VisionSubsystem VisionSubsystem;
     private final DriveSubsystem driveSubsystem;
-    PhotonCamera camera = new PhotonCamera(VisionConstants.CAM_NAME);
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     public VisionCommands(VisionSubsystem visionSubsystem, DriveSubsystem driveSubsystem) {
@@ -24,35 +25,61 @@ public class VisionCommands {
         this.driveSubsystem = driveSubsystem;
     }
 
-    public Command alignCoral() {
+    public Command alignCoral(PhotonCamera camera) {
         return VisionSubsystem.runOnce(() -> {
+
             System.out.println("started coral");
             int[] tags = null;
             if (!DriverStation.getAlliance().isPresent()) {
-                System.err.println("no alliace!");
+                error("no alliace!");
                 return;
             }
             if (DriverStation.getAlliance().get() == Alliance.Red) {
                 tags = VisionConstants.REEF_TAG_IDS_RED;
+                print("red");
             } else {
                 tags = VisionConstants.REEF_TAG_IDS_BLUE;
+                print("blue");
+            }
+            boolean moved = false;
+            PhotonPipelineResult result = camera.getLatestResult();
+            if (!result.hasTargets()) {
+                error("no targets!");
+                return;
             }
             for (int i : tags) {
-                if (getPathToTag(i) != null) {
-                    Translation2d path = getPathToTag(i);
-                    driveSubsystem.drive(path, 0, true);
-                    System.out.println("ran drive");
+                if (getPathToTag(i, result) != null) {
+                    Translation2d path = getPathToTag(i, result);
+                    if (path.getX() > 0 || path.getY() > 0) {
+                        print("running drive");
+                        driveSubsystem.drive(path, 0, true);
+                        print("ran drive");
+                        print("x:" + path.getX());
+                        print("y:" + path.getY());
+                        moved = true;
+                    }
                 }
+
             }
+            if (!moved) {
+                print("no tags I want");
+                List<PhotonTrackedTarget> targets = result.getTargets();
+                for (PhotonTrackedTarget target : targets) {
+                    print(target.fiducialId);
+                }
+                return;
+            }
+
         }
 
         );
     }
 
-    private Translation2d getPathToTag(int id) {
-        var result = camera.getLatestResult();
+    private Translation2d getPathToTag(int id, PhotonPipelineResult result) {
+        print("getting path");
         boolean hasTargets = result.hasTargets();
         if (!hasTargets) {
+            print("no valid targets!");
             return null;
         }
         List<PhotonTrackedTarget> targets = result.getTargets();
@@ -63,5 +90,17 @@ public class VisionCommands {
             }
         }
         return null;
+    }
+
+    private void print(String input) {
+        System.out.println(input);
+    }
+
+    private void print(int input) {
+        System.out.println(input);
+    }
+
+    private void error(String input) {
+        System.err.println(input);
     }
 }
