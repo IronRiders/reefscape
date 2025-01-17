@@ -32,7 +32,7 @@ public class RobotContainer {
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
   private final VisionCommands visionCommands = visionSubsystem.getCommands();
 
-  //private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
   private final CommandXboxController primaryController =
       new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
   
@@ -45,8 +45,8 @@ public class RobotContainer {
     configureBindings();
 
     // Init auto chooser
-   // autoChooser = AutoBuilder.buildAutoChooser();
-    //SmartDashboard.putData("Auto Select", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Select", autoChooser);
   }
 
   /**
@@ -81,7 +81,7 @@ public class RobotContainer {
         )
         
     );
-   // primaryController.a().onTrue(driveCommands.driveTest());
+    primaryController.a().onTrue(driveCommands.driveTest());
     primaryController.a().onTrue(visionCommands.alignCoral());
   }
 
@@ -92,10 +92,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous. THIS IS A PLACEHOLDER!
-   // return autoChooser.getSelected();
-   return new Command() {
-    
-   };
+    return autoChooser.getSelected();
   }
   
 }
