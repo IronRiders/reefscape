@@ -26,8 +26,10 @@ public class VisionCommands {
 
     public Command alignCoral() {
         return VisionSubsystem.runOnce(() -> {
+            System.out.println("started coral");
             int[] tags = null;
             if (!DriverStation.getAlliance().isPresent()) {
+                System.err.println("no alliace!");
                 return;
             }
             if (DriverStation.getAlliance().get() == Alliance.Red) {
@@ -39,6 +41,7 @@ public class VisionCommands {
                 if (getPathToTag(i) != null) {
                     Translation2d path = getPathToTag(i);
                     driveSubsystem.drive(path, 0, true);
+                    System.out.println("ran drive");
                 }
             }
         }
