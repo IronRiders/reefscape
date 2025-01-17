@@ -21,7 +21,7 @@ public class DriveSubsystem extends SubsystemBase {
 	private DriveCommands commands;
 	private SwerveDrive swerveDrive;
 
-	public DriveSubsystem() throws RuntimeException {
+	public DriveSubsystem() throws RuntimeException {/* 
 		try {
 			swerveDrive = 
 				new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
@@ -57,7 +57,7 @@ public class DriveSubsystem extends SubsystemBase {
 				return false;
 			},
 			this
-		);
+		);*/
 	}
 
 	/** 
@@ -70,7 +70,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param fieldRelative If not field relative, the robot will move relative to its own rotation.
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
-		swerveDrive.drive(translation, rotation, fieldRelative, false);
+		//swerveDrive.drive(translation, rotation, fieldRelative, false);
 	}
 
 	/** Fetch the DriveCommands instance */
