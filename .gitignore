@@ -26,3 +26,4 @@ build/
 .gradle/
 .vscode/
 .idea/ # please do not use IntelliJ!
+build

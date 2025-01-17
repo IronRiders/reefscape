@@ -22,16 +22,15 @@ public class DriveSubsystem extends SubsystemBase {
 	private SwerveDrive swerveDrive;
 
 	public DriveSubsystem() throws RuntimeException {
-
-		commands = new DriveCommands(this);
-
-	/* 	try {
+		try {
 			swerveDrive = 
 				new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
 					.createSwerveDrive(DriveConstants.SWERVE_MAXIMUM_SPEED);
 		} catch(IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
-			throw new RuntimeException(e);
+			throw new RuntimeException("Error configuring swerve drive", e);
 		}
+
+		commands = new DriveCommands(this);
 
 		swerveDrive.setHeadingCorrection(false);
 		SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -40,7 +39,7 @@ public class DriveSubsystem extends SubsystemBase {
 		try {
 			robotConfig = RobotConfig.fromGUISettings();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException("Could not load path planner config", e);
 		}
 
 		AutoBuilder.configure(
