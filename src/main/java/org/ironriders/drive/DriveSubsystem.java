@@ -70,7 +70,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param fieldRelative If not field relative, the robot will move relative to its own rotation.
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
-		//swerveDrive.drive(translation, rotation, fieldRelative, false);
+		swerveDrive.drive(translation, rotation, fieldRelative, false);
 	}
 
 	/** Fetch the DriveCommands instance */
