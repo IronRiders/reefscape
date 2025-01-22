@@ -1,6 +1,8 @@
 package org.ironriders.elevator;
 
+import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -23,6 +25,7 @@ public class ElevatorSubsystem extends SubsystemBase{
     private final double d = 0;
     private SparkMax leftMotor; // lead motor
     private SparkMax rightMotor;
+    private SparkClosedLoopController PIDController = leftMotor.getClosedLoopController();
 
     private RelativeEncoder encoder;
 
@@ -33,7 +36,6 @@ public class ElevatorSubsystem extends SubsystemBase{
         SparkMaxConfig leftConfig = new SparkMaxConfig();
         SparkMaxConfig rightConfig = new SparkMaxConfig();
 
-        leftMotor.getClosedLoopController() ;
         encoder = leftMotor.getEncoder();
 
         leftConfig.idleMode(IdleMode.kBrake);
@@ -53,7 +55,14 @@ public class ElevatorSubsystem extends SubsystemBase{
         leftMotor.getClosedLoopController().setReference(goal.height, ControlType.kPosition);
     }
 
-    public 
+    public void setSpeed(double speed){
+        leftMotor.set(speed);
+    }
+
+    @Override
+    public void periodic() {
+
+    }
 
     //https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/trapezoidal-profiles.html#trapezoidal-motion-profiles-in-wpilib
 
