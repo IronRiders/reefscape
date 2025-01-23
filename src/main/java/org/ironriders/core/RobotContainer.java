@@ -10,6 +10,7 @@ import org.ironriders.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -30,6 +31,9 @@ public class RobotContainer {
 
   private final CommandXboxController primaryController =
       new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
+  
+  private final CommandGenericHID secondaryController =
+            new CommandGenericHID(DriveConstants.SECONDARY_CONTROLLER_PORT);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,6 +55,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    secondaryController.button(1).onTrue(driveCommands.autoLeave());
+
     driveSubsystem.setDefaultCommand(
         driveCommands.driveTeleop(
             () -> Utils.controlCurve(

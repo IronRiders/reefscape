@@ -39,4 +39,10 @@ public class DriveCommands {
 			);
 		});
 	}
+
+	public Command autoLeave() {
+		return driveSubsystem.runOnce(() -> {
+			System.out.println("testjdff");
+		});
+	}
 }

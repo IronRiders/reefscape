@@ -1,0 +1,19 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/Auto Select": "String Chooser",
+      "/SmartDashboard/Encoders": "Alerts",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/IMU": "Alerts",
+      "/SmartDashboard/JSON": "Alerts",
+      "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/Pigeon 2 (v6) [11]": "Gyro",
+      "/SmartDashboard/Swerve Drive": "Alerts"
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  }
+}
