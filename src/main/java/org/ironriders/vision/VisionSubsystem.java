@@ -78,13 +78,19 @@ public class VisionSubsystem extends SubsystemBase {
 
         // begin pose test space area. there's always a chance this will look nicer
         // later. probably not.
-
+        if(VisionConstants.CAM_OFFSETS.length==0){
+            System.out.println("no cameras set skipping!");  
+            return;
+        }
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
         List<PhotonCamera> cams = null;
         for (String name : VisionConstants.CAM_NAMES) {
             cams.add(new PhotonCamera(name));
         }
-
+        if(cams.size()!=VisionConstants.CAM_OFFSETS.length){
+            System.out.println("VISION ARRAY MISMATCH!!!!!!!");
+            return;
+        }
         List<PhotonPoseEstimator> poseEstimators = null;
         for (Transform3d offsett : VisionConstants.CAM_OFFSETS) {
             poseEstimators.add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
