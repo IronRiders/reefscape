@@ -112,12 +112,12 @@ public class VisionSubsystem extends SubsystemBase {
             averageRotationY += estimate.getReferencePose().getRotation().getY();
             averageRotationZ += estimate.getReferencePose().getRotation().getZ();
         }
-        averageX = averageX / 4;
-        averageY = averageY / 4;
-        averageZ = averageZ / 4;
-        averageRotationX = averageRotationX / 4;
-        averageRotationY = averageRotationY / 4;
-        averageRotationZ = averageRotationZ / 4;
+        averageX = averageX / cams.size();
+        averageY = averageY / cams.size();
+        averageZ = averageZ / cams.size();
+        averageRotationX = averageRotationX / cams.size();
+        averageRotationY = averageRotationY / cams.size();
+        averageRotationZ = averageRotationZ / cams.size();
         Pose3d averagePose = new Pose3d(averageX, averageY, averageZ,
                 new Rotation3d(averageRotationX, averageRotationY, averageRotationZ));// yay
         driveSubsystem.getSwerveDrive().addVisionMeasurement(
