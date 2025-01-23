@@ -60,8 +60,8 @@ public class VisionCommands {
             if (!moved) {
                 print("no tags I want");
                 List<PhotonTrackedTarget> targets = result.getTargets();
-                for (PhotonTrackedTarget target : targets) {
-                    print(target.fiducialId);
+                for (PhotonTrackedTarget target : targets) { // this whole if statement is really just for debugging and is probably outdated due to the smart dashboard layout
+                    print(target.fiducialId);//my experiance however is that as soon as i remove it i'll need it so it stays
                 }
                 return;
             }
@@ -72,14 +72,13 @@ public class VisionCommands {
     }
 
     private Translation2d getPathToTag(int id, PhotonPipelineResult result) {
-        print("getting path");
         boolean hasTargets = result.hasTargets();
         if (!hasTargets) {
-            print("no valid targets!");
+            print("no valid targets!"); //this should be caught before this function is ran but might as well double check
             return null;
         }
         List<PhotonTrackedTarget> targets = result.getTargets();
-        for (PhotonTrackedTarget target : targets) {
+        for (PhotonTrackedTarget target : targets) {//see comment on nested for loops in visionSubsystem
             if (target.getFiducialId() == id) {
                 Transform3d pose = target.getBestCameraToTarget();
                 return new Translation2d(pose.getX(), pose.getY());
