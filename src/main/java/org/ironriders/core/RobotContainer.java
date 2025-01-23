@@ -7,6 +7,10 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
 
@@ -50,8 +54,8 @@ public class RobotContainer {
     configureBindings();
 
     // Init auto chooser
-    // autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Auto Select", autoChooser);
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Select", autoChooser);
   }
 
   /**
@@ -102,10 +106,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous. THIS IS A PLACEHOLDER!
-    // return autoChooser.getSelected();
-    return new Command() {
-
-    };
+    return autoChooser.getSelected();
   }
   
 }

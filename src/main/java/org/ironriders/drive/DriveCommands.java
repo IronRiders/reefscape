@@ -8,8 +8,6 @@ import org.ironriders.core.RobotContainer;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,15 +24,7 @@ public class DriveCommands {
 		this.swerveDrive = driveSubsystem.getSwerveDrive();
 	}
 
-	/*
-	 * SparkMax sparkMax=new SparkMax(13, MotorType.kBrushless);
-	 * public Command driveTest(){
-	 * return driveSubsystem.runOnce(()->{
-	 * sparkMax.set(1);
-	 * }
-	 * );
-	 * }
-	 */
+
 	/**
 	 * Command to drive the robot given controller input.
 	 * 
@@ -53,11 +43,10 @@ public class DriveCommands {
 			// Run the drive method with the inputs multiplied by the max speed.
 			driveSubsystem.drive(
 					new Translation2d(
-			// inputTranslationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
-			// inputTranslationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()
+			 inputTranslationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
+			 inputTranslationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()
 			),
-					// inputRotation.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
-					0,
+					 inputRotation.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
 					true // Gus likes it this way
 			);
 		});
