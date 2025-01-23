@@ -77,7 +77,7 @@ public class VisionCommands {
         boolean hasTargets = result.hasTargets();
         if (!hasTargets) {
             print("no valid targets!"); // this should be caught before this function is ran but might as well double
-                                        // check
+                                              // check
             return null;
         }
         List<PhotonTrackedTarget> targets = result.getTargets();
