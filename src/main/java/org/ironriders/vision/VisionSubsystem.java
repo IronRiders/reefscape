@@ -87,8 +87,7 @@ public class VisionSubsystem extends SubsystemBase {
 
         List<PhotonPoseEstimator> poseEstimators = null;
         for (Transform3d offsett : VisionConstants.CAM_OFFSETS) {
-            poseEstimators
-                    .add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
+            poseEstimators.add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
         }
         int index = 0;
         for (PhotonPoseEstimator estimate : poseEstimators) {
@@ -105,7 +104,7 @@ public class VisionSubsystem extends SubsystemBase {
         double averageRotationY = 0;
         double averageRotationZ = 0;
 
-        for (PhotonPoseEstimator estimate : poseEstimators) {
+        for (PhotonPoseEstimator estimate : poseEstimators) {//i could probably combine this with the last loop but i didn't do that initially and if it aint broke
             averageX += estimate.getReferencePose().getX();
             averageY += estimate.getReferencePose().getY();
             averageZ += estimate.getReferencePose().getZ();
