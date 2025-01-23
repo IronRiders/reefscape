@@ -75,7 +75,8 @@ public class VisionSubsystem extends SubsystemBase {
 
 
 
-        //begin pose test space area. there's always a chance this will look nicer later
+        //begin pose test space area. there's always a chance this will look nicer later. probably not.
+
 
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
         //Forward Camera
