@@ -76,8 +76,6 @@ public class VisionSubsystem extends SubsystemBase {
         canAlignCoral = foundTag; // update public var so others can see it
         SmartDashboard.putBoolean("Can Align Coral", canAlignCoral);
 
-        // begin pose test space area. there's always a chance this will look nicer
-        // later. probably not.
         if(VisionConstants.CAM_OFFSETS.length==0){
             System.out.println("no cameras set skipping!");  
             return;
