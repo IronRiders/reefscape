@@ -1,8 +1,6 @@
 package org.ironriders.vision;
 
-
 import java.util.List;
-
 import org.ironriders.drive.DriveSubsystem;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -28,7 +26,7 @@ public class VisionCommands {
     public Command alignCoral(PhotonCamera camera) {
         return VisionSubsystem.runOnce(() -> {
 
-            System.out.println("started coral");
+            System.out.println("started coral mini auto");
             int[] tags = null;
             if (!DriverStation.getAlliance().isPresent()) {
                 error("no alliace!");
@@ -36,10 +34,8 @@ public class VisionCommands {
             }
             if (DriverStation.getAlliance().get() == Alliance.Red) {
                 tags = VisionConstants.REEF_TAG_IDS_RED;
-                print("red");
             } else {
                 tags = VisionConstants.REEF_TAG_IDS_BLUE;
-                print("blue");
             }
             boolean moved = false;
             PhotonPipelineResult result = camera.getLatestResult();
