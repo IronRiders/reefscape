@@ -79,14 +79,12 @@ public class VisionSubsystem extends SubsystemBase {
 
 
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-        //Forward Camera
         List<PhotonCamera> cams=null;
         for(String name :VisionConstants.CAM_NAMES){
             cams.add(new PhotonCamera(name));
         }
 
         List<PhotonPoseEstimator>poseEstimators=null;
-        // Construct PhotonPoseEstimator
         for(Transform3d offsett:VisionConstants.CAM_OFFSETS){
             poseEstimators.add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));  
         }
