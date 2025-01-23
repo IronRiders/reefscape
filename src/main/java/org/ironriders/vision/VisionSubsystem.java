@@ -4,16 +4,27 @@ import java.util.List;
 
 import org.ironriders.drive.DriveSubsystem;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
     private VisionCommands commands = new VisionCommands(this, new DriveSubsystem());
     private PhotonCamera camera = new PhotonCamera(VisionConstants.CAM_NAME);
-
+    private DriveSubsystem driveSubsystem;
+    public boolean canAlignCoral;//you can get this if you want!
     /** Fetch the VisionCommands instance */
     public VisionCommands getCommands() {
         return commands;
@@ -26,7 +37,10 @@ public class VisionSubsystem extends SubsystemBase {
     public void alignwithCoral() {
         commands.alignCoral(camera);
     }
-
+    public void setDriveSubsystem(DriveSubsystem driveSubsystem){
+        this.driveSubsystem=driveSubsystem;
+    }
+    @SuppressWarnings("null")
     @Override
     public void periodic() {
         PhotonPipelineResult result = camera.getLatestResult();
@@ -40,5 +54,71 @@ public class VisionSubsystem extends SubsystemBase {
             ids += (target.fiducialId) + " ";
         }
         SmartDashboard.putString("IDs", ids);
+
+        int[] tags = null;
+        if (DriverStation.getAlliance().get() == Alliance.Red) {
+            tags = VisionConstants.REEF_TAG_IDS_RED;
+
+        } else {
+            tags = VisionConstants.REEF_TAG_IDS_BLUE;
+        }
+        boolean foundTag=false;
+        for (int i : tags) {
+            for (PhotonTrackedTarget target : targets) {//nested for loops feel slow but also i don't really care
+                if(i==target.fiducialId){
+                    foundTag=true;
+                }
+            }
+        }
+        canAlignCoral=foundTag; //update public var so others can see it
+        SmartDashboard.putBoolean("Can Align Coral", canAlignCoral);
+
+
+
+        //begin pose test space area. there's always a chance this will look nicer later. probably not.
+
+
+        AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+        //Forward Camera
+        List<PhotonCamera> cams=null;
+        for(String name :VisionConstants.CAM_NAMES){
+            cams.add(new PhotonCamera(name));
+        }
+
+        List<PhotonPoseEstimator>poseEstimators=null;
+        // Construct PhotonPoseEstimator
+        for(Transform3d offsett:VisionConstants.CAM_OFFSETS){
+            poseEstimators.add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));  
+        }
+        int index=0;
+        for(PhotonPoseEstimator estimate :poseEstimators){
+            result=cams.get(index).getLatestResult();
+            estimate.update(result);
+            index++;
+        }
+        //great now we have a estimate from all the cameras. I don't really know what to do with this so i'll contruct an average pose i guess;
+        double averageX=0;
+        double averageY=0;
+        double averageZ=0;
+        double averageRotationX=0;
+        double averageRotationY=0;
+        double averageRotationZ=0;
+
+        for(PhotonPoseEstimator estimate :poseEstimators){
+            averageX+=estimate.getReferencePose().getX();
+            averageY+=estimate.getReferencePose().getY();
+            averageZ+=estimate.getReferencePose().getZ();
+            averageRotationX+=estimate.getReferencePose().getRotation().getX();
+            averageRotationY+=estimate.getReferencePose().getRotation().getY();
+            averageRotationZ+=estimate.getReferencePose().getRotation().getZ();
+        }
+        averageX=averageX/4;
+        averageY=averageY/4;
+        averageZ=averageZ/4;
+        averageRotationX=averageRotationX/4;
+        averageRotationY=averageRotationY/4;
+        averageRotationZ=averageRotationZ/4;
+        Pose3d averagePose=new Pose3d(averageX,averageY,averageZ,new Rotation3d(averageRotationX,averageRotationY,averageRotationZ));//yay
+        driveSubsystem.getSwerveDrive().addVisionMeasurement(new Pose2d(averagePose.getX(),averagePose.getY(),averagePose.getRotation().toRotation2d()),System.nanoTime());//update the swerve drives position stuff
     }
 }
