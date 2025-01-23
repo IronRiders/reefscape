@@ -11,11 +11,15 @@ public class DriveConstants {
     public static final int PRIMARY_CONTROLLER_PORT = 0;
 
     public static final File SWERVE_JSON_DIRECTORY = new File(Filesystem.getDeployDirectory(), "swerve");
-    public static final PPHolonomicDriveController HOLONOMIC_CONFIG = 
-        new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
+    public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController( // PPHolonomicController
+                                                                                                      // is the built in
+                                                                                                      // path following
+                                                                                                      // controller for
+                                                                                                      // holonomic drive
+                                                                                                      // trains
             new PIDConstants(5.0, 0.0, 0.0), // Translation PID
             new PIDConstants(5.0, 0.0, 0.0) // Rotation PID
-        );
+    );
 
     // Mathematical Constants
     public static final double TRANSLATION_CONTROL_EXPONENT = 3.0;

@@ -18,34 +18,39 @@ public class DriveCommands {
 		this.driveSubsystem = driveSubsystem;
 		this.swerveDrive = driveSubsystem.getSwerveDrive();
 	}
-	/*SparkMax sparkMax=new SparkMax(13, MotorType.kBrushless);
-	public Command driveTest(){
-		return driveSubsystem.runOnce(()->{
-				sparkMax.set(1);
-		}
-		);
-	}*/
+
+	/*
+	 * SparkMax sparkMax=new SparkMax(13, MotorType.kBrushless);
+	 * public Command driveTest(){
+	 * return driveSubsystem.runOnce(()->{
+	 * sparkMax.set(1);
+	 * }
+	 * );
+	 * }
+	 */
 	/**
 	 * Command to drive the robot given controller input.
 	 * 
 	 * @param inputTranslationX DoubleSupplier, value from 0-1.
 	 * @param inputTranslationY DoubleSupplier, value from 0-1.
-	 * @param inputRotation DoubleSupplier, value from 0-1.
+	 * @param inputRotation     DoubleSupplier, value from 0-1.
 	 */
-	public Command driveTeleop(DoubleSupplier inputTranslationX, DoubleSupplier inputTranslationY, DoubleSupplier inputRotation) {
+	public Command driveTeleop(DoubleSupplier inputTranslationX, DoubleSupplier inputTranslationY,
+			DoubleSupplier inputRotation) {
 		return driveSubsystem.runOnce(() -> {
 			// No driver input while autonomous
-			if (DriverStation.isAutonomous()) return;
+			if (DriverStation.isAutonomous())
+				return;
 
 			// Run the drive method with the inputs multiplied by the max speed.
 			driveSubsystem.drive(
-				new Translation2d(
-					//inputTranslationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(), 
-					//inputTranslationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()
-				),
-				//inputRotation.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
-				0,
-				true // Gus likes it this way
+					new Translation2d(
+			// inputTranslationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
+			// inputTranslationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()
+			),
+					// inputRotation.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
+					0,
+					true // Gus likes it this way
 			);
 		});
 	}
