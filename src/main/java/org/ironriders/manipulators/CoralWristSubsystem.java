@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.LimitSwitchConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -16,9 +17,8 @@ import edu.wpi.first.math.controller.struct.ArmFeedforwardStruct;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import static org.ironriders.manipulators.ManipulatorConstants.*;
-import static org.ironriders.core.Utils.*;
+import static org.ironriders.manipulators.CoralWristConstants.*;
+
 
 public class CoralWristSubsystem extends SubsystemBase {
     //Why do we extend subsystem base?
@@ -39,7 +39,7 @@ public class CoralWristSubsystem extends SubsystemBase {
         forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true).forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // this sets allows the limit switch to disable the motor  
         forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true).forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // It also sets the Type to k normally closed see https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
         motorConfig
-            .smartCurrentLimit(CORAL_WRIST_CURRENT_STALL_LIMIT, CORAL_WRIST_CURRENT_FREE_LIMIT)
+            .smartCurrentLimit(CORAL_WRIST_CURRENT_STALL_LIMIT)
             .voltageCompensation(CORAL_WRIST_COMPENSATED_VOLTAGE)
             .idleMode(IdleMode.kBrake)
             .limitSwitch
@@ -47,7 +47,7 @@ public class CoralWristSubsystem extends SubsystemBase {
             .apply(reverseLimitSwitchConfig);
         motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
-        
+
         
 
         set(getRotation());
