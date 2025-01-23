@@ -1,5 +1,4 @@
-# This is the Auto branch. 
-
+[![CI](https://github.com/IronRiders/reefscape/actions/workflows/gradle.yml/badge.svg)](https://github.com/IronRiders/reefscape/actions/workflows/gradle.yml)
 # *Iron Riders* - Season 2025 Repository
 
 ![image](https://github.com/user-attachments/assets/65a361c1-4db4-4ecb-b378-381c4e049c19)
