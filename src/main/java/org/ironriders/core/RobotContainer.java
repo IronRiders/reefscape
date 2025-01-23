@@ -7,7 +7,10 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
+import org.ironriders.manipulator.ManipulatorCommands;
+import org.ironriders.manipulator.ManipulatorSubsystem;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +35,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
+
+  // private final ManipulatorSubsystem manipulatorSubsystem = new ManipulatorSubsystem();
+  // private final ManipulatorCommands manipulatorCommands = manipulatorSubsystem.getCommands();
+
 
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
   private final VisionCommands visionCommands = visionSubsystem.getCommands();
@@ -67,22 +74,21 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
-      driveSubsystem.setDefaultCommand(
-      driveCommands.driveTeleop(
-      () -> Utils.controlCurve(
-      primaryController.getLeftX(),
-      DriveConstants.TRANSLATION_CONTROL_EXPONENT,
-      DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-      () -> Utils.controlCurve(
-      primaryController.getLeftY(),
-      DriveConstants.TRANSLATION_CONTROL_EXPONENT,
-      DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-      () -> Utils.controlCurve(
-      primaryController.getLeftX(),
-      DriveConstants.ROTATION_CONTROL_EXPONENT,
-      DriveConstants.ROTATION_CONTROL_DEADBAND)
-      )
+    driveSubsystem.setDefaultCommand(
+        driveCommands.driveTeleop(
+            () -> Utils.controlCurve(
+              primaryController.getLeftX(), 
+              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
+              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
+            () -> Utils.controlCurve(
+              primaryController.getLeftY(), 
+              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
+              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
+            () -> Utils.controlCurve(
+              primaryController.getRightX(), 
+              DriveConstants.ROTATION_CONTROL_EXPONENT, 
+              DriveConstants.ROTATION_CONTROL_DEADBAND)
+        )
     );
 
     primaryController.a().onTrue(visionCommands.alignCoral(camera));
