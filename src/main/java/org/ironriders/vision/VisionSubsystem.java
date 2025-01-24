@@ -104,7 +104,7 @@ public class VisionSubsystem extends SubsystemBase {
         double averageX = 0;
         double averageY = 0;
         double averageZ = 0;
-        double averageRotationX = 0;
+        double averageRotationX = 0;//could this be an array? yes. will it be? no
         double averageRotationY = 0;
         double averageRotationZ = 0;
 
