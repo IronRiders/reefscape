@@ -11,9 +11,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.struct.ArmFeedforwardStruct;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,10 +19,10 @@ import static org.ironriders.manipulators.CoralWristConstants.*;
 
 
 public class CoralWristSubsystem extends SubsystemBase {
-    //Why do we extend subsystem base?
+    // Why do we extend subsystem base?
     private final CoralWristCommands commands;
 
-    //find acutal motor IDs
+    // find acutal motor IDs
     private final SparkMax motor = new SparkMax(CORALWRISTMOTOR, MotorType.kBrushless);
     private final ProfiledPIDController pid = new ProfiledPIDController(0.1, 0, 0, PROFILE);
     private final DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(CORALWRISTENCODER);
@@ -33,11 +31,18 @@ public class CoralWristSubsystem extends SubsystemBase {
     private final LimitSwitchConfig forwardLimitSwitchConfig = new LimitSwitchConfig();
     private final LimitSwitchConfig reverseLimitSwitchConfig = new LimitSwitchConfig();
     private final SparkMaxConfig motorConfig = new SparkMaxConfig();
-    // private ArmFeedforward coralFeedforward = new ArmFeedforward(CORALWRISTKS,CORALWRISTKG,CORALWRISTKV); 
-    public CoralWristSubsystem(){
 
-        forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true).forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // this sets allows the limit switch to disable the motor  
-        forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true).forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // It also sets the Type to k normally closed see https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
+    // private ArmFeedforward coralFeedforward = new
+    // ArmFeedforward(CORALWRISTKS,CORALWRISTKG,CORALWRISTKV);
+    public CoralWristSubsystem() {
+
+        forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true)
+                .forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // this sets allows the limit switch to
+                                                                                 // disable the motor
+        forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true)
+                .forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // It also sets the Type to k normally
+                                                                                 // closed see
+                                                                                 // https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
         motorConfig
             .smartCurrentLimit(CORAL_WRIST_CURRENT_STALL_LIMIT)
             .voltageCompensation(CORAL_WRIST_COMPENSATED_VOLTAGE)
@@ -45,6 +50,8 @@ public class CoralWristSubsystem extends SubsystemBase {
             .limitSwitch
             .apply(forwardLimitSwitchConfig)
             .apply(reverseLimitSwitchConfig);
+            
+            
         motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
 
