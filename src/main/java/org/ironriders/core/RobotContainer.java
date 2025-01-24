@@ -7,8 +7,8 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
-import org.ironriders.manipulator.ManipulatorCommands;
-import org.ironriders.manipulator.ManipulatorSubsystem;
+import org.ironriders.manipulators.CoralWristCommands;
+import org.ironriders.manipulators.CoralWristSubsystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -39,8 +39,8 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
-  // private final ManipulatorSubsystem manipulatorSubsystem = new ManipulatorSubsystem();
-  // private final ManipulatorCommands manipulatorCommands = manipulatorSubsystem.getCommands();
+  private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
+  private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
   // Auto support
   private final SendableChooser<Command> autoChooser;
