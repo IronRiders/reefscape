@@ -29,7 +29,7 @@ public class RobotContainer {
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
   private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
-  private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
+  private final CoralWristCommands coralWristCommands = coralWristSubsystem.getWristCommands();
 
   // Auto support
   private final SendableChooser<Command> autoChooser;
