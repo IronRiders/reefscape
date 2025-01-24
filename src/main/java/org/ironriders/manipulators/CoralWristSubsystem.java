@@ -10,15 +10,13 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.controller.struct.ArmFeedforwardStruct;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import static org.ironriders.manipulators.ManipulatorConstants.*;
-import static org.ironriders.core.Utils.*;
 
 public class CoralWristSubsystem extends SubsystemBase {
     // Why do we extend subsystem base?
