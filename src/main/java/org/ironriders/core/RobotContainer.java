@@ -41,7 +41,10 @@ public class RobotContainer {
  // private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
  // private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands(); no warnings :)
 
-  // Auto support
+  private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
+  private final VisionCommands visionCommands = visionSubsystem.getCommands();
+  private PhotonCamera camera = visionSubsystem.getCamera();
+
   private final SendableChooser<Command> autoChooser;
   private final CommandXboxController primaryController =
       new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
