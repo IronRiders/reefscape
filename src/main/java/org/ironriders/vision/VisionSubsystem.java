@@ -21,10 +21,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
-    private VisionCommands commands = new VisionCommands(this, new DriveSubsystem());
+    private VisionCommands commands;
     private PhotonCamera camera = new PhotonCamera(VisionConstants.CAM_NAME);
     private DriveSubsystem driveSubsystem;
     public boolean canAlignCoral;// you can get this if you want!
+
+    public VisionSubsystem(DriveSubsystem driveSubsystem) {
+        this.driveSubsystem = driveSubsystem;
+        this.commands = new VisionCommands(this, driveSubsystem);
+    }
 
     /** Fetch the VisionCommands instance */
     public VisionCommands getCommands() {
@@ -37,10 +42,6 @@ public class VisionSubsystem extends SubsystemBase {
 
     public void alignwithCoral() {
         commands.alignCoral(camera);
-    }
-
-    public void setDriveSubsystem(DriveSubsystem driveSubsystem) {
-        this.driveSubsystem = driveSubsystem;
     }
 
     @SuppressWarnings("null")
