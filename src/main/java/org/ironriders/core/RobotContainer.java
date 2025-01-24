@@ -12,7 +12,6 @@ import org.ironriders.manipulators.CoralWristSubsystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
@@ -36,8 +35,8 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
-  private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
-  private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
+ // private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
+ // private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands(); no warnings :)
 
 
   private final VisionSubsystem visionSubsystem = new VisionSubsystem();
