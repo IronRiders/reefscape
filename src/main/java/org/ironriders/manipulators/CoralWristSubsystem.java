@@ -94,7 +94,7 @@ public class CoralWristSubsystem extends SubsystemBase {
         return pid.atGoal();
     }
 
-    public CoralWristCommands getWristCommands(){
+    public CoralWristCommands getCommands(){
         return commands;
     }
 

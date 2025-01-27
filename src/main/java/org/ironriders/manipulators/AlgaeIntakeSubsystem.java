@@ -61,4 +61,8 @@ public class AlgaeIntakeSubsystem extends SubsystemBase{
        set(State.STOP);
     }
 
+    public AlgaeIntakeCommands getCommands(){
+        return commands;
+    }
+
 }

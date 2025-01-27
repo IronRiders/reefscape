@@ -56,4 +56,8 @@ public class CoralIntakeSubsystem extends SubsystemBase{
        set(State.STOP);
     }
 
+    public CoralIntakeCommands getCommands(){
+        return commands;
+    }
+
 }

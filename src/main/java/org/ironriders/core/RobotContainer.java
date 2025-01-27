@@ -7,8 +7,13 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
+import org.ironriders.manipulators.AlgaeIntakeCommands;
+import org.ironriders.manipulators.AlgaeIntakeSubsystem;
+import org.ironriders.manipulators.CoralIntakeCommands;
+import org.ironriders.manipulators.CoralIntakeSubsystem;
 import org.ironriders.manipulators.CoralWristCommands;
 import org.ironriders.manipulators.CoralWristSubsystem;
+import org.ironriders.manipulators.IntakeConstants.State;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -29,7 +34,13 @@ public class RobotContainer {
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
   private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
-  private final CoralWristCommands coralWristCommands = coralWristSubsystem.getWristCommands();
+  private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
+  
+  private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
+  private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
+
+  private final AlgaeIntakeSubsystem AlgaeIntakeSubsystem = new AlgaeIntakeSubsystem();
+  private final AlgaeIntakeCommands AlgaeIntakeCommands = AlgaeIntakeSubsystem.getCommands();
 
   // Auto support
   private final SendableChooser<Command> autoChooser;
