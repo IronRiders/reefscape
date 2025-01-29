@@ -38,7 +38,6 @@ public class VisionCommands {
             } else {
                 tags = VisionConstants.REEF_TAG_IDS_BLUE;
             }
-            boolean moved = false;
             PhotonPipelineResult result = camera.getLatestResult();
             if (!result.hasTargets()) {
                 error("no targets!");
