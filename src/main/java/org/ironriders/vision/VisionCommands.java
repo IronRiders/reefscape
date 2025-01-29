@@ -66,7 +66,6 @@ public class VisionCommands {
                             print("stopped");
                             break;
                         }
-                        print(DriverStation.isDisabled());
                     }
                 }
 
