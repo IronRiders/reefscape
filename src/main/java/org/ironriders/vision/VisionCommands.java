@@ -29,7 +29,7 @@ public class VisionCommands {
             System.out.println("started coral mini auto");
             int[] tags = null;
             if (!DriverStation.getAlliance().isPresent()) {
-                error("no alliace!");
+                error("no alliance!");
                 return;
             }
             if (DriverStation.getAlliance().get() == Alliance.Red) {
