@@ -8,8 +8,6 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
-import org.photonvision.*;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
 
@@ -24,8 +22,12 @@ public class VisionCommands {
         this.VisionSubsystem = visionSubsystem;
         this.driveSubsystem = driveSubsystem;
     }
-
-    public Command alignCoral(PhotonCamera camera, int station) {
+    /**
+     * Get a command to a given coral station
+     * @param station the coral station you want to go to. it will automaticlly select your alliance.
+     * @return a command to move to the station on success or a blank command on error
+     */
+    public Command alignCoral(int station) {
         Pose2d[] locations;
         if (DriverStation.getAlliance().get() == Alliance.Blue) {
             locations = VisionConstants.STATION_LOCATIONS_BLUE;
@@ -34,7 +36,7 @@ public class VisionCommands {
                 locations = VisionConstants.STATION_LOCATIONS_RED;
             } else {
                 print("no alliance set");
-                return null;
+                return new Command() {};
             }
         }
         Pose2d location = locations[station];

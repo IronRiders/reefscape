@@ -41,7 +41,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public void alignwithCoral(int station) {
-        commands.alignCoral(camera, station);
+        commands.alignCoral(station);
     }
 
     @SuppressWarnings("null")
@@ -81,6 +81,7 @@ public class VisionSubsystem extends SubsystemBase {
             // System.out.println("no cameras set skipping!");
             return;
         }
+        //this has to be changed to our custom field for testing
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
         List<PhotonCamera> cams = null;
         for (String name : VisionConstants.CAM_NAMES) {

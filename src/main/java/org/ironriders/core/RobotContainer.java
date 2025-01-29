@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
-import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -42,8 +41,6 @@ public class RobotContainer {
 
   private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
   private final VisionCommands visionCommands = visionSubsystem.getCommands();
-  private PhotonCamera camera = visionSubsystem.getCamera();
-
   private final SendableChooser<Command> autoChooser;
   private final CommandXboxController primaryController = new CommandXboxController(
       DriveConstants.PRIMARY_CONTROLLER_PORT);
@@ -90,7 +87,7 @@ public class RobotContainer {
                 DriveConstants.ROTATION_CONTROL_EXPONENT,
                 DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
-    primaryController.a().onTrue(visionCommands.alignCoral(camera, 0));
+    primaryController.a().onTrue(visionCommands.alignCoral(0));
   }
 
   /**
