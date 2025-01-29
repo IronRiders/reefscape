@@ -23,10 +23,14 @@ public class VisionCommands {
         this.VisionSubsystem = visionSubsystem;
         this.driveSubsystem = driveSubsystem;
     }
+
     /**
      * Get a command to a given coral station
-     * @param station the coral station you want to go to. it will automaticlly select your alliance.
-     * @return a command to move to the station on success or a blank command on error
+     * 
+     * @param station the coral station you want to go to. it will automaticlly
+     *                select your alliance.
+     * @return a command to move to the station on success or a blank command on
+     *         error
      */
     public Command alignCoral(int station) {
         Pose2d[] locations;
@@ -37,11 +41,13 @@ public class VisionCommands {
                 locations = VisionConstants.STATION_LOCATIONS_RED;
             } else {
                 print("no alliance set");
-                return new Command() {};
+                return new Command() {
+                };
             }
         }
         Pose2d location = locations[station];
-        return AutoBuilder.pathfindToPose(location, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO, DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO/2, 10, 2));
+        return AutoBuilder.pathfindToPose(location, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+                DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 2));
     }
 
     private void print(String input) {

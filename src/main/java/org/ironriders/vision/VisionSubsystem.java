@@ -57,11 +57,10 @@ public class VisionSubsystem extends SubsystemBase {
         SmartDashboard.putData("pose", m_field);
         m_field.setRobotPose(driveSubsystem.getSwerveDrive().getPose());
 
-
         if (VisionConstants.CAM_OFFSETS.length == 0) {
             return;
         }
-        //this has to be changed to our custom field for testing
+        // this has to be changed to our custom field for testing
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
         List<PhotonCamera> cams = null;
         for (String name : VisionConstants.CAM_NAMES) {
