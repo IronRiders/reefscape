@@ -54,15 +54,15 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(
         driveCommands.driveTeleop(
             () -> Utils.controlCurve(
-              0.0, // -primaryController.getLeftX(), 
+              primaryController.getLeftX(), 
               DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
               DriveConstants.TRANSLATION_CONTROL_DEADBAND),
             () -> Utils.controlCurve(
-              0.0, //primaryController.getLeftY(), 
+              primaryController.getLeftY(), 
               DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
               DriveConstants.TRANSLATION_CONTROL_DEADBAND),
             () -> Utils.controlCurve(
-              0.4, // primaryController.getRightX(), 
+              primaryController.getRightX(), 
               DriveConstants.ROTATION_CONTROL_EXPONENT, 
               DriveConstants.ROTATION_CONTROL_DEADBAND)
         )
