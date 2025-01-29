@@ -63,10 +63,10 @@ public class VisionCommands {
                         print("x:" + x);
                         print("y:" + y);
                         moved = true;
-                        if(initX>x||initY>y){
+                       /*  if(initX>x||initY>y){
                             print("i'm getting further away?");
                             return;
-                        }
+                        }*/
                         if(DriverStation.isDisabled()||DriverStation.isEStopped()){
                             print("stopped");
                             break;
