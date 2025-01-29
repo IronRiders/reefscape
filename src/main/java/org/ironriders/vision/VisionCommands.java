@@ -1,6 +1,8 @@
 package org.ironriders.vision;
 
 import java.util.List;
+
+import org.ironriders.core.Utils;
 import org.ironriders.drive.DriveSubsystem;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -50,10 +52,11 @@ public class VisionCommands {
                     double initY=path.getY();
                     double lastX=initX;
                     double lastY=initY;
+                    int counter=0;
                     while (path.getX() > 0 || path.getY() > 0) {
                         path = getPathToTag(i, result);
                         print("running drive");
-                        driveSubsystem.drive(new Translation2d(-path.getX()*.25,-path.getY()*.25), 0, false);
+                        driveSubsystem.drive(new Translation2d(Utils.clamp(-.25, .25, -path.getX()),Utils.clamp(-.25, .25, -path.getY())), 0, false);
                         print("ran drive");
                         print("x:" + path.getX());
                         print("y:" + path.getY());
@@ -66,6 +69,8 @@ public class VisionCommands {
                             print("stopped");
                             break;
                         }
+                        
+                        
                     }
                 }
 
