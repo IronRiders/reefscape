@@ -15,8 +15,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -54,27 +53,12 @@ public class VisionSubsystem extends SubsystemBase {
             ids += (target.fiducialId) + " ";
         }
         SmartDashboard.putString("IDs", ids);
+        Field2d m_field = new Field2d();
+        SmartDashboard.putData("pose", m_field);
+        m_field.setRobotPose(driveSubsystem.getSwerveDrive().getPose());
 
-        int[] tags = null;
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
-            tags = VisionConstants.REEF_TAG_IDS_RED;
-
-        } else {
-            tags = VisionConstants.REEF_TAG_IDS_BLUE;
-        }
-        boolean foundTag = false;
-        for (int i : tags) {
-            for (PhotonTrackedTarget target : targets) {// nested for loops feel slow but also i don't really care
-                if (i == target.fiducialId) {
-                    foundTag = true;
-                }
-            }
-        }
-        canAlignCoral = foundTag; // update public var so others can see it
-        SmartDashboard.putBoolean("Can Align Coral", canAlignCoral);
 
         if (VisionConstants.CAM_OFFSETS.length == 0) {
-            // System.out.println("no cameras set skipping!");
             return;
         }
         //this has to be changed to our custom field for testing
@@ -84,7 +68,7 @@ public class VisionSubsystem extends SubsystemBase {
             cams.add(new PhotonCamera(name));
         }
         if (cams.size() != VisionConstants.CAM_OFFSETS.length) {
-            System.out.println("VISION ARRAY MISMATCH!!!!!!!");
+            System.out.print("VISION ARRAY MISMATCH!!!!!!!");
             return;
         }
         List<PhotonPoseEstimator> poseEstimators = null;
