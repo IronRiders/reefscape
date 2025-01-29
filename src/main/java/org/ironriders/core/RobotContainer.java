@@ -90,7 +90,7 @@ public class RobotContainer {
                 DriveConstants.ROTATION_CONTROL_EXPONENT,
                 DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
-    primaryController.a().onTrue(visionCommands.alignCoral(camera));
+    primaryController.a().onTrue(visionCommands.alignCoral(camera,0));
   }
 
   /**
