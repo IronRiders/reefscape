@@ -40,7 +40,7 @@ public class VisionCommands {
             }
         }
         Pose2d location = locations[station];
-        return AutoBuilder.pathfindToPose(location, new PathConstraints(.5, .25, 10, 2));
+        return AutoBuilder.pathfindToPose(location, new PathConstraints(.25, .25, 10, 2));
     }
 
     private void print(String input) {
