@@ -47,7 +47,7 @@ public class RobotContainer {
       DriveConstants.PRIMARY_CONTROLLER_PORT);
 
   /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, IO devices, and commands.
    */
   public RobotContainer() {
     // Configure the trigger bindings
