@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,8 +35,6 @@ public class AlgaeWristSubsystem extends SubsystemBase {
     private final LimitSwitchConfig reverseLimitSwitchConfig = new LimitSwitchConfig();
     private final SparkMaxConfig motorConfig = new SparkMaxConfig();
 
-    // private ArmFeedforward coralFeedforward = new
-    // ArmFeedforward(CORALWRISTKS,CORALWRISTKG,CORALWRISTKV);
     public AlgaeWristSubsystem() {
 
         forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true)

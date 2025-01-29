@@ -27,10 +27,9 @@ public class AlgaeWristConstants {
     public static final double ALGAE_WRIST_TOLERENCE = 10; // tune me please
 
     public enum State {
-        STATION(0),
-        STOWED(0),
-        L1toL3(0),
-        L4(0);
+        STOWED(0), // tune me pls
+        INTAKING(0);
+
 
         final double postion;
 
