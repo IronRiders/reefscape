@@ -1,5 +1,6 @@
 package org.ironriders.vision;
 
+import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -40,7 +41,7 @@ public class VisionCommands {
             }
         }
         Pose2d location = locations[station];
-        return AutoBuilder.pathfindToPose(location, new PathConstraints(.25, .25, 10, 2));
+        return AutoBuilder.pathfindToPose(location, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO, DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO/2, 10, 2));
     }
 
     private void print(String input) {

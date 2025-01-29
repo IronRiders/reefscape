@@ -25,7 +25,7 @@ public class DriveSubsystem extends SubsystemBase {
 		try {
 			swerveDrive = 
 				new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
-					.createSwerveDrive(DriveConstants.SWERVE_MAXIMUM_SPEED);
+					.createSwerveDrive(DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP);
 		} catch(IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
 		}
