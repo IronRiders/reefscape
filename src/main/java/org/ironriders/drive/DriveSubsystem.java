@@ -7,6 +7,8 @@ import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -82,4 +84,10 @@ public class DriveSubsystem extends SubsystemBase {
 	public SwerveDrive getSwerveDrive() {
 		return swerveDrive;
 	}
+
+	//** Resets the Odemetry to the current position*/
+	public void resetOdometry(Pose2d pose2d){
+		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
+	}
+
 }
