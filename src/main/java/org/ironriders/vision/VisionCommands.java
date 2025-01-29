@@ -58,8 +58,8 @@ public class VisionCommands {
                         print("running drive");
                         driveSubsystem.drive(new Translation2d(Utils.clamp(-.25, .25, -path.getX()),Utils.clamp(-.25, .25, -path.getY())), 0, false);
                         print("ran drive");
-                        print("x:" + path.getX());
-                        print("y:" + path.getY());
+                        print("x:" + Utils.clamp(-.25, .25, -path.getX()));
+                        print("y:" + Utils.clamp(-.25, .25, -path.getY()));
                         moved = true;
                         if(initX>path.getX()||initY>path.getY()){
                             print("i'm getting further away?");
