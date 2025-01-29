@@ -1,19 +1,14 @@
-package org.ironriders.manipulators;
+package org.ironriders.coral;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-public class IntakeConstants {
+public class CoralIntakeConstants {
     
     public static final String DASHBOARD_PREFIX_CORAL = "coral intake/";
     public static final String DASHBOARD_PREFIX_ALGAE = "algae intake/";
 
     //motor IDs (-1 = unknow)
-    public static final int CORALINTAKEMOTOR = -1;
-    public static final int ALGAELEFTINTAKEMOTOR = -1;
-    public static final int ALGAERIGHTINTAKEMOTOR = -1;
-    public static final int CORAL_BEAMBREAK_CHANNEL = -1;
-
-
+    public static final int CORAL_INTAKE_MOTOR = -1;
     public static final int CORAL_INTAKE_CURRENT_STALL_LIMIT = 30; //please test
     public static final int ALGAE_INTAKE_CURRENT_STALL_LIMIT = 30; //please test
     public static final int CORAL_INTAKE_COMPENSATED_VOLTAGE = 10; // ASK A MENTOR PLEASE

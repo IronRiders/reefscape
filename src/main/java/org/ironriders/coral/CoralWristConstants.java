@@ -1,4 +1,4 @@
-package org.ironriders.manipulators;
+package org.ironriders.coral;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 

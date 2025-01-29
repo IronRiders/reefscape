@@ -1,4 +1,4 @@
-package org.ironriders.manipulators;
+package org.ironriders.coral;
 
 import org.ironriders.core.Utils;
 
@@ -15,7 +15,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static org.ironriders.manipulators.CoralWristConstants.*;
+import static org.ironriders.coral.CoralWristConstants.*;
 
 
 public class CoralWristSubsystem extends SubsystemBase {

@@ -1,4 +1,4 @@
-package org.ironriders.manipulators;
+package org.ironriders.coral;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -10,8 +10,10 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static org.ironriders.manipulators.IntakeConstants.*;
-import org.ironriders.manipulators.IntakeConstants.State;
+import static org.ironriders.coral.CoralIntakeConstants.*;
+
+import org.ironriders.coral.CoralIntakeConstants.State;
+
 
 
 
@@ -19,7 +21,7 @@ public class CoralIntakeSubsystem extends SubsystemBase{
     private final CoralIntakeCommands commands;
     private boolean hasCoral = false;
     //find acutal motor IDs
-    private final SparkMax coralMotor = new SparkMax(CORALINTAKEMOTOR, MotorType.kBrushless);
+    private final SparkMax coralMotor = new SparkMax(CORAL_INTAKE_MOTOR, MotorType.kBrushless);
     private final SparkMaxConfig coralMotorConfig = new SparkMaxConfig();
     public CoralIntakeSubsystem(){
         coralMotorConfig

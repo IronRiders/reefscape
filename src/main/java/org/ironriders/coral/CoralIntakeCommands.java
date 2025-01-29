@@ -1,9 +1,9 @@
-package org.ironriders.manipulators;
+package org.ironriders.coral;
 
-import org.ironriders.manipulators.IntakeConstants.State;
+import org.ironriders.coral.CoralIntakeConstants.State;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import static org.ironriders.manipulators.IntakeConstants.DISCHARGE_TIMEOUT;
+import static org.ironriders.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
@@ -18,7 +18,7 @@ public class CoralIntakeCommands {
 
     }
 
-    public Command set(IntakeConstants.State state){
+    public Command set(CoralIntakeConstants.State state){
         Command command = intake.run(() -> intake.set(state));
 
         if (state.equals(State.EJECT) ) {

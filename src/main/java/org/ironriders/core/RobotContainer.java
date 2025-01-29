@@ -7,13 +7,13 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
-import org.ironriders.manipulators.AlgaeIntakeCommands;
-import org.ironriders.manipulators.AlgaeIntakeSubsystem;
-import org.ironriders.manipulators.CoralIntakeCommands;
-import org.ironriders.manipulators.CoralIntakeSubsystem;
-import org.ironriders.manipulators.CoralWristCommands;
-import org.ironriders.manipulators.CoralWristSubsystem;
-import org.ironriders.manipulators.IntakeConstants.State;
+import org.ironriders.algae.AlgaeIntakeCommands;
+import org.ironriders.algae.AlgaeIntakeSubsystem;
+import org.ironriders.coral.CoralIntakeCommands;
+import org.ironriders.coral.CoralIntakeSubsystem;
+import org.ironriders.coral.CoralWristCommands;
+import org.ironriders.coral.CoralWristSubsystem;
+
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
