@@ -44,6 +44,7 @@ public class VisionCommands {
                 error("no targets!");
                 return;
             }
+            
             for (int i : tags) {
                 if (getPathToTag(i, result) != null) {
                     Translation2d path = getPathToTag(i, result).getTranslation().toTranslation2d();
