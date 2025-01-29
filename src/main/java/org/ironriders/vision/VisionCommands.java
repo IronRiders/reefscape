@@ -54,9 +54,9 @@ public class VisionCommands {
                     double lastY=initY;
                     int counter=0;
                     while (path.getX() > 0 || path.getY() > 0) {
+                        path = getPathToTag(i, result);
                         double x=Utils.clamp(-.25, .25, -path.getX());
                         double y=Utils.clamp(-.25, .25, -path.getY());
-                        path = getPathToTag(i, result);
                         print("running drive");
                         driveSubsystem.drive(new Translation2d(x,y), 0, false);
                         print("ran drive");
