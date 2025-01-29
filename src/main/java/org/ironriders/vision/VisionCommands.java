@@ -45,10 +45,12 @@ public class VisionCommands {
         System.out.println(input);
     }
 
+    @SuppressWarnings("unused")
     private void print(int input) {
         System.out.println(input);
     }
 
+    @SuppressWarnings("unused")
     private void print(boolean input) {
         System.out.println(input);
     }
