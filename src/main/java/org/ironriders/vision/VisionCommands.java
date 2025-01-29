@@ -46,7 +46,7 @@ public class VisionCommands {
             for (int i : tags) {
                 if (getPathToTag(i, result) != null) {
                     Translation2d path = getPathToTag(i, result);
-                    while (path.getX() > 0 || path.getY() > 0){
+                    while (path.getX() > 0 || path.getY() > 0) {
                     path = getPathToTag(i, result);
                         print("running drive");
                         driveSubsystem.drive(path, 0, false);
