@@ -30,73 +30,75 @@ import com.pathplanner.lib.auto.AutoBuilder;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final DriveCommands driveCommands = driveSubsystem.getCommands();
+	// The robot's subsystems and commands are defined here...
+	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+	private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
-  // private final CoralWristSubsystem coralWristSubsystem = new
-  // CoralWristSubsystem();
-  // private final CoralWristCommands coralWristCommands =
-  // coralWristSubsystem.getCommands(); no warnings :)
+	// private final CoralWristSubsystem coralWristSubsystem = new
+	// CoralWristSubsystem();
+	// private final CoralWristCommands coralWristCommands =
+	// coralWristSubsystem.getCommands(); no warnings :)
 
-  private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
-  private final VisionCommands visionCommands = visionSubsystem.getCommands();
-  private final SendableChooser<Command> autoChooser;
-  private final CommandXboxController primaryController = new CommandXboxController(
-      DriveConstants.PRIMARY_CONTROLLER_PORT);
+	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
+	private final VisionCommands visionCommands = visionSubsystem.getCommands();
 
-  /**
-   * The container for the robot. Contains subsystems, IO devices, and commands.
-   */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
+	private final SendableChooser<Command> autoChooser;
 
-    // Init auto chooser
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Select", autoChooser);
-  }
+	private final CommandXboxController primaryController = new CommandXboxController(
+			DriveConstants.PRIMARY_CONTROLLER_PORT);
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be
-   * created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-   * an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
-   * CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or
-   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    driveSubsystem.setDefaultCommand(
-        driveCommands.driveTeleop(
-            () -> Utils.controlCurve(
-                primaryController.getLeftY(),
-                DriveConstants.TRANSLATION_CONTROL_EXPONENT,
-                DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-            () -> Utils.controlCurve(
-                primaryController.getLeftX(),
-                DriveConstants.TRANSLATION_CONTROL_EXPONENT,
-                DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-            () -> Utils.controlCurve(
-                primaryController.getRightX(),
-                DriveConstants.ROTATION_CONTROL_EXPONENT,
-                DriveConstants.ROTATION_CONTROL_DEADBAND)));
+	/**
+	 * The container for the robot. Contains subsystems, IO devices, and commands.
+	 */
+	public RobotContainer() {
+		// Configure the trigger bindings
+		configureBindings();
 
-    primaryController.a().onTrue(visionCommands.alignCoral(0));
-  }
+		// Init auto chooser
+		autoChooser = AutoBuilder.buildAutoChooser();
+		SmartDashboard.putData("Auto Select", autoChooser);
+	}
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous. THIS IS A PLACEHOLDER!
-    return autoChooser.getSelected();
-  }
+	/**
+	 * Use this method to define your trigger->command mappings. Triggers can be
+	 * created via the
+	 * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+	 * an arbitrary
+	 * predicate, or via the named factories in {@link
+	 * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+	 * {@link
+	 * CommandXboxController
+	 * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+	 * PS4} controllers or
+	 * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+	 * joysticks}.
+	 */
+	private void configureBindings() {
+		driveSubsystem.setDefaultCommand(
+				driveCommands.driveTeleop(
+						() -> Utils.controlCurve(
+								primaryController.getLeftY(),
+								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
+								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
+						() -> Utils.controlCurve(
+								primaryController.getLeftX(),
+								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
+								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
+						() -> Utils.controlCurve(
+								primaryController.getRightX(),
+								DriveConstants.ROTATION_CONTROL_EXPONENT,
+								DriveConstants.ROTATION_CONTROL_DEADBAND)));
+
+		primaryController.a().onTrue(visionCommands.alignCoral(0));
+	}
+
+	/**
+	 * Use this to pass the autonomous command to the main {@link Robot} class.
+	 *
+	 * @return the command to run in autonomous
+	 */
+	public Command getAutonomousCommand() {
+		// An example command will be run in autonomous. THIS IS A PLACEHOLDER!
+		return autoChooser.getSelected();
+	}
 }

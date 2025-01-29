@@ -10,7 +10,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +19,7 @@ import static org.ironriders.manipulators.ManipulatorConstants.*;
 
 public class CoralWristSubsystem extends SubsystemBase {
     // Why do we extend subsystem base?
-    //it publishes it to the command sceduler -tyler
+    // it publishes it to the command sceduler -tyler
     private final CoralWristCommands commands;
 
     // find acutal motor IDs
