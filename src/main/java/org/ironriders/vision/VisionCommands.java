@@ -46,14 +46,27 @@ public class VisionCommands {
             for (int i : tags) {
                 if (getPathToTag(i, result) != null) {
                     Translation2d path = getPathToTag(i, result);
+                    double initX=path.getX();
+                    double initY=path.getY();
+                    double lastX=initX;
+                    double lastY=initY;
                     while (path.getX() > 0 || path.getY() > 0) {
-                    path = getPathToTag(i, result);
+                        path = getPathToTag(i, result);
                         print("running drive");
                         driveSubsystem.drive(new Translation2d(-path.getX()*.25,-path.getY()*.25), 0, false);
                         print("ran drive");
                         print("x:" + path.getX());
                         print("y:" + path.getY());
                         moved = true;
+                        if(initX>path.getX()||initY>path.getY()){
+                            print("i'm getting further away?");
+                            return;
+                        }
+                        if(DriverStation.isDisabled()||DriverStation.isEStopped()){
+                            print("stopped");
+                            break;
+                        }
+                        print(DriverStation.isDisabled());
                     }
                 }
 
@@ -99,6 +112,9 @@ public class VisionCommands {
         System.out.println(input);
     }
 
+    private void print(boolean input){
+        System.out.println(input); 
+    }
     private void error(String input) {
         System.err.println(input);
     }
