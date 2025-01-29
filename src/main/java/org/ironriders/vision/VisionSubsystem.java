@@ -78,7 +78,7 @@ public class VisionSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Can Align Coral", canAlignCoral);
 
         if(VisionConstants.CAM_OFFSETS.length==0){
-            System.out.println("no cameras set skipping!");  
+          //  System.out.println("no cameras set skipping!");  
             return;
         }
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
