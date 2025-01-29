@@ -9,8 +9,8 @@ public class VisionConstants {
                                                                                                     // number of cameras
                                                                                                     // here
     public static final Transform3d[] CAM_OFFSETS = {};
-    public static final Pose2d[] STATION_LOCATIONS_RED = {};
-    public static final Pose2d[] STATION_LOCATIONS_BLUE = {};
+    public static final Pose2d[] STATION_LOCATIONS_RED = {new Pose2d()};
+    public static final Pose2d[] STATION_LOCATIONS_BLUE = {new Pose2d()};
     public static final int[] REEF_TAG_IDS_RED = { 17, 18, 19, 20, 21, 22 };
     public static final int[] REEF_TAG_IDS_BLUE = { 6, 7, 8, 9, 10, 11 };
 }

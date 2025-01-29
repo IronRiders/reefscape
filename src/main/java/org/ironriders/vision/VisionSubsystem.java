@@ -40,10 +40,6 @@ public class VisionSubsystem extends SubsystemBase {
         return this.camera;
     }
 
-    public void alignwithCoral(int station) {
-        commands.alignCoral(station);
-    }
-
     @SuppressWarnings("null")
     @Override
     public void periodic() {
