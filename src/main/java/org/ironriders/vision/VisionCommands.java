@@ -47,7 +47,7 @@ public class VisionCommands {
         }
         Pose2d location = locations[station];
         return AutoBuilder.pathfindToPose(location, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-                DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 2));
+                DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
     }
 
     private void print(String input) {
