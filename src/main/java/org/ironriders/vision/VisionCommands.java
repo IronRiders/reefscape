@@ -60,7 +60,6 @@ public class VisionCommands {
                                     foundTag = true;
                                 }
                             }
-
                             if (!foundTag) {
                                 print("lost target tag");
                                 return;
@@ -85,6 +84,7 @@ public class VisionCommands {
                     }
                 }
             }
+
         }
 
         );
