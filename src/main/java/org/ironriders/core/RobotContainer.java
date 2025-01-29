@@ -8,12 +8,16 @@ import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,7 +37,7 @@ public class RobotContainer {
       new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
   
   private final CommandGenericHID secondaryController =
-            new CommandGenericHID(DriveConstants.SECONDARY_CONTROLLER_PORT);
+      new CommandGenericHID(DriveConstants.SECONDARY_CONTROLLER_PORT);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -55,7 +59,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    secondaryController.button(1).onTrue(driveCommands.autoLeave());
+
+    secondaryController.button(1).onTrue(driveCommands.runPath("Example Path"));
+    //secondaryController.button(2).onTrue(driveCommands.runPath("NAMEME"));
+
 
     driveSubsystem.setDefaultCommand(
         driveCommands.driveTeleop(
@@ -72,7 +79,7 @@ public class RobotContainer {
               DriveConstants.ROTATION_CONTROL_EXPONENT, 
               DriveConstants.ROTATION_CONTROL_DEADBAND)
         )
-    );
+  );
   }
 
   /**
@@ -81,7 +88,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous. THIS IS A PLACEHOLDER!
-    return autoChooser.getSelected();
+    return null;
   }
+  
 }

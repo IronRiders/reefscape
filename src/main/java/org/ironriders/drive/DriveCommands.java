@@ -1,10 +1,17 @@
 package org.ironriders.drive;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
+import org.ironriders.core.RobotContainer;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import swervelib.SwerveDrive;
 
 public class DriveCommands {
@@ -25,6 +32,7 @@ public class DriveCommands {
 	 */
 	public Command driveTeleop(DoubleSupplier inputTranslationX, DoubleSupplier inputTranslationY, DoubleSupplier inputRotation) {
 		return driveSubsystem.runOnce(() -> {
+
 			// No driver input while autonomous
 			if (DriverStation.isAutonomous()) return;
 
@@ -40,9 +48,18 @@ public class DriveCommands {
 		});
 	}
 
-	public Command autoLeave() {
-		return driveSubsystem.runOnce(() -> {
-			System.out.println("testjdff");
-		});
-	}
+	public Command runPath(String Path) {
+    try{
+        // Load the path you want to follow using its name in the GUI
+        PathPlannerPath autoPath = PathPlannerPath.fromPathFile(Path);
+		System.out.println(Path);
+        // Create a path following command using AutoBuilder. This will also trigger event markers.
+        return AutoBuilder.followPath(autoPath);
+    } catch (Exception e) {
+		System.out.println("eroor");
+        DriverStation.reportError("Something bad happen !!: " + e.getMessage(), e.getStackTrace());
+        return Commands.none();
+		
+    }
+  }
 }
