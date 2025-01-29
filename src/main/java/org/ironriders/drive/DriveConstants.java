@@ -27,5 +27,5 @@ public class DriveConstants {
     public static final double ROTATION_CONTROL_EXPONENT = 3.0;
     public static final double ROTATION_CONTROL_DEADBAND = 0.8;
 
-    public static final double SWERVE_MAXIMUM_SPEED = 7.5; // m/s
+    public static final double SWERVE_MAXIMUM_SPEED = .25; // m/s
 }

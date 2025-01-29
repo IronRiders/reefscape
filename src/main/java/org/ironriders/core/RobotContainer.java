@@ -35,8 +35,10 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
- // private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
- // private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands(); no warnings :)
+  // private final CoralWristSubsystem coralWristSubsystem = new
+  // CoralWristSubsystem();
+  // private final CoralWristCommands coralWristCommands =
+  // coralWristSubsystem.getCommands(); no warnings :)
 
   private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
   private final VisionCommands visionCommands = visionSubsystem.getCommands();
@@ -76,19 +78,17 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(
         driveCommands.driveTeleop(
             () -> Utils.controlCurve(
-              0.0, // -primaryController.getLeftX(), 
-              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
-              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
+                primaryController.getLeftY(),
+                DriveConstants.TRANSLATION_CONTROL_EXPONENT,
+                DriveConstants.TRANSLATION_CONTROL_DEADBAND),
             () -> Utils.controlCurve(
-              0.0, //primaryController.getLeftY(), 
-              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
-              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
+                primaryController.getLeftX(),
+                DriveConstants.TRANSLATION_CONTROL_EXPONENT,
+                DriveConstants.TRANSLATION_CONTROL_DEADBAND),
             () -> Utils.controlCurve(
-              primaryController.getRightX(), 
-              DriveConstants.ROTATION_CONTROL_EXPONENT, 
-              DriveConstants.ROTATION_CONTROL_DEADBAND)
-        )
-    );
+                primaryController.getRightX(),
+                DriveConstants.ROTATION_CONTROL_EXPONENT,
+                DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
     primaryController.a().onTrue(visionCommands.alignCoral(camera));
   }

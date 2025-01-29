@@ -36,6 +36,15 @@ public class Utils {
         return (voltage/maxVoltage);
     }
 
+    public static double clamp(double min,double max,double in){
+        if(in>max){
+            in=max;
+        }
+        if(in<min){
+            in=min;
+        }
+        return in;
+    }
     
 
 }

@@ -1,6 +1,8 @@
 package org.ironriders.vision;
 
 import java.util.List;
+
+import org.ironriders.core.Utils;
 import org.ironriders.drive.DriveSubsystem;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -25,11 +27,10 @@ public class VisionCommands {
 
     public Command alignCoral(PhotonCamera camera) {
         return VisionSubsystem.runOnce(() -> {
-
-            System.out.println("started coral mini auto");
+            print("started coral mini auto");
             int[] tags = null;
             if (!DriverStation.getAlliance().isPresent()) {
-                error("no alliace!");
+                error("no alliance!");
                 return;
             }
             if (DriverStation.getAlliance().get() == Alliance.Red) {
@@ -45,27 +46,43 @@ public class VisionCommands {
             }
             for (int i : tags) {
                 if (getPathToTag(i, result) != null) {
-                    Translation2d path = getPathToTag(i, result);
-                    if (path.getX() > 0 || path.getY() > 0) {
-                        print("running drive");
-                        driveSubsystem.drive(path, 0, true);
-                        print("ran drive");
-                        print("x:" + path.getX());
-                        print("y:" + path.getY());
+                    Translation2d path = getPathToTag(i, result).getTranslation().toTranslation2d();
+                    while (path.getX() > 0 || path.getY() > 0) {
+                        result = camera.getLatestResult();
+                        if (!result.hasTargets()) {
+                            print("no targets");
+                            return;
+                        } else {
+                            List<PhotonTrackedTarget> targets = result.getTargets();
+                            Boolean foundTag = false;
+                            for (PhotonTrackedTarget target : targets) {
+                                if (target.getFiducialId() == i) {
+                                    foundTag = true;
+                                }
+                            }
+                            if (!foundTag) {
+                                print("lost target tag");
+                                return;
+                            }
+
+                        }
+                        if (getPathToTag(i, result) == null) {
+                            continue;
+                        }
+                        path = getPathToTag(i, result).getTranslation().toTranslation2d();
+                        double x = Utils.clamp(-.25, .25, -path.getX());
+                        double y = Utils.clamp(-.25, .25, -path.getY());
+                        driveSubsystem.drive(new Translation2d(x, y), 0, false);
+                        print("x: " + x);
+                        print("y: " + y);
                         moved = true;
+                        if (DriverStation.isDisabled() || DriverStation.isEStopped()) {
+                            print("stopped");
+                            break;
+                        }
+
                     }
                 }
-
-            }
-            if (!moved) {
-                print("no tags I want");
-                List<PhotonTrackedTarget> targets = result.getTargets();
-                for (PhotonTrackedTarget target : targets) { // this whole if statement is really just for debugging and
-                                                             // is probably outdated due to the smart dashboard layout
-                    print(target.fiducialId);// my experiance however is that as soon as i remove it i'll need it so it
-                                             // stays
-                }
-                return;
             }
 
         }
@@ -73,18 +90,17 @@ public class VisionCommands {
         );
     }
 
-    private Translation2d getPathToTag(int id, PhotonPipelineResult result) {
+    private Transform3d getPathToTag(int id, PhotonPipelineResult result) {
         boolean hasTargets = result.hasTargets();
         if (!hasTargets) {
-            print("no valid targets!"); // this should be caught before this function is ran but might as well double
-                                              // check
+            print("no valid targets!");
             return null;
         }
         List<PhotonTrackedTarget> targets = result.getTargets();
-        for (PhotonTrackedTarget target : targets) {// see comment on nested for loops in visionSubsystem
+        for (PhotonTrackedTarget target : targets) {
             if (target.getFiducialId() == id) {
                 Transform3d pose = target.getBestCameraToTarget();
-                return new Translation2d(pose.getX(), pose.getY());
+                return pose;
             }
         }
         return null;
@@ -95,6 +111,10 @@ public class VisionCommands {
     }
 
     private void print(int input) {
+        System.out.println(input);
+    }
+
+    private void print(boolean input) {
         System.out.println(input);
     }
 
