@@ -54,14 +54,16 @@ public class VisionCommands {
                     double lastY=initY;
                     int counter=0;
                     while (path.getX() > 0 || path.getY() > 0) {
+                        double x=Utils.clamp(-.25, .25, -path.getX());
+                        double y=Utils.clamp(-.25, .25, -path.getY());
                         path = getPathToTag(i, result);
                         print("running drive");
-                        driveSubsystem.drive(new Translation2d(Utils.clamp(-.25, .25, -path.getX()),Utils.clamp(-.25, .25, -path.getY())), 0, false);
+                        driveSubsystem.drive(new Translation2d(x,y), 0, false);
                         print("ran drive");
-                        print("x:" + Utils.clamp(-.25, .25, -path.getX()));
-                        print("y:" + Utils.clamp(-.25, .25, -path.getY()));
+                        print("x:" + x);
+                        print("y:" + y);
                         moved = true;
-                        if(initX>path.getX()||initY>path.getY()){
+                        if(initX>x||initY>y){
                             print("i'm getting further away?");
                             return;
                         }
