@@ -49,7 +49,7 @@ public class VisionCommands {
                     while (path.getX() > 0 || path.getY() > 0) {
                     path = getPathToTag(i, result);
                         print("running drive");
-                        driveSubsystem.drive(new Translation2d(path.getX()*.25,path.getY()*.25), 0, false);
+                        driveSubsystem.drive(new Translation2d(-path.getX()*.25,-path.getY()*.25), 0, false);
                         print("ran drive");
                         print("x:" + path.getX());
                         print("y:" + path.getY());
