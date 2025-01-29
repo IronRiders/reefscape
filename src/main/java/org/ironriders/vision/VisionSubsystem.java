@@ -41,7 +41,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public void alignwithCoral(int station) {
-        commands.alignCoral(camera,station);
+        commands.alignCoral(camera, station);
     }
 
     @SuppressWarnings("null")
@@ -77,8 +77,8 @@ public class VisionSubsystem extends SubsystemBase {
         canAlignCoral = foundTag; // update public var so others can see it
         SmartDashboard.putBoolean("Can Align Coral", canAlignCoral);
 
-        if(VisionConstants.CAM_OFFSETS.length==0){
-          //  System.out.println("no cameras set skipping!");  
+        if (VisionConstants.CAM_OFFSETS.length == 0) {
+            // System.out.println("no cameras set skipping!");
             return;
         }
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -86,13 +86,14 @@ public class VisionSubsystem extends SubsystemBase {
         for (String name : VisionConstants.CAM_NAMES) {
             cams.add(new PhotonCamera(name));
         }
-        if(cams.size()!=VisionConstants.CAM_OFFSETS.length){
+        if (cams.size() != VisionConstants.CAM_OFFSETS.length) {
             System.out.println("VISION ARRAY MISMATCH!!!!!!!");
             return;
         }
         List<PhotonPoseEstimator> poseEstimators = null;
         for (Transform3d offsett : VisionConstants.CAM_OFFSETS) {
-            poseEstimators.add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
+            poseEstimators
+                    .add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
         }
         int index = 0;
         for (PhotonPoseEstimator estimate : poseEstimators) {
@@ -105,11 +106,12 @@ public class VisionSubsystem extends SubsystemBase {
         double averageX = 0;
         double averageY = 0;
         double averageZ = 0;
-        double averageRotationX = 0;//could this be an array? yes. will it be? no
+        double averageRotationX = 0;// could this be an array? yes. will it be? no
         double averageRotationY = 0;
         double averageRotationZ = 0;
 
-        for (PhotonPoseEstimator estimate : poseEstimators) {//i could probably combine this with the last loop but i didn't do that initially and if it aint broke
+        for (PhotonPoseEstimator estimate : poseEstimators) {// i could probably combine this with the last loop but i
+                                                             // didn't do that initially and if it aint broke
             averageX += estimate.getReferencePose().getX();
             averageY += estimate.getReferencePose().getY();
             averageZ += estimate.getReferencePose().getZ();
