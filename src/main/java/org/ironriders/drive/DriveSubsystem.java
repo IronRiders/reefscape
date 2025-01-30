@@ -1,6 +1,9 @@
 package org.ironriders.drive;
 
 import java.io.IOException;
+
+import org.ironriders.core.Commands;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import swervelib.SwerveDrive;
@@ -18,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class DriveSubsystem extends SubsystemBase {
 
-	private DriveCommands commands;
 	private SwerveDrive swerveDrive;
 
 	public DriveSubsystem() throws RuntimeException {
@@ -29,8 +31,6 @@ public class DriveSubsystem extends SubsystemBase {
 		} catch(IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
 		}
-
-		commands = new DriveCommands(this);
 
 		swerveDrive.setHeadingCorrection(false);
 		SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -71,11 +71,6 @@ public class DriveSubsystem extends SubsystemBase {
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
 		swerveDrive.drive(translation, rotation, fieldRelative, false);
-	}
-	
-	/** Fetch the DriveCommands instance */
-	public DriveCommands getCommands() {
-		return commands;
 	}
 
 	/** Fetch the SwerveDrive instance */

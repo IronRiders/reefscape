@@ -4,7 +4,6 @@
 
 package org.ironriders.core;
 
-import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,13 +20,16 @@ import com.pathplanner.lib.auto.AutoBuilder;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private final DriveCommands driveCommands = driveSubsystem.getCommands();
+
+  // Commands all organized into one class
+  private final Commands driveCommands = new Commands(driveSubsystem);
 
   // Auto support
   private final SendableChooser<Command> autoChooser;
 
+  // Can be Xbox or Logitech controller
   private final CommandXboxController primaryController =
       new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
 
