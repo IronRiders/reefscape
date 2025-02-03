@@ -45,8 +45,7 @@ public class VisionCommands {
                 };
             }
         }
-        Pose2d location = locations[station];
-        return AutoBuilder.pathfindToPose(location, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+        return AutoBuilder.pathfindToPose(locations[station], new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
                 DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
     }
 
