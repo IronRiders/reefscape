@@ -19,22 +19,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import static org.ironriders.elevator.ElevatorConstants.*;
 public class ElevatorSubsystem extends SubsystemBase{
-    private final double p = 0;
-    private final double i = 0;
-    private final double d = 0;
     //private final double ff = 0;
-    private final double maxVel = 0;
-    private final double maxAcc = 0;
-    private final double iZone = 0;
-    private final double t = .2;
-    private final double kS = 0;
-    private final double kG = 0;
-    private final double kV = 0;
-    private final double kA = 0;
-    private final double ffVel = 0;
-    private final double ffAcc = 0;
     private final SparkMax leftMotor; // lead motor
     private final SparkMax rightMotor;
     private final SparkClosedLoopController PIDController;
