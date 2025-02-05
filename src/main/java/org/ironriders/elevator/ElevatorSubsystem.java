@@ -1,7 +1,7 @@
 package org.ironriders.elevator;
 
-import static org.ironriders.core.Constants.leftElevatorMotorDeviceID;
-import static org.ironriders.core.Constants.rightElevatorMotorDeviceID;
+import static org.ironriders.elevator.ElevatorConstants.leftElevatorMotorDeviceID;
+import static org.ironriders.elevator.ElevatorConstants.rightElevatorMotorDeviceID;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
