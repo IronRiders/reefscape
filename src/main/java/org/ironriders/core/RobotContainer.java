@@ -9,6 +9,7 @@ import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
 //import org.ironriders.manipulators.CoralWristCommands;
 //import org.ironriders.manipulators.CoralWristSubsystem;
+import org.ironriders.elevator.ElevatorSubsystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -19,6 +20,7 @@ import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+//import edu.wpi.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 /**
@@ -33,6 +35,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
   // private final CoralWristSubsystem coralWristSubsystem = new
