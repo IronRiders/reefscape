@@ -1,6 +1,6 @@
 package org.ironriders.elevator;
 
-import static org.ironriders.core.Constants.*;
+import static org.ironriders.elevator.ElevatorConstants.*;
 
 public enum Level {
     L1 (L1Height),

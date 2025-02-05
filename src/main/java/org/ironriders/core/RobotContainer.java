@@ -58,8 +58,7 @@ public class RobotContainer {
 	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
   
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  private final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
-
+//   private final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands(); // command get commands isn't implimented in elevator Command file
 	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
 	private final VisionCommands visionCommands = visionSubsystem.getCommands();
 	private PhotonCamera camera = visionSubsystem.getCamera();
