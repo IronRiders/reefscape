@@ -7,8 +7,6 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
-
-import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
@@ -27,7 +25,6 @@ import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-//import edu.wpi.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 /**
@@ -55,9 +52,6 @@ public class RobotContainer {
 
 	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
-  
-  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  private final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
 	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
 	private final VisionCommands visionCommands = visionSubsystem.getCommands();
