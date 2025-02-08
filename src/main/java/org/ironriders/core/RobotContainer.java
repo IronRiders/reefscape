@@ -92,6 +92,8 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
+
+		// drive controls based on cubic functionified joystick values
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> Utils.controlCurve(
@@ -107,6 +109,7 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
+		// I ❤️ mini-autos
 		primaryController.a().onTrue(visionCommands.alignCoral(camera));
 	}
 
@@ -116,7 +119,6 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
-		// An example command will be run in autonomous. THIS IS A PLACEHOLDER!
 		return autoChooser.getSelected();
 	}
 }

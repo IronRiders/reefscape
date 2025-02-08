@@ -1,5 +1,6 @@
 package org.ironriders.core;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import org.ironriders.algae.AlgaeIntakeCommands;
@@ -69,4 +70,14 @@ public class RobotCommands {
                 () -> true
         );
     }
+
+    // public Command putCoral(DoubleSupplier replaceMeOncePetersCodeIsPushedPlease /* REPLACE THIS WITH ELEVATION ENUM!!! */, BooleanSupplier rightHandSide) {
+    //     return Commands.sequence(
+    //         align to reef side
+    //         then move elevator to correct height
+    //         then move wrist to correct angle
+    //         then intake
+    //         then descend elevator
+    //     );
+    // }
 }
