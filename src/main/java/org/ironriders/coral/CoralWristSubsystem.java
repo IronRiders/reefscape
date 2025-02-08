@@ -11,13 +11,11 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.ironriders.coral.CoralWristConstants.*;
-
 
 public class CoralWristSubsystem extends SubsystemBase {
     // Why do we extend subsystem base?
@@ -45,30 +43,24 @@ public class CoralWristSubsystem extends SubsystemBase {
                                                                                  // closed see
                                                                                  // https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
         motorConfig
-            .smartCurrentLimit(CORAL_WRIST_CURRENT_STALL_LIMIT)
-            .voltageCompensation(CORAL_WRIST_COMPENSATED_VOLTAGE)
-            .idleMode(IdleMode.kBrake)
-            .limitSwitch
-            .apply(forwardLimitSwitchConfig)
-            .apply(reverseLimitSwitchConfig);
-            
-            
-        motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        
+                .smartCurrentLimit(CORAL_WRIST_CURRENT_STALL_LIMIT)
+                .voltageCompensation(CORAL_WRIST_COMPENSATED_VOLTAGE)
+                .idleMode(IdleMode.kBrake).limitSwitch
+                .apply(forwardLimitSwitchConfig)
+                .apply(reverseLimitSwitchConfig);
 
-        
+        motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         set(getRotation());
 
         pid.setTolerance(Coral_Wrist_TOLERANCE);
-       
-    
+
         commands = new CoralWristCommands(this);
     }
 
     @Override
-    public void periodic(){
-        double output = pid.calculate(getRotation()); 
+    public void periodic() {
+        double output = pid.calculate(getRotation());
         motor.set(output);
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
@@ -78,26 +70,25 @@ public class CoralWristSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseLimitSwitch.isPressed());
     }
 
-    public void set(double position){
+    public void set(double position) {
         pid.setGoal(position);
     }
 
-    public void reset(){
+    public void reset() {
         pid.setGoal(getRotation()); // Stops the wrist from moving
-        pid.reset(getRotation());   //sets the error to zero but asssums it has no velocity
+        pid.reset(getRotation()); // sets the error to zero but asssums it has no velocity
     }
 
-    private double getRotation(){
-        return Utils.absoluteRotation(absoluteEncoder.get() * 360 -CORAL_WRIST_ENCODER_OFFSET);
+    private double getRotation() {
+        return Utils.absoluteRotation(absoluteEncoder.get() * 360 - CORAL_WRIST_ENCODER_OFFSET);
     }
 
-    public boolean atPosition(){
+    public boolean atPosition() {
         return pid.atGoal();
     }
 
-    public CoralWristCommands getCommands(){
+    public CoralWristCommands getCommands() {
         return commands;
     }
 
 }
-

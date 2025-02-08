@@ -14,54 +14,53 @@ import static org.ironriders.algae.AlgaeIntakeConstants.*;
 
 import org.ironriders.algae.AlgaeIntakeConstants.State;;
 
-
-
-public class AlgaeIntakeSubsystem extends SubsystemBase{
+public class AlgaeIntakeSubsystem extends SubsystemBase {
     private final AlgaeIntakeCommands commands;
     private boolean hasAlgae = false;
-    //find acutal motor IDs
+    // find acutal motor IDs
     private final SparkMax algaeLeftMotor = new SparkMax(ALGAELEFTINTAKEMOTOR, MotorType.kBrushless);
     private final SparkMax algaeRightMotor = new SparkMax(ALGAERIGHTINTAKEMOTOR, MotorType.kBrushless);
     private final SparkMaxConfig algaeMotorConfig = new SparkMaxConfig();
-    public AlgaeIntakeSubsystem(){
+
+    public AlgaeIntakeSubsystem() {
         algaeMotorConfig
-            .smartCurrentLimit(ALGAE_INTAKE_CURRENT_STALL_LIMIT)
-            .voltageCompensation(ALGAE_INTAKE_COMPENSATED_VOLTAGE)
-            .idleMode(IdleMode.kBrake);
+                .smartCurrentLimit(ALGAE_INTAKE_CURRENT_STALL_LIMIT)
+                .voltageCompensation(ALGAE_INTAKE_COMPENSATED_VOLTAGE)
+                .idleMode(IdleMode.kBrake);
         algaeLeftMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         algaeRightMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         commands = new AlgaeIntakeCommands(this);
-    
+
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX_ALGAE + "velocity", getSpeed());       
-        
+        SmartDashboard.putNumber(DASHBOARD_PREFIX_ALGAE + "velocity", getSpeed());
+
     }
 
-    public void setHasAlgae(boolean hasAlgae){
+    public void setHasAlgae(boolean hasAlgae) {
         this.hasAlgae = hasAlgae;
     }
 
-    public void set(State state){
+    public void set(State state) {
         algaeLeftMotor.set(state.getSpeed());
         algaeRightMotor.set(-state.getSpeed());
 
         SmartDashboard.putString(DASHBOARD_PREFIX_ALGAE + "state", state.name());
     }
 
-    private double getSpeed(){
+    private double getSpeed() {
         return algaeLeftMotor.getEncoder().getVelocity();
     }
 
-    public void reset(){
-       set(State.STOP);
+    public void reset() {
+        set(State.STOP);
     }
 
-    public AlgaeIntakeCommands getCommands(){
+    public AlgaeIntakeCommands getCommands() {
         return commands;
     }
 

@@ -55,7 +55,11 @@ public class RobotContainer {
 
 	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
 	private final VisionCommands visionCommands = visionSubsystem.getCommands();
-	private PhotonCamera camera = visionSubsystem.getCamera();
+	private final PhotonCamera camera = visionSubsystem.getCamera();
+
+	private final RobotCommands robotCommands = new RobotCommands(
+		driveCommands, coralWristCommands, coralIntakeCommands, algaeWristCommands, algaeIntakeCommands, visionCommands
+	);
 
 	private final SendableChooser<Command> autoChooser;
 	private final CommandXboxController primaryController = new CommandXboxController(
@@ -89,7 +93,7 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 		driveSubsystem.setDefaultCommand(
-				driveCommands.driveTeleop(
+				robotCommands.driveTeleop(
 						() -> Utils.controlCurve(
 								primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,

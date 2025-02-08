@@ -20,14 +20,14 @@ import static org.ironriders.algae.AlgaeWristConstants.*;
 
 import org.ironriders.algae.AlgaeWristCommands;
 
-
 public class AlgaeWristSubsystem extends SubsystemBase {
     // Why do we extend subsystem base?
     private final AlgaeWristCommands commands;
 
     // find acutal motor IDs
     private final SparkMax motor = new SparkMax(ALGAEWRISTMOTOR, MotorType.kBrushless);
-    private final ProfiledPIDController pid = new ProfiledPIDController(ALGAEWRISTKP, ALGAEWRISTKI, ALGAEWRISTKD, PROFILE);
+    private final ProfiledPIDController pid = new ProfiledPIDController(ALGAEWRISTKP, ALGAEWRISTKI, ALGAEWRISTKD,
+            PROFILE);
     private final DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(ALGAEWRISTENCODER);
     private final SparkLimitSwitch forwardLimitSwitch = motor.getForwardLimitSwitch();
     private final SparkLimitSwitch reverseLimitSwitch = motor.getReverseLimitSwitch();
@@ -45,30 +45,24 @@ public class AlgaeWristSubsystem extends SubsystemBase {
                                                                                  // closed see
                                                                                  // https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
         motorConfig
-            .smartCurrentLimit(ALGAE_WRIST_CURRENT_STALL_LIMIT)
-            .voltageCompensation(ALGAE_WRIST_COMPENSATED_VOLTAGE)
-            .idleMode(IdleMode.kBrake)
-            .limitSwitch
-            .apply(forwardLimitSwitchConfig)
-            .apply(reverseLimitSwitchConfig);
-            
-            
-        motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        
+                .smartCurrentLimit(ALGAE_WRIST_CURRENT_STALL_LIMIT)
+                .voltageCompensation(ALGAE_WRIST_COMPENSATED_VOLTAGE)
+                .idleMode(IdleMode.kBrake).limitSwitch
+                .apply(forwardLimitSwitchConfig)
+                .apply(reverseLimitSwitchConfig);
 
-        
+        motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         set(getRotation());
 
         pid.setTolerance(ALGAE_WRIST_TOLERENCE);
-       
-    
+
         commands = new AlgaeWristCommands(this);
     }
 
     @Override
-    public void periodic(){
-        double output = pid.calculate(getRotation()); 
+    public void periodic() {
+        double output = pid.calculate(getRotation());
         motor.set(output);
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
@@ -78,26 +72,25 @@ public class AlgaeWristSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseLimitSwitch.isPressed());
     }
 
-    public void set(double position){
+    public void set(double position) {
         pid.setGoal(position);
     }
 
-    public void reset(){
+    public void reset() {
         pid.setGoal(getRotation()); // Stops the wrist from moving
-        pid.reset(getRotation());   //sets the error to zero but asssums it has no velocity
+        pid.reset(getRotation()); // sets the error to zero but asssums it has no velocity
     }
 
-    private double getRotation(){
-        return Utils.absoluteRotation(absoluteEncoder.get() * 360 -ALGAE_WRIST_ENCODER_OFFSET);
+    private double getRotation() {
+        return Utils.absoluteRotation(absoluteEncoder.get() * 360 - ALGAE_WRIST_ENCODER_OFFSET);
     }
 
-    public boolean atPosition(){
+    public boolean atPosition() {
         return pid.atGoal();
     }
 
-    public AlgaeWristCommands getCommands(){
+    public AlgaeWristCommands getCommands() {
         return commands;
     }
 
 }
-

@@ -14,51 +14,49 @@ import static org.ironriders.coral.CoralIntakeConstants.*;
 
 import org.ironriders.coral.CoralIntakeConstants.State;
 
-
-
-
-public class CoralIntakeSubsystem extends SubsystemBase{
+public class CoralIntakeSubsystem extends SubsystemBase {
     private final CoralIntakeCommands commands;
     private boolean hasCoral = false;
-    //find acutal motor IDs
+    // find acutal motor IDs
     private final SparkMax coralMotor = new SparkMax(CORAL_INTAKE_MOTOR, MotorType.kBrushless);
     private final SparkMaxConfig coralMotorConfig = new SparkMaxConfig();
-    public CoralIntakeSubsystem(){
+
+    public CoralIntakeSubsystem() {
         coralMotorConfig
-            .smartCurrentLimit(CORAL_INTAKE_CURRENT_STALL_LIMIT)
-            .voltageCompensation(CORAL_INTAKE_COMPENSATED_VOLTAGE)
-            .idleMode(IdleMode.kBrake);
+                .smartCurrentLimit(CORAL_INTAKE_CURRENT_STALL_LIMIT)
+                .voltageCompensation(CORAL_INTAKE_COMPENSATED_VOLTAGE)
+                .idleMode(IdleMode.kBrake);
         coralMotor.configure(coralMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         commands = new CoralIntakeCommands(this);
-    
+
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX_CORAL + "velocity", getSpeed());       
-        
+        SmartDashboard.putNumber(DASHBOARD_PREFIX_CORAL + "velocity", getSpeed());
+
     }
 
-    public void setHasAlgae(boolean hasAlgae){
+    public void setHasAlgae(boolean hasAlgae) {
         this.hasCoral = hasAlgae;
     }
 
-    public void set(State state){
+    public void set(State state) {
         coralMotor.set(state.getSpeed());
 
         SmartDashboard.putString(DASHBOARD_PREFIX_CORAL + "state", state.name());
     }
 
-    private double getSpeed(){
+    private double getSpeed() {
         return coralMotor.getEncoder().getVelocity();
     }
 
-    public void reset(){
-       set(State.STOP);
+    public void reset() {
+        set(State.STOP);
     }
 
-    public CoralIntakeCommands getCommands(){
+    public CoralIntakeCommands getCommands() {
         return commands;
     }
 
