@@ -92,8 +92,7 @@ public class VisionSubsystem extends SubsystemBase {
         double averageRotationY = 0;
         double averageRotationZ = 0;
 
-        for ( EstimatedRobotPose estimate : poses) {// i could probably combine this with the last loop but i
-                                                             // didn't do that initially and if it aint broke
+        for ( EstimatedRobotPose estimate : poses) {
             averageX += estimate.estimatedPose.getX();
             averageY += estimate.estimatedPose.getY();
             averageZ += estimate.estimatedPose.getZ();
