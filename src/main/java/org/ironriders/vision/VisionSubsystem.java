@@ -1,8 +1,10 @@
 package org.ironriders.vision;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ironriders.drive.DriveSubsystem;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -39,7 +41,6 @@ public class VisionSubsystem extends SubsystemBase {
         return this.camera;
     }
 
-    @SuppressWarnings("null")
     @Override
     public void periodic() {
         PhotonPipelineResult result = camera.getLatestResult();
@@ -62,7 +63,7 @@ public class VisionSubsystem extends SubsystemBase {
         }
         // this has to be changed to our custom field for testing
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-        List<PhotonCamera> cams = null;
+        List<PhotonCamera> cams = new ArrayList<>();
         for (String name : VisionConstants.CAM_NAMES) {
             cams.add(new PhotonCamera(name));
         }
@@ -70,15 +71,16 @@ public class VisionSubsystem extends SubsystemBase {
             System.out.print("VISION ARRAY MISMATCH!!!!!!!");
             return;
         }
-        List<PhotonPoseEstimator> poseEstimators = null;
+        List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
         for (Transform3d offsett : VisionConstants.CAM_OFFSETS) {
             poseEstimators
                     .add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
         }
         int index = 0;
+        List<EstimatedRobotPose> poses=new ArrayList<>();
         for (PhotonPoseEstimator estimate : poseEstimators) {
             result = cams.get(index).getLatestResult();
-            estimate.update(result);
+            poses.add(estimate.update(result).get());
             index++;
         }
         // great now we have a estimate from all the cameras. I don't really know what
@@ -90,14 +92,14 @@ public class VisionSubsystem extends SubsystemBase {
         double averageRotationY = 0;
         double averageRotationZ = 0;
 
-        for (PhotonPoseEstimator estimate : poseEstimators) {// i could probably combine this with the last loop but i
+        for ( EstimatedRobotPose estimate : poses) {// i could probably combine this with the last loop but i
                                                              // didn't do that initially and if it aint broke
-            averageX += estimate.getReferencePose().getX();
-            averageY += estimate.getReferencePose().getY();
-            averageZ += estimate.getReferencePose().getZ();
-            averageRotationX += estimate.getReferencePose().getRotation().getX();
-            averageRotationY += estimate.getReferencePose().getRotation().getY();
-            averageRotationZ += estimate.getReferencePose().getRotation().getZ();
+            averageX += estimate.estimatedPose.getX();
+            averageY += estimate.estimatedPose.getY();
+            averageZ += estimate.estimatedPose.getZ();
+            averageRotationX += estimate.estimatedPose.getRotation().getX();
+            averageRotationY += estimate.estimatedPose.getRotation().getY();
+            averageRotationZ += estimate.estimatedPose.getRotation().getZ();
         }
         averageX = averageX / cams.size();
         averageY = averageY / cams.size();
