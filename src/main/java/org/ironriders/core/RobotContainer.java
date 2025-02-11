@@ -70,33 +70,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    driveSubsystem.setDefaultCommand(
-        driveCommands.driveTeleop(
-            () -> Utils.controlCurve(
-              primaryController.getLeftY(), 
-              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
-              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-            () -> Utils.controlCurve(
-              primaryController.getLeftX(), 
-              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
-              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-            () -> Utils.controlCurve(
-              primaryController.getRightX(), 
-              DriveConstants.ROTATION_CONTROL_EXPONENT, 
-              DriveConstants.ROTATION_CONTROL_DEADBAND)
-        )
-    );
-  }
+
 		// Init auto chooser
 		autoChooser = AutoBuilder.buildAutoChooser();
 		SmartDashboard.putData("Auto Select", autoChooser);
