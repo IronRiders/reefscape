@@ -44,8 +44,9 @@ public class DriveCommands {
 			);
 		});
 	}
-	public Command driveToPose(Pose2d targetPose){
+
+	public Command driveToPose(Pose2d targetPose) {
 		return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-                DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
+				DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
 	}
 }

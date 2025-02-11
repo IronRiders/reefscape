@@ -77,7 +77,7 @@ public class VisionSubsystem extends SubsystemBase {
                     .add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
         }
         int index = 0;
-        List<EstimatedRobotPose> poses=new ArrayList<>();
+        List<EstimatedRobotPose> poses = new ArrayList<>();
         for (PhotonPoseEstimator estimate : poseEstimators) {
             result = cams.get(index).getLatestResult();
             poses.add(estimate.update(result).get());
@@ -91,16 +91,16 @@ public class VisionSubsystem extends SubsystemBase {
         double averageRotationX = 0;// could this be an array? yes. will it be? no
         double averageRotationY = 0;
         double averageRotationZ = 0;
-        double lastTimeStamp=0;
-        for ( EstimatedRobotPose estimate : poses) {
+        double lastTimeStamp = 0;
+        for (EstimatedRobotPose estimate : poses) {
             averageX += estimate.estimatedPose.getX();
             averageY += estimate.estimatedPose.getY();
             averageZ += estimate.estimatedPose.getZ();
             averageRotationX += estimate.estimatedPose.getRotation().getX();
             averageRotationY += estimate.estimatedPose.getRotation().getY();
             averageRotationZ += estimate.estimatedPose.getRotation().getZ();
-            if(estimate.timestampSeconds>lastTimeStamp){
-                lastTimeStamp=estimate.timestampSeconds;
+            if (estimate.timestampSeconds > lastTimeStamp) {
+                lastTimeStamp = estimate.timestampSeconds;
             }
         }
         averageX = averageX / cams.size();

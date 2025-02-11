@@ -45,8 +45,9 @@ public class VisionCommands {
                 };
             }
         }
-        return AutoBuilder.pathfindToPose(locations[station], new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-                DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
+        return AutoBuilder.pathfindToPose(locations[station],
+                new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+                        DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
     }
 
     private void print(String input) {

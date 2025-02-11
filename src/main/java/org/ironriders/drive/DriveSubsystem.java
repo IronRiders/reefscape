@@ -86,8 +86,8 @@ public class DriveSubsystem extends SubsystemBase {
 		return swerveDrive;
 	}
 
-	//** Resets the Odemetry to the current position*/
-	public void resetOdometry(Pose2d pose2d){
+	// ** Resets the Odemetry to the current position*/
+	public void resetOdometry(Pose2d pose2d) {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
 	}
 
