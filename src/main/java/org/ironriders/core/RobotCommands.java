@@ -71,13 +71,23 @@ public class RobotCommands {
         );
     }
 
-    // public Command putCoral(DoubleSupplier replaceMeOncePetersCodeIsPushedPlease /* REPLACE THIS WITH ELEVATION ENUM!!! */, BooleanSupplier rightHandSide) {
-    //     return Commands.sequence(
-    //         align to reef side
-    //         then move elevator to correct height
-    //         then move wrist to correct angle
-    //         then intake
-    //         then descend elevator
-    //     );
-    // }
+    public Command toggleClimber() {
+        return Commands.none();
+    }
+
+    public Command scoreAlgae() {
+        return Commands.none();
+    }
+
+    public Command scoreCoral() {
+        return Commands.none();
+    }
+
+    public Command grabAlgae() {
+        return Commands.none();
+    }
+
+    public Command grabCoral() {
+        return Commands.none();
+    }
 }
