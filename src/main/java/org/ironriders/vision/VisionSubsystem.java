@@ -1,8 +1,10 @@
 package org.ironriders.vision;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ironriders.drive.DriveSubsystem;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -15,8 +17,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -40,11 +41,6 @@ public class VisionSubsystem extends SubsystemBase {
         return this.camera;
     }
 
-    public void alignwithCoral() {
-        commands.alignCoral(camera);
-    }
-
-    @SuppressWarnings("null")
     @Override
     public void periodic() {
         PhotonPipelineResult result = camera.getLatestResult();
@@ -58,46 +54,33 @@ public class VisionSubsystem extends SubsystemBase {
             ids += (target.fiducialId) + " ";
         }
         SmartDashboard.putString("IDs", ids);
+        Field2d m_field = new Field2d();
+        SmartDashboard.putData("pose", m_field);
+        m_field.setRobotPose(driveSubsystem.getSwerveDrive().getPose());
 
-        int[] tags = null;
-        if (DriverStation.getAlliance().get() == Alliance.Red) {
-            tags = VisionConstants.REEF_TAG_IDS_RED;
-
-        } else {
-            tags = VisionConstants.REEF_TAG_IDS_BLUE;
-        }
-        boolean foundTag = false;
-        for (int i : tags) {
-            for (PhotonTrackedTarget target : targets) {// nested for loops feel slow but also i don't really care
-                if (i == target.fiducialId) {
-                    foundTag = true;
-                }
-            }
-        }
-        canAlignCoral = foundTag; // update public var so others can see it
-        SmartDashboard.putBoolean("Can Align Coral", canAlignCoral);
-
-        if(VisionConstants.CAM_OFFSETS.length==0){
-          //  System.out.println("no cameras set skipping!");  
+        if (VisionConstants.CAM_OFFSETS.length == 0) {
             return;
         }
+        // this has to be changed to our custom field for testing
         AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-        List<PhotonCamera> cams = null;
+        List<PhotonCamera> cams = new ArrayList<>();
         for (String name : VisionConstants.CAM_NAMES) {
             cams.add(new PhotonCamera(name));
         }
-        if(cams.size()!=VisionConstants.CAM_OFFSETS.length){
-            System.out.println("VISION ARRAY MISMATCH!!!!!!!");
+        if (cams.size() != VisionConstants.CAM_OFFSETS.length) {
+            System.out.print("VISION ARRAY MISMATCH!!!!!!!");
             return;
         }
-        List<PhotonPoseEstimator> poseEstimators = null;
+        List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
         for (Transform3d offsett : VisionConstants.CAM_OFFSETS) {
-            poseEstimators.add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
+            poseEstimators
+                    .add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
         }
         int index = 0;
+        List<EstimatedRobotPose> poses = new ArrayList<>();
         for (PhotonPoseEstimator estimate : poseEstimators) {
             result = cams.get(index).getLatestResult();
-            estimate.update(result);
+            poses.add(estimate.update(result).get());
             index++;
         }
         // great now we have a estimate from all the cameras. I don't really know what
@@ -105,17 +88,20 @@ public class VisionSubsystem extends SubsystemBase {
         double averageX = 0;
         double averageY = 0;
         double averageZ = 0;
-        double averageRotationX = 0;//could this be an array? yes. will it be? no
+        double averageRotationX = 0;// could this be an array? yes. will it be? no
         double averageRotationY = 0;
         double averageRotationZ = 0;
-
-        for (PhotonPoseEstimator estimate : poseEstimators) {//i could probably combine this with the last loop but i didn't do that initially and if it aint broke
-            averageX += estimate.getReferencePose().getX();
-            averageY += estimate.getReferencePose().getY();
-            averageZ += estimate.getReferencePose().getZ();
-            averageRotationX += estimate.getReferencePose().getRotation().getX();
-            averageRotationY += estimate.getReferencePose().getRotation().getY();
-            averageRotationZ += estimate.getReferencePose().getRotation().getZ();
+        double lastTimeStamp = 0;
+        for (EstimatedRobotPose estimate : poses) {
+            averageX += estimate.estimatedPose.getX();
+            averageY += estimate.estimatedPose.getY();
+            averageZ += estimate.estimatedPose.getZ();
+            averageRotationX += estimate.estimatedPose.getRotation().getX();
+            averageRotationY += estimate.estimatedPose.getRotation().getY();
+            averageRotationZ += estimate.estimatedPose.getRotation().getZ();
+            if (estimate.timestampSeconds > lastTimeStamp) {
+                lastTimeStamp = estimate.timestampSeconds;
+            }
         }
         averageX = averageX / cams.size();
         averageY = averageY / cams.size();
@@ -127,6 +113,6 @@ public class VisionSubsystem extends SubsystemBase {
                 new Rotation3d(averageRotationX, averageRotationY, averageRotationZ));// yay
         driveSubsystem.getSwerveDrive().addVisionMeasurement(
                 new Pose2d(averagePose.getX(), averagePose.getY(), averagePose.getRotation().toRotation2d()),
-                System.nanoTime());// update the swerve drives position stuff
+                lastTimeStamp);// update the swerve drives position stuff
     }
 }
