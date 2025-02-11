@@ -2,6 +2,10 @@ package org.ironriders.drive;
 
 import java.util.function.DoubleSupplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,5 +43,9 @@ public class DriveCommands {
 					true // Gus likes it this way
 			);
 		});
+	}
+	public Command driveToPose(Pose2d targetPose){
+		return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+                DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
 	}
 }
