@@ -54,9 +54,6 @@ public class ElevatorSubsystem extends SubsystemBase{
         SparkMaxConfig primaryConfig = new SparkMaxConfig();
         SparkMaxConfig followerConfig = new SparkMaxConfig();
 
-        LimitSwitchConfig topLimitSwitchConfig = new LimitSwitchConfig();
-        LimitSwitchConfig bottomLimitSwitchConfig = new LimitSwitchConfig();
-
         encoder = primaryMotor.getEncoder();
 
         primaryConfig.idleMode(IdleMode.kBrake);
@@ -83,8 +80,6 @@ public class ElevatorSubsystem extends SubsystemBase{
     }
 
     public void setGoal(Level goal){
-        //PIDController.setReference(goal.height, ControlType.kPosition, ClosedLoopSlot.kSlot0, 0); // arb feedforward should be calculated 
-
         this.goalState = new TrapezoidProfile.State(goal.positionInches, 0d);
     }
 
