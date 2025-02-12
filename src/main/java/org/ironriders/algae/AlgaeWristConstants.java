@@ -28,7 +28,7 @@ public class AlgaeWristConstants {
 
     public enum State {
         STOWED(0), // tune me pls
-        INTAKING(0);
+        EXTENDED(0);
 
         final double postion;
 

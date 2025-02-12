@@ -7,6 +7,7 @@ import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
 import org.ironriders.algae.AlgaeWristSubsystem;
+import org.ironriders.algae.AlgaeWristConstants.State;
 import org.ironriders.coral.CoralIntakeCommands;
 import org.ironriders.coral.CoralIntakeSubsystem;
 import org.ironriders.coral.CoralWristCommands;
@@ -18,6 +19,7 @@ import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import java.util.function.Supplier;
@@ -38,16 +40,18 @@ public class RobotCommands {
     private final AlgaeWristCommands algaeWristCommands;
     private final AlgaeIntakeCommands algaeIntakeCommands;
     private final VisionCommands visionCommands;
+    private final GenericHID controller;
 
     public RobotCommands(DriveCommands driveCommands, CoralWristCommands coralWristCommands,
             CoralIntakeCommands coralIntakeCommands, AlgaeWristCommands algaeWristCommands,
-            AlgaeIntakeCommands algaeIntakeCommands, VisionCommands visionCommands) {
+            AlgaeIntakeCommands algaeIntakeCommands, VisionCommands visionCommands, GenericHID controller) {
         this.driveCommands = driveCommands;
         this.coralWristCommands = coralWristCommands;
         this.coralIntakeCommands = coralIntakeCommands;
         this.algaeWristCommands = algaeWristCommands;
         this.algaeIntakeCommands = algaeIntakeCommands;
         this.visionCommands = visionCommands;
+        this.controller = controller;
     }
 
     /**
@@ -71,23 +75,41 @@ public class RobotCommands {
         );
     }
 
+    public Command rumble() {
+        return Commands.sequence(
+                Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 1)),
+                Commands.waitSeconds(0.3),
+                Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0))
+        ).handleInterrupt(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0));
+    }
+
     public Command toggleClimber() {
         return Commands.none();
+        //TODO
     }
 
     public Command scoreAlgae() {
-        return Commands.none();
+        return Commands.sequence(
+        algaeWristCommands.set(State.EXTENDED)
+        );
+        //TODO
+        //Elevator set to algae postion 
+        //Put Algae wrist out
+        
     }
 
     public Command scoreCoral() {
         return Commands.none();
+        //TODO
     }
 
     public Command grabAlgae() {
         return Commands.none();
+        //TODO
     }
 
     public Command grabCoral() {
         return Commands.none();
+        //TODO
     }
 }
