@@ -7,7 +7,8 @@ import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
 import org.ironriders.algae.AlgaeWristSubsystem;
-import org.ironriders.algae.AlgaeWristConstants.State;
+import org.ironriders.algae.AlgaeWristConstants.AlgaeWristState;
+import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.coral.CoralIntakeCommands;
 import org.ironriders.coral.CoralIntakeSubsystem;
 import org.ironriders.coral.CoralWristCommands;
@@ -88,9 +89,19 @@ public class RobotCommands {
         //TODO
     }
 
-    public Command scoreAlgae() {
+    public Command prepareToScoreAlgae() {
         return Commands.sequence(
-        algaeWristCommands.set(State.EXTENDED)
+        algaeWristCommands.set(AlgaeWristState.EXTENDED)
+        );
+        //TODO
+        //Elevator set to algae postion 
+        //Put Algae wrist out
+        
+    }
+    public Command ScoreAlgae() {
+        return Commands.sequence(
+        algaeWristCommands.set(AlgaeWristState.EXTENDED),
+        algaeIntakeCommands.set(AlgaeWristState.EJECT)
         );
         //TODO
         //Elevator set to algae postion 

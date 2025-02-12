@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static org.ironriders.algae.AlgaeIntakeConstants.*;
 
-import org.ironriders.algae.AlgaeIntakeConstants.State;;
+import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;;
 
 public class AlgaeIntakeSubsystem extends SubsystemBase {
     private final AlgaeIntakeCommands commands;
@@ -45,7 +45,7 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
         this.hasAlgae = hasAlgae;
     }
 
-    public void set(State state) {
+    public void set(AlgaeIntakeState state) {
         algaeLeftMotor.set(state.getSpeed());
         algaeRightMotor.set(-state.getSpeed());
 
@@ -57,7 +57,7 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
     }
 
     public void reset() {
-        set(State.STOP);
+        set(AlgaeIntakeState.STOP);
     }
 
     public AlgaeIntakeCommands getCommands() {

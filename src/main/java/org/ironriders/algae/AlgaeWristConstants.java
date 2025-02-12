@@ -26,13 +26,13 @@ public class AlgaeWristConstants {
     public static final double ALGAE_WRIST_ENCODER_OFFSET = -1; // please test
     public static final double ALGAE_WRIST_TOLERENCE = 10; // tune me please
 
-    public enum State {
+    public enum AlgaeWristState {
         STOWED(0), // tune me pls
         EXTENDED(0);
 
         final double postion;
 
-        State(int postion) {
+        AlgaeWristState(int postion) {
             this.postion = postion;
         }
 

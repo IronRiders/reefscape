@@ -16,14 +16,14 @@ public class AlgaeIntakeConstants {
 
     public static final int DISCHARGE_TIMEOUT = 1;
 
-    public enum State {
+    public enum AlgaeIntakeState {
         GRAB(1),
         EJECT(-1),
         STOP(0);
 
         private final double speed;
 
-        State(double speed) {
+        AlgaeIntakeState(double speed) {
             this.speed = speed;
         }
 

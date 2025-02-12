@@ -10,11 +10,11 @@ public class AlgaeWristCommands {
     public AlgaeWristCommands(AlgaeWristSubsystem wrist) {
         this.algaeWrist = wrist;
 
-        NamedCommands.registerCommand("Algae Wrist Stowed", set(State.STOWED));
-        NamedCommands.registerCommand("Algae Wrist Intaking", set(State.INTAKING));
+        NamedCommands.registerCommand("Algae Wrist Stowed", set(AlgaeWristState.STOWED));
+        NamedCommands.registerCommand("Algae Wrist Extended", set(AlgaeWristState.EXTENDED));
     }
 
-    public Command set(State state) {
+    public Command set(AlgaeWristState state) {
         return algaeWrist
                 .runOnce(() -> algaeWrist.set(state.getPostion()))
                 .until(algaeWrist::atPosition)
