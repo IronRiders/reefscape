@@ -101,7 +101,7 @@ public class RobotCommands {
     public Command ScoreAlgae() {
         return Commands.sequence(
         algaeWristCommands.set(AlgaeWristState.EXTENDED),
-        algaeIntakeCommands.set(AlgaeWristState.EJECT)
+        algaeIntakeCommands.set(AlgaeIntakeState.EJECT)
         );
         //TODO
         //Elevator set to algae postion 
