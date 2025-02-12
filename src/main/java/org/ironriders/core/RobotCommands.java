@@ -14,6 +14,7 @@ import org.ironriders.coral.CoralWristCommands;
 import org.ironriders.coral.CoralWristSubsystem;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveSubsystem;
+import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
@@ -35,6 +36,7 @@ import java.util.function.Supplier;
 public class RobotCommands {
 
     private final DriveCommands driveCommands;
+    private final ElevatorCommands elevatorCommands;
     private final CoralWristCommands coralWristCommands;
     private final CoralIntakeCommands coralIntakeCommands;
     private final AlgaeWristCommands algaeWristCommands;
@@ -46,6 +48,7 @@ public class RobotCommands {
             CoralIntakeCommands coralIntakeCommands, AlgaeWristCommands algaeWristCommands,
             AlgaeIntakeCommands algaeIntakeCommands, VisionCommands visionCommands, GenericHID controller) {
         this.driveCommands = driveCommands;
+        this.elevatorCommands = elevatorCommands;
         this.coralWristCommands = coralWristCommands;
         this.coralIntakeCommands = coralIntakeCommands;
         this.algaeWristCommands = algaeWristCommands;
