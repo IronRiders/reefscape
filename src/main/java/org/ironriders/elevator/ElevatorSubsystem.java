@@ -20,22 +20,27 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.ironriders.elevator.ElevatorConstants.*;
-public class ElevatorSubsystem extends SubsystemBase{
-    //private final double ff = 0;
+
+import org.ironriders.drive.DriveConstants;
+
+public class ElevatorSubsystem extends SubsystemBase {
+
     private final SparkMax leftMotor; // lead motor
     private final SparkMax rightMotor;
+
     private final SparkClosedLoopController PIDController;
     private final SparkLimitSwitch topLimitSwitch;
     private final SparkLimitSwitch bottomLimitSwitch;
     private final RelativeEncoder encoder;
     private final TrapezoidProfile profile;
     private final ElevatorFeedforward feedforward;
+
     private TrapezoidProfile.State goal;
     private TrapezoidProfile.State setPoint;
 
-    public ElevatorSubsystem(){
-        leftMotor =  new SparkMax(leftElevatorMotorDeviceID, MotorType.kBrushless);
-        rightMotor  =  new SparkMax(rightElevatorMotorDeviceID, MotorType.kBrushless);
+    public ElevatorSubsystem() {
+        leftMotor = new SparkMax(LEFT_MOTOR_ID, MotorType.kBrushless);
+        rightMotor = new SparkMax(RIGHT_MOTOR_ID, MotorType.kBrushless);
 
         topLimitSwitch = leftMotor.getForwardLimitSwitch();
         bottomLimitSwitch = leftMotor.getReverseLimitSwitch();
@@ -51,48 +56,47 @@ public class ElevatorSubsystem extends SubsystemBase{
         encoder = leftMotor.getEncoder();
 
         leftConfig.idleMode(IdleMode.kBrake);
-        leftConfig.closedLoop.pid(p, i, d);
-        leftConfig.closedLoop.iZone(iZone);
+        leftConfig.closedLoop.pid(MOTOR_PID_P, MOTOR_PID_I, MOTOR_PID_D);
+        leftConfig.closedLoop.iZone(MOTOR_PID_IZONE);
 
-        rightConfig.follow(leftElevatorMotorDeviceID);
+        rightConfig.follow(LEFT_MOTOR_ID);
         rightConfig.idleMode(IdleMode.kBrake);
         rightConfig.inverted(true);
 
         leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         rightMotor.configure(rightConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(maxVel, maxAcc);
+        TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(MAXIMUM_VELOCITY,
+                MAXIMUM_ACCELERATION);
         profile = new TrapezoidProfile(constraints);
         goal = new TrapezoidProfile.State();
         setPoint = new TrapezoidProfile.State();
 
-        feedforward = new ElevatorFeedforward(kS, kG, kV);
+        feedforward = new ElevatorFeedforward(KS, KG, KV);
     }
 
-    public void setGoal(Level goal){
-        //PIDController.setReference(goal.height, ControlType.kPosition, ClosedLoopSlot.kSlot0, 0); // arb feedforward should be calculated 
+    public void setGoal(Level goal) {
+        // PIDController.setReference(goal.height, ControlType.kPosition,
+        // ClosedLoopSlot.kSlot0, 0); // arb feedforward should be calculated
 
         this.goal = new TrapezoidProfile.State(goal.height, 0d);
     }
 
-    @Override
-    public void periodic(){
-        if(topLimitSwitch.isPressed()){
-            leftMotor.stopMotor();
-        }
-        else if(bottomLimitSwitch.isPressed()){
-            leftMotor.stopMotor();
-        }
-
-        setPoint = profile.calculate(t, setPoint, goal);
-
-        PIDController.setReference(goal.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feedforward.calculate(ffVel, ffAcc));
+    public boolean atGoal() {
+        return Math.abs(encoder.getPosition() - goal.position) < GOAL_TOLERANCE;
     }
-    //https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/trapezoidal-profiles.html#trapezoidal-motion-profiles-in-wpilib
 
-    //https://docs.revrobotics.com/brushless/revlib/revlib-overview/migrating-to-revlib-2025
+    @Override
+    public void periodic() {
+        if (topLimitSwitch.isPressed()) {
+            leftMotor.stopMotor();
+        } else if (bottomLimitSwitch.isPressed()) {
+            leftMotor.stopMotor();
+        }
 
-    //https://docs.revrobotics.com/brushless/revlib/closed-loop-control-overview/getting-started-with-pid-tuning
+        setPoint = profile.calculate(T, setPoint, goal);
 
-    //https://docs.revrobotics.com/brushless/revlib/closed-loop-control-overview/closed-loop-control-getting-started#pid-constants-and-configuration
+        PIDController.setReference(goal.position, ControlType.kPosition, ClosedLoopSlot.kSlot0,
+                feedforward.calculate(FF_VEL, FF_ACC));
+    }
 }

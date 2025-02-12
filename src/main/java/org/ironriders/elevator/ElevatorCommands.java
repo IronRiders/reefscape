@@ -1,20 +1,19 @@
 package org.ironriders.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
-public class ElevatorCommands extends Command {
-    private Level level;
-    private ElevatorSubsystem elevator;
+public class ElevatorCommands {
 
-    public ElevatorCommands(Level level, ElevatorSubsystem elevator){
-        this.level = level;
-        this.elevator = elevator;
+    private ElevatorSubsystem elevatorSubsystem;
 
-        addRequirements(elevator);
+    public ElevatorCommands(ElevatorSubsystem elevatorSubsystem) {
+        this.elevatorSubsystem = elevatorSubsystem;
     }
 
-    @Override
-    public void execute(){
-        elevator.setGoal(level);
+    public Command setLevel(ElevatorConstants.Level level) {
+        return elevatorSubsystem.runOnce(() -> {
+            elevatorSubsystem.setGoal(level);
+        }).andThen(Commands.waitUntil(() -> elevatorSubsystem.atGoal()));
     }
 }
