@@ -1,8 +1,6 @@
 package org.ironriders.vision;
 
-import java.util.List;
-
-import org.ironriders.core.Utils;
+import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -11,12 +9,13 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
-import org.photonvision.*;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
 
 public class VisionCommands {
+    @SuppressWarnings("unused")
     private final VisionSubsystem VisionSubsystem;
+    @SuppressWarnings("unused")
     private final DriveSubsystem driveSubsystem;
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
@@ -25,100 +24,43 @@ public class VisionCommands {
         this.driveSubsystem = driveSubsystem;
     }
 
-    public Command alignCoral(PhotonCamera camera) {
-        return VisionSubsystem.runOnce(() -> {
-            print("started coral mini auto");
-            int[] tags = null;
-            if (!DriverStation.getAlliance().isPresent()) {
-                error("no alliance!");
-                return;
-            }
+    /**
+     * Get a command to a given coral station
+     * 
+     * @param station the coral station you want to go to. it will automaticlly
+     *                select your alliance.
+     * @return a command to move to the station on success or a blank command on
+     *         error
+     */
+    public Command alignCoral(int station) {
+        Pose2d[] locations;
+        if (DriverStation.getAlliance().get() == Alliance.Blue) {
+            locations = VisionConstants.STATION_LOCATIONS_BLUE;
+        } else {
             if (DriverStation.getAlliance().get() == Alliance.Red) {
-                tags = VisionConstants.REEF_TAG_IDS_RED;
+                locations = VisionConstants.STATION_LOCATIONS_RED;
             } else {
-                tags = VisionConstants.REEF_TAG_IDS_BLUE;
-            }
-            boolean moved = false;
-            PhotonPipelineResult result = camera.getLatestResult();
-            if (!result.hasTargets()) {
-                error("no targets!");
-                return;
-            }
-            for (int i : tags) {
-                if (getPathToTag(i, result) != null) {
-                    Translation2d path = getPathToTag(i, result).getTranslation().toTranslation2d();
-                    while (path.getX() > 0 || path.getY() > 0) {
-                        result = camera.getLatestResult();
-                        if (!result.hasTargets()) {
-                            print("no targets");
-                            return;
-                        } else {
-                            List<PhotonTrackedTarget> targets = result.getTargets();
-                            Boolean foundTag = false;
-                            for (PhotonTrackedTarget target : targets) {
-                                if (target.getFiducialId() == i) {
-                                    foundTag = true;
-                                }
-                            }
-                            if (!foundTag) {
-                                print("lost target tag");
-                                return;
-                            }
-
-                        }
-                        if (getPathToTag(i, result) == null) {
-                            continue;
-                        }
-                        path = getPathToTag(i, result).getTranslation().toTranslation2d();
-                        double x = Utils.clamp(-.25, .25, -path.getX());
-                        double y = Utils.clamp(-.25, .25, -path.getY());
-                        driveSubsystem.drive(new Translation2d(x, y), 0, false);
-                        print("x: " + x);
-                        print("y: " + y);
-                        moved = true;
-                        if (DriverStation.isDisabled() || DriverStation.isEStopped()) {
-                            print("stopped");
-                            break;
-                        }
-
-                    }
-                }
-            }
-
-        }
-
-        );
-    }
-
-    private Transform3d getPathToTag(int id, PhotonPipelineResult result) {
-        boolean hasTargets = result.hasTargets();
-        if (!hasTargets) {
-            print("no valid targets!");
-            return null;
-        }
-        List<PhotonTrackedTarget> targets = result.getTargets();
-        for (PhotonTrackedTarget target : targets) {
-            if (target.getFiducialId() == id) {
-                Transform3d pose = target.getBestCameraToTarget();
-                return pose;
+                print("no alliance set");
+                return new Command() {
+                };
             }
         }
-        return null;
+        return AutoBuilder.pathfindToPose(locations[station],
+                new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+                        DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
     }
 
     private void print(String input) {
         System.out.println(input);
     }
 
+    @SuppressWarnings("unused")
     private void print(int input) {
         System.out.println(input);
     }
 
+    @SuppressWarnings("unused")
     private void print(boolean input) {
         System.out.println(input);
-    }
-
-    private void error(String input) {
-        System.err.println(input);
     }
 }

@@ -2,7 +2,10 @@ package org.ironriders.drive;
 
 import java.util.function.DoubleSupplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,7 +19,6 @@ public class DriveCommands {
 		this.driveSubsystem = driveSubsystem;
 		this.swerveDrive = driveSubsystem.getSwerveDrive();
 	}
-
 
 	/**
 	 * Command to drive the robot given controller input.
@@ -35,12 +37,16 @@ public class DriveCommands {
 			// Run the drive method with the inputs multiplied by the max speed.
 			driveSubsystem.drive(
 					new Translation2d(
-			 inputTranslationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
-			 inputTranslationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()
-			),
-					 inputRotation.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
+							inputTranslationX.getAsDouble() * swerveDrive.getMaximumChassisVelocity(),
+							inputTranslationY.getAsDouble() * swerveDrive.getMaximumChassisVelocity()),
+					inputRotation.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
 					true // Gus likes it this way
 			);
 		});
+	}
+
+	public Command driveToPose(Pose2d targetPose) {
+		return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+				DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
 	}
 }

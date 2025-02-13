@@ -66,7 +66,6 @@ public class RobotContainer {
 	private final SendableChooser<Command> autoChooser;
 	private final CommandXboxController primaryController = new CommandXboxController(
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
-
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
 	 */
@@ -108,10 +107,7 @@ public class RobotContainer {
 								primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
-
-		primaryController.a().onTrue(visionCommands.alignCoral(camera));
 	}
-
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
 	 *
