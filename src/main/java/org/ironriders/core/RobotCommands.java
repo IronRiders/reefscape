@@ -2,7 +2,10 @@ package org.ironriders.core;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-
+import org.ironriders.algae.AlgaeIntakeConstants;
+import org.ironriders.algae.AlgaeWristConstants;
+import org.ironriders.coral.CoralIntakeConstants;
+import org.ironriders.coral.CoralWristConstants;
 import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
@@ -16,6 +19,7 @@ import org.ironriders.coral.CoralWristSubsystem;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
+import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
@@ -75,55 +79,53 @@ public class RobotCommands {
                         inputTranslationX.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP,
                         inputTranslationY.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP),
                 () -> inputRotation.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP,
-                () -> true
-        );
+                () -> true);
     }
 
     public Command rumble() {
         return Commands.sequence(
                 Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 1)),
                 Commands.waitSeconds(0.3),
-                Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0))
-        ).handleInterrupt(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0));
+                Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0)))
+                .handleInterrupt(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0));
     }
 
     public Command toggleClimber() {
         return Commands.none();
-        //TODO
+        // TODO
     }
 
     public Command prepareToScoreAlgae() {
-        return Commands.sequence(
-        algaeWristCommands.set(AlgaeWristState.EXTENDED)
-        );
-        //TODO
-        //Elevator set to algae postion 
-        //Put Algae wrist out
-        
+        return Commands.parallel(
+                elevatorCommands.setLevel(ElevatorConstants.Level.L1),
+                algaeWristCommands.set(AlgaeWristState.EXTENDED));
     }
-    public Command ScoreAlgae() {
+    public Command scoreAlgae() {
         return Commands.sequence(
-        algaeWristCommands.set(AlgaeWristState.EXTENDED),
-        algaeIntakeCommands.set(AlgaeIntakeState.EJECT)
-        );
-        //TODO
-        //Elevator set to algae postion 
-        //Put Algae wrist out
-        
+                algaeIntakeCommands.set(AlgaeIntakeState.EJECT));
     }
 
+    public Command prepareToScoreCoral(ElevatorConstants.Level level) {
+        return Commands.parallel(
+            elevatorCommands.setLevel(level),
+            coralWristCommands.set(level != ElevatorConstants.Level.L4 ? CoralWristConstants.State.L1toL3
+                    : CoralWristConstants.State.L4));
+    }
     public Command scoreCoral() {
-        return Commands.none();
-        //TODO
+        return Commands.sequence(
+                coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
+                elevatorCommands.setLevel(ElevatorConstants.Level.L1)
+        );
     }
 
     public Command grabAlgae() {
         return Commands.none();
-        //TODO
+        // TODO: Implement option(?) for scoring algae at the same time, and option for
+        // golfball
     }
 
     public Command grabCoral() {
         return Commands.none();
-        //TODO
+        // TODO
     }
 }
