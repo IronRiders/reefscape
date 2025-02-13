@@ -1,16 +1,18 @@
 package org.ironriders.elevator;
 
 import static org.ironriders.core.Constants.*;
+import static org.ironriders.elevator.ElevatorConstants.downPos;
 
 public enum Level {
+    Down (downPos),
     L1 (L1Height),
     L2 (L2Height),
     L3 (L3Height),
     L4 (L4Height);
 
-    public double height;
+    public double positionInches;
 
-    private Level(double height){
-        this.height = height;
+    private Level(double positionInches){
+        this.positionInches = positionInches;
     }
 }
