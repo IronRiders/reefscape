@@ -1,8 +1,8 @@
 package org.ironriders.elevator;
 
 public class ElevatorConstants {
-    public static final int leftElevatorMotorDeviceID = 0;
-    public static final int rightElevatorMotorDeviceID = 0;
+    public static final int primaryElevatorMotorDeviceID = 0;
+    public static final int followerElevatorMotorDeviceID = 0;
 
     public static final double gearRatio = 0;
     public static final double sprocketDiameter = 0;

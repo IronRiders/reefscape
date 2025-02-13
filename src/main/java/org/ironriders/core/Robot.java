@@ -4,9 +4,13 @@
 
 package org.ironriders.core;
 
+import org.ironriders.elevator.ElevatorCommands;
+import org.ironriders.elevator.ElevatorSubsystem;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -18,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
 
   private final RobotContainer robotContainer;
+
 
   private Command autonomousCommand;
 
@@ -71,7 +76,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autonomousCommand = robotContainer.getAutonomousCommand();
-
+    robotContainer.elevatorCommands.home().schedule();
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
@@ -91,6 +96,9 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
+    }
+    if(!robotContainer.elevatorSubsystem.isHomed()){
+      robotContainer.elevatorCommands.home().schedule();
     }
   }
 

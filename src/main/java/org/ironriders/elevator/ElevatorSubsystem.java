@@ -1,7 +1,5 @@
 package org.ironriders.elevator;
 
-import static org.ironriders.core.Constants.leftElevatorMotorDeviceID;
-import static org.ironriders.core.Constants.rightElevatorMotorDeviceID;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -23,7 +21,11 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.ironriders.elevator.ElevatorConstants.*;
+
+import org.ironriders.algae.AlgaeWristCommands;
+
 public class ElevatorSubsystem extends SubsystemBase{
+    private final ElevatorCommands commands;
     //private final double ff = 0;
     private final SparkMax primaryMotor; // lead motor
     private final SparkMax followerMotor;
@@ -43,8 +45,9 @@ public class ElevatorSubsystem extends SubsystemBase{
     double currentPos;
 
     public ElevatorSubsystem(){
-        primaryMotor =  new SparkMax(leftElevatorMotorDeviceID, MotorType.kBrushless);
-        followerMotor  =  new SparkMax(rightElevatorMotorDeviceID, MotorType.kBrushless);
+        
+        primaryMotor =  new SparkMax(primaryElevatorMotorDeviceID, MotorType.kBrushless);
+        followerMotor  =  new SparkMax(followerElevatorMotorDeviceID, MotorType.kBrushless);
 
         topLimitSwitch = primaryMotor.getForwardLimitSwitch();
         bottomLimitSwitch = primaryMotor.getReverseLimitSwitch();
@@ -59,7 +62,7 @@ public class ElevatorSubsystem extends SubsystemBase{
         primaryConfig.idleMode(IdleMode.kBrake);
         
 
-        followerConfig.follow(leftElevatorMotorDeviceID);
+        followerConfig.follow(followerElevatorMotorDeviceID);
         followerConfig.idleMode(IdleMode.kBrake);
         followerConfig.inverted(true);
 
@@ -77,6 +80,7 @@ public class ElevatorSubsystem extends SubsystemBase{
 
 
         feedforward = new ElevatorFeedforward(kS, kG, kV);
+        commands = new ElevatorCommands(this);
     }
 
     public void setGoal(Level goal){
@@ -159,6 +163,9 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public void homeElevator(){
         primaryMotor.set(-0.1); //Slow downward movement until bottom limit is hit
+        if(bottomLimitSwitch.isPressed()){
+            handleBottomLimit();
+        }  
     }
     
     public boolean isAtPosition(Level level){
@@ -170,6 +177,9 @@ public class ElevatorSubsystem extends SubsystemBase{
         return isHomed;
     }
 
+    public ElevatorCommands getCommands(){
+        return commands;
+    } 
     //https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/trapezoidal-profiles.html#trapezoidal-motion-profiles-in-wpilib
 
     //https://docs.revrobotics.com/brushless/revlib/revlib-overview/migrating-to-revlib-2025

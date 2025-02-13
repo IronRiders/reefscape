@@ -29,6 +29,10 @@ public class ElevatorCommands extends Command {
         .handleInterrupt(() -> elevator.stopMotor());
     }
 
+    public Command home(){
+        return elevator.runOnce(elevator::homeElevator);
+    }
+
     @Override
     public boolean isFinished(){
         if(level == null) return false;
