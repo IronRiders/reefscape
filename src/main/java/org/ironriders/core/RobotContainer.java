@@ -15,6 +15,7 @@ import org.ironriders.coral.CoralIntakeCommands;
 import org.ironriders.coral.CoralIntakeSubsystem;
 import org.ironriders.coral.CoralWristCommands;
 import org.ironriders.coral.CoralWristSubsystem;
+import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,7 +44,8 @@ public class RobotContainer {
 	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	private final DriveCommands driveCommands = driveSubsystem.getCommands();
   
-  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
 	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
 	private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
@@ -62,7 +64,7 @@ public class RobotContainer {
 	private final PhotonCamera camera = visionSubsystem.getCamera();
 
 	private final RobotCommands robotCommands = new RobotCommands(
-		driveCommands, coralWristCommands, coralIntakeCommands, algaeWristCommands, algaeIntakeCommands, visionCommands
+		driveCommands, coralWristCommands, coralIntakeCommands, algaeWristCommands, algaeIntakeCommands, visionCommands, elevatorCommands
 	);
 
 	private final SendableChooser<Command> autoChooser;

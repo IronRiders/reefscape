@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import java.util.function.Supplier;
+import org.ironriders.elevator.Level.*;
 
 /**
  * These commands require more complex logic and are not directly tied to a
@@ -51,7 +52,7 @@ public class RobotCommands {
 
     public RobotCommands(DriveCommands driveCommands, CoralWristCommands coralWristCommands,
             CoralIntakeCommands coralIntakeCommands, AlgaeWristCommands algaeWristCommands,
-            AlgaeIntakeCommands algaeIntakeCommands, VisionCommands visionCommands, GenericHID controller) {
+            AlgaeIntakeCommands algaeIntakeCommands, VisionCommands visionCommands, GenericHID controller, ElevatorCommands elevatorCommands) {
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
         this.coralWristCommands = coralWristCommands;
@@ -97,7 +98,7 @@ public class RobotCommands {
 
     public Command prepareToScoreAlgae() {
         return Commands.parallel(
-                elevatorCommands.setLevel(ElevatorConstants.Level.L1),
+                elevatorCommands.setLevel(Level.L1),
                 algaeWristCommands.set(AlgaeWristState.EXTENDED));
     }
     public Command scoreAlgae() {
@@ -105,7 +106,7 @@ public class RobotCommands {
                 algaeIntakeCommands.set(AlgaeIntakeState.EJECT));
     }
 
-    public Command prepareToScoreCoral(ElevatorConstants.Level level) {
+    public Command prepareToScoreCoral(Level level) {
         return Commands.parallel(
             elevatorCommands.setLevel(level),
             coralWristCommands.set(level != ElevatorConstants.Level.L4 ? CoralWristConstants.State.L1toL3
