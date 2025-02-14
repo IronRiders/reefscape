@@ -7,6 +7,9 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
+
+import java.lang.ModuleLayer.Controller;
+
 import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
@@ -19,6 +22,7 @@ import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.ironriders.vision.VisionCommands;
@@ -43,33 +47,42 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	private final DriveCommands driveCommands = driveSubsystem.getCommands();
-  
-  public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
+
+	private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+	private final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
 	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
 	private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
-	private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
-	private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
+	// private final CoralIntakeSubsystem coralIntakeSubsystem = new
+	// CoralIntakeSubsystem();
+	// private final CoralIntakeCommands coralIntakeCommands =
+	// coralIntakeSubsystem.getCommands();
 
-	private final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
-	private final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
+	// private final AlgaeWristSubsystem algaeWristSubystem = new
+	// AlgaeWristSubsystem();
+	// private final AlgaeWristCommands algaeWristCommands =
+	// algaeWristSubystem.getCommands();
 
-	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
-	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
+	// private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new
+	// AlgaeIntakeSubsystem();
+	// private final AlgaeIntakeCommands algaeIntakeCommands =
+	// algaeIntakeSubsystem.getCommands();
 
 	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
 	private final VisionCommands visionCommands = visionSubsystem.getCommands();
 	private final PhotonCamera camera = visionSubsystem.getCamera();
 
-	private final RobotCommands robotCommands = new RobotCommands(
-		driveCommands, coralWristCommands, coralIntakeCommands, algaeWristCommands, algaeIntakeCommands, visionCommands, elevatorCommands
-	);
-
 	private final SendableChooser<Command> autoChooser;
 	private final CommandXboxController primaryController = new CommandXboxController(
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
+
+	private final RobotCommands robotCommands = new RobotCommands(
+			driveCommands, elevatorCommands, visionCommands, primaryController.getHID()
+	// driveCommands, coralWristCommands, coralIntakeCommands, algaeWristCommands,
+	// algaeIntakeCommands, visionCommands
+	);
+
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
 	 */
@@ -102,21 +115,22 @@ public class RobotContainer {
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> Utils.controlCurve(
-								primaryController.getLeftY(),
+								-primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> Utils.controlCurve(
-								primaryController.getLeftX(),
+								-primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> Utils.controlCurve(
-								primaryController.getRightX(),
+								-primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
 		// I ❤️ mini-autos
-		primaryController.a().onTrue(visionCommands.alignCoral(camera));
+		// primaryController.a().onTrue(visionCommands.alignCoral(camera));
 	}
+
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
 	 *

@@ -182,12 +182,5 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public ElevatorCommands getCommands(){
         return commands;
-    } 
-    //https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/trapezoidal-profiles.html#trapezoidal-motion-profiles-in-wpilib
-
-    //https://docs.revrobotics.com/brushless/revlib/revlib-overview/migrating-to-revlib-2025
-
-    //https://docs.revrobotics.com/brushless/revlib/closed-loop-control-overview/getting-started-with-pid-tuning
-
-    //https://docs.revrobotics.com/brushless/revlib/closed-loop-control-overview/closed-loop-control-getting-started#pid-constants-and-configuration
+    }
 }
