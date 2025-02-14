@@ -48,8 +48,8 @@ public class RobotContainer {
 	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
-	private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-	private final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
+	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
 	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
 	private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
