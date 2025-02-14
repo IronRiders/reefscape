@@ -1,7 +1,6 @@
 package org.ironriders.elevator;
 
-import static org.ironriders.core.Constants.*;
-import static org.ironriders.elevator.ElevatorConstants.downPos;
+import static org.ironriders.elevator.ElevatorConstants.*;
 
 public enum Level {
     Down (downPos),
