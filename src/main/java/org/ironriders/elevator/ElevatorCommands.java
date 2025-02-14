@@ -19,7 +19,7 @@ public class ElevatorCommands {
         NamedCommands.registerCommand("Elevator going home", set(Level.Down));
     }
 
-    public Command set(Level level) {
+    public Command set(ElevatorConstants.Level level) {
         return elevatorSubsystem.runOnce(() -> {
             elevatorSubsystem.setPositionInches(level.positionInches);
         })

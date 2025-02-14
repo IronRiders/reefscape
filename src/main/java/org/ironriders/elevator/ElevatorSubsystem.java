@@ -37,8 +37,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final TrapezoidProfile profile;
     private final ElevatorFeedforward feedforward;
     private final PIDController pidController;
-    private TrapezoidProfile.State goalState;
-    private TrapezoidProfile.State currentState;
+    private TrapezoidProfile.State goalState = new TrapezoidProfile.State();
+    private TrapezoidProfile.State currentState = new TrapezoidProfile.State();
 
     private Level currentTarget = Level.Down;
     private boolean isHomed = false;
@@ -61,6 +61,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         encoder = primaryMotor.getEncoder();
 
         primaryConfig.idleMode(IdleMode.kBrake);
+        primaryConfig.inverted(true);
 
         followerConfig.follow(ElevatorConstants.FOLLOW_MOTOR_ID);
         followerConfig.idleMode(IdleMode.kBrake);
@@ -114,7 +115,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void setPositionInches(double inches) {
         if (!isHomed && inches > 0) {
-            System.out.println("Waraning: Elevator not homed! Home first before moving to positions.");
+            System.out.println("Warning: Elevator not homed! Home first before moving to positions.");
             return;
         }
 
@@ -165,7 +166,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         }
     }
 
-    public boolean isAtPosition(Level level) {
+    public boolean isAtPosition(ElevatorConstants.Level level) {
         return pidController.atSetpoint() &&
                 Math.abs(getHeightInches() - level.positionInches) < 0.5;
     }

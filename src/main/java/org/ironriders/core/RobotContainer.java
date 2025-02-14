@@ -20,7 +20,7 @@ import org.ironriders.coral.CoralWristCommands;
 import org.ironriders.coral.CoralWristSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
-
+import org.ironriders.elevator.ElevatorConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -51,8 +51,8 @@ public class RobotContainer {
 	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
-	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
-	private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
+	// private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
+	// private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
 	// private final CoralIntakeSubsystem coralIntakeSubsystem = new
 	// CoralIntakeSubsystem();
@@ -128,6 +128,9 @@ public class RobotContainer {
 
 		// I ❤️ mini-autos
 		// primaryController.a().onTrue(visionCommands.alignCoral(camera));
+
+		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
+		primaryController.b().onTrue(elevatorCommands.home());
 	}
 
 	/**

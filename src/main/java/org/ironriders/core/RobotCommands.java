@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import java.util.function.Supplier;
-import org.ironriders.elevator.Level.*;
 
 /**
  * These commands require more complex logic and are not directly tied to a
