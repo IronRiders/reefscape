@@ -43,9 +43,9 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	private final DriveCommands driveCommands = driveSubsystem.getCommands();
-  
-  public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
+
+	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
 	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
 	private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
@@ -66,6 +66,7 @@ public class RobotContainer {
 	private final SendableChooser<Command> autoChooser;
 	private final CommandXboxController primaryController = new CommandXboxController(
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
+
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
 	 */
@@ -73,34 +74,6 @@ public class RobotContainer {
 		// Configure the trigger bindings
 		configureBindings();
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    driveSubsystem.setDefaultCommand(
-        driveCommands.driveTeleop(
-            () -> Utils.controlCurve(
-              -primaryController.getLeftY(), 
-              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
-              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-            () -> Utils.controlCurve(
-              -primaryController.getLeftX(), 
-              DriveConstants.TRANSLATION_CONTROL_EXPONENT, 
-              DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-            () -> Utils.controlCurve(
-              primaryController.getRightX(), 
-              DriveConstants.ROTATION_CONTROL_EXPONENT, 
-              DriveConstants.ROTATION_CONTROL_DEADBAND)
-        )
-    );
-  }
-		// Init auto chooser
 		autoChooser = AutoBuilder.buildAutoChooser();
 		SmartDashboard.putData("Auto Select", autoChooser);
 	}
@@ -123,11 +96,11 @@ public class RobotContainer {
 		driveSubsystem.setDefaultCommand(
 				driveCommands.driveTeleop(
 						() -> Utils.controlCurve(
-								primaryController.getLeftY(),
+								-primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> Utils.controlCurve(
-								primaryController.getLeftX(),
+								-primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> Utils.controlCurve(
@@ -135,6 +108,7 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 	}
+
 	/**
 	 * Use this to pass the autonomous command to the main {@link Robot} class.
 	 *
