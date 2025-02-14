@@ -90,7 +90,6 @@ public class RobotContainer {
 		// Configure the trigger bindings
 		configureBindings();
 
-		// Init auto chooser
 		autoChooser = AutoBuilder.buildAutoChooser();
 		SmartDashboard.putData("Auto Select", autoChooser);
 	}
