@@ -25,6 +25,8 @@ import org.ironriders.drive.DriveConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
+    private ElevatorCommands elevatorCommands;
+
     private final SparkMax leftMotor; // lead motor
     private final SparkMax rightMotor;
 
@@ -39,6 +41,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private TrapezoidProfile.State setPoint;
 
     public ElevatorSubsystem() {
+
+        elevatorCommands = new ElevatorCommands(this);
+
         leftMotor = new SparkMax(LEFT_MOTOR_ID, MotorType.kBrushless);
         rightMotor = new SparkMax(RIGHT_MOTOR_ID, MotorType.kBrushless);
 
@@ -98,5 +103,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         PIDController.setReference(goal.position, ControlType.kPosition, ClosedLoopSlot.kSlot0,
                 feedforward.calculate(FF_VEL, FF_ACC));
+    }
+
+    public ElevatorCommands getCommands() {
+        return elevatorCommands;
     }
 }
