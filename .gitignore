@@ -27,3 +27,9 @@ build/
 .vscode/
 .idea/ # please do not use IntelliJ!
 build
+
+# Simulator related stuff; might be value in storing these under source control
+# at some point but ignore for now
+simgui*.json
+networktables.json
+ctre_sim
