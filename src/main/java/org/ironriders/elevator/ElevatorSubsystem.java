@@ -17,6 +17,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.ironriders.elevator.ElevatorConstants.*;
@@ -28,7 +29,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     // private final double ff = 0;
     private final SparkMax primaryMotor; // lead motor
     private final SparkMax followerMotor;
-    private final SparkClosedLoopController PIDController;
 
     private final SparkLimitSwitch topLimitSwitch;
     private final SparkLimitSwitch bottomLimitSwitch;
@@ -53,19 +53,17 @@ public class ElevatorSubsystem extends SubsystemBase {
         topLimitSwitch = primaryMotor.getReverseLimitSwitch();
         bottomLimitSwitch = primaryMotor.getForwardLimitSwitch();
 
-        PIDController = primaryMotor.getClosedLoopController();
-
         SparkMaxConfig primaryConfig = new SparkMaxConfig();
         SparkMaxConfig followerConfig = new SparkMaxConfig();
 
         encoder = primaryMotor.getEncoder();
 
-        primaryConfig.idleMode(IdleMode.kBrake);
-        primaryConfig.inverted(true);
+        primaryConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
+        primaryConfig.inverted(true); // probably make a constant out of this
 
         followerConfig.follow(ElevatorConstants.FOLLOW_MOTOR_ID);
-        followerConfig.idleMode(IdleMode.kBrake);
-        followerConfig.inverted(true);
+        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
+        followerConfig.inverted(true); // probably make a constant out of this
 
         primaryMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         followerMotor.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -146,6 +144,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putString("Elevator State", currentTarget.toString());
         SmartDashboard.putNumber("Elevator Current", primaryMotor.getOutputCurrent());
         SmartDashboard.putNumber("Elevator Velocity", currentState.velocity);
+        SmartDashboard.putBoolean("Elevator Forward Limit Switch", primaryMotor.getForwardLimitSwitch().isPressed());
+        SmartDashboard.putBoolean("Elevator Reverse Limit Switch", primaryMotor.getReverseLimitSwitch().isPressed());
     }
 
     private double calculateFeedForward(TrapezoidProfile.State state) {
