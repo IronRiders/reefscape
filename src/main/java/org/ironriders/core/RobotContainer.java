@@ -130,7 +130,7 @@ public class RobotContainer {
 		// primaryController.a().onTrue(visionCommands.alignCoral(camera));
 
 		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		primaryController.b().onTrue(elevatorCommands.home());
+		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
 	}
 
 	/**

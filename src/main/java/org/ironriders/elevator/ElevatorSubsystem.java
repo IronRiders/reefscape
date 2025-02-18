@@ -1,5 +1,6 @@
 package org.ironriders.elevator;
 
+import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -12,6 +13,8 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.LimitSwitchConfig.Type;
+
 import org.ironriders.elevator.ElevatorConstants.*;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
@@ -39,15 +42,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final PIDController pidController;
     private TrapezoidProfile.State goalState = new TrapezoidProfile.State();
     private TrapezoidProfile.State currentState = new TrapezoidProfile.State();
+    
 
     private Level currentTarget = Level.Down;
     private boolean isHomed = false;
     private double setpoint = 0.0;
+    
     double currentPos;
 
     public ElevatorSubsystem() {
-
-        primaryMotor = new SparkMax(PRIMARY_MOTOR_ID, MotorType.kBrushless);
+        goalState.position =0;
+        primaryMotor = new SparkMax(PRIMARY_MOTOR_ID, MotorType.kBrushless); 
         followerMotor = new SparkMax(FOLLOW_MOTOR_ID, MotorType.kBrushless);
 
         topLimitSwitch = primaryMotor.getReverseLimitSwitch();
@@ -55,22 +60,33 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         SparkMaxConfig primaryConfig = new SparkMaxConfig();
         SparkMaxConfig followerConfig = new SparkMaxConfig();
+        LimitSwitchConfig limitSwitchConfig = new LimitSwitchConfig();
+        LimitSwitchConfig disabledLimitSwitchConfig = new LimitSwitchConfig();
 
         encoder = primaryMotor.getEncoder();
 
-        primaryConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
-        primaryConfig.inverted(true); // probably make a constant out of this
+        limitSwitchConfig.forwardLimitSwitchEnabled(false)
+                .forwardLimitSwitchType(Type.kNormallyClosed).reverseLimitSwitchEnabled(true).reverseLimitSwitchType(Type.kNormallyOpen);
 
-        followerConfig.follow(ElevatorConstants.FOLLOW_MOTOR_ID);
-        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
-        followerConfig.inverted(true); // probably make a constant out of this
+        // disabledLimitSwitchConfig.forwardLimitSwitchEnabled(false).forwardLimitSwitchType(Type.kNormallyClosed);
+        primaryConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
+        primaryConfig.inverted(true); // probably make a constant out of this
+        primaryConfig.apply(limitSwitchConfig);
+
+         
+                                                                                
+
+
+        followerConfig.follow(ElevatorConstants.PRIMARY_MOTOR_ID, true);
+        followerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
+        // followerConfig.inverted(true); // probably make a constant out of this
+        
 
         primaryMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         followerMotor.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ElevatorConstants.MAX_VEL, ElevatorConstants.MAX_ACC);
         profile = new TrapezoidProfile(constraints);
         goalState = new TrapezoidProfile.State();
-
         pidController = new PIDController(
                 ElevatorConstants.P,
                 ElevatorConstants.I,
@@ -84,6 +100,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.goalState = new TrapezoidProfile.State(goal.positionInches, 0d);
     }
 
+    boolean isHoming = false;
     @Override
     public void periodic() {
         currentPos = encoder.getPosition() / ElevatorConstants.INCHES_PER_ROTATION;
@@ -92,13 +109,18 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         if (bottomLimitSwitch.isPressed()) {
             handleBottomLimit();
-        } else if (topLimitSwitch.isPressed()) {
-            stopMotor();
         }
+        // if (isHoming =true && !bottomLimitSwitch.isPressed()){
+        //     primaryMotor.set(0);
+        //     isHoming = false;
+        // }
+        // } else if (topLimitSwitch.isPressed()) {
+        //     stopMotor();
+        // }
 
         // Only run if homed
         if (isHomed) {
-            double pidOutput = pidController.calculate(getHeightInches(), currentState.position);
+            double pidOutput = pidController.calculate(getHeightInches(), goalState.position);
             double ff = calculateFeedForward(currentState);
 
             double ouputPower = MathUtil.clamp(pidOutput + ff, -ElevatorConstants.MAX_OUTPUT,
@@ -129,12 +151,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     private void handleBottomLimit() {
-        stopMotor();
+        // stopMotor();
         encoder.setPosition(BOTTOM_POS * INCHES_PER_ROTATION);
         isHomed = true;
-        setpoint = BOTTOM_POS;
+        // isHoming = true;
+        // setpoint = BOTTOM_POS;
         currentState = new TrapezoidProfile.State(BOTTOM_POS, 0);
-        goalState = new TrapezoidProfile.State(BOTTOM_POS, 0);
+        // goalState = new TrapezoidProfile.State(BOTTOM_POS, 0);
+        // LimitSwitchConfig limitSwitchConfig = new LimitSwitchConfig();
+        // limitSwitchConfig.forwardLimitSwitchEnabled(false);
+        // primaryMotor.set(.1);
     }
 
     private void updateTelemetry() {
@@ -142,10 +168,15 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Elevator Target", setpoint);
         SmartDashboard.putBoolean("Elevator Homed", isHomed);
         SmartDashboard.putString("Elevator State", currentTarget.toString());
-        SmartDashboard.putNumber("Elevator Current", primaryMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Primary Motor Current", primaryMotor.getOutputCurrent());
         SmartDashboard.putNumber("Elevator Velocity", currentState.velocity);
         SmartDashboard.putBoolean("Elevator Forward Limit Switch", primaryMotor.getForwardLimitSwitch().isPressed());
         SmartDashboard.putBoolean("Elevator Reverse Limit Switch", primaryMotor.getReverseLimitSwitch().isPressed());
+        SmartDashboard.putNumber("Elevator Follower Motor Current", followerMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Setpoint", setpoint);
+        SmartDashboard.putNumber("Elevator Current Position", currentPos);
+        SmartDashboard.putNumber("Elevator goal Position", goalState.position);
+
     }
 
     private double calculateFeedForward(TrapezoidProfile.State state) {
@@ -161,6 +192,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void homeElevator() {
         primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
+        System.out.println("ELEVATOR HOMED");
         if (bottomLimitSwitch.isPressed()) {
             handleBottomLimit();
         }
