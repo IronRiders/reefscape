@@ -56,15 +56,15 @@ public class RobotCommands {
     public RobotCommands(
             DriveCommands driveCommands,
             ElevatorCommands elevatorCommands,
-            CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-            AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
+            // CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
+            // AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
             VisionCommands visionCommands, GenericHID controller) {
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
-        this.coralWristCommands = coralWristCommands;
-        this.coralIntakeCommands = coralIntakeCommands;
-        this.algaeWristCommands = algaeWristCommands;
-        this.algaeIntakeCommands = algaeIntakeCommands;
+        // this.coralWristCommands = coralWristCommands;
+        // this.coralIntakeCommands = coralIntakeCommands;
+        // this.algaeWristCommands = algaeWristCommands;
+        // this.algaeIntakeCommands = algaeIntakeCommands;
         this.visionCommands = visionCommands;
         this.controller = controller;
 

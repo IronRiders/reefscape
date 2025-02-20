@@ -77,8 +77,9 @@ public class RobotContainer {
 	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
 
 	private final RobotCommands robotCommands = new RobotCommands(
-			driveCommands, elevatorCommands, coralWristCommands, coralIntakeCommands,
-			algaeWristCommands, algaeIntakeCommands, visionCommands, primaryController.getHID());
+			driveCommands, elevatorCommands, 
+			// coralWristCommands, coralIntakeCommands, algaeWristCommands, algaeIntakeCommands, 
+			visionCommands, primaryController.getHID());
 
 	// non-final variables
 	private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1; // for scoring coral
