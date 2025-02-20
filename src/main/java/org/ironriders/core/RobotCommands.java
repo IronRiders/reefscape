@@ -165,7 +165,8 @@ public class RobotCommands {
     public Command grabAlgae() {
         return Commands.sequence(
                 algaeIntakeCommands.set(AlgaeIntakeState.GRAB),
-                algaeWristCommands.set(AlgaeWristState.STOWED));
+                algaeWristCommands.set(AlgaeWristState.STOWED),
+                this.rumble());
     }
 
     public Command prepareToGrabCoral() {
@@ -178,6 +179,7 @@ public class RobotCommands {
     public Command grabCoral() {
         return Commands.sequence(
                 coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
-                coralWristCommands.set(CoralWristConstants.State.STOWED));
+                coralWristCommands.set(CoralWristConstants.State.STOWED),
+                rumble());
     }
 }
