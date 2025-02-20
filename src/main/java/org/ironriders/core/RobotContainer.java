@@ -7,6 +7,9 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
+
+import java.lang.ModuleLayer.Controller;
+
 import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
@@ -17,14 +20,18 @@ import org.ironriders.coral.CoralWristCommands;
 import org.ironriders.coral.CoralWristSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
-
+import org.ironriders.elevator.ElevatorConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+
 import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 //import edu.wpi.*;
@@ -40,6 +47,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
 	// The robot's subsystems and commands are defined here...
 	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	private final DriveCommands driveCommands = driveSubsystem.getCommands();
@@ -61,11 +69,20 @@ public class RobotContainer {
 
 	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
 	private final VisionCommands visionCommands = visionSubsystem.getCommands();
-	private PhotonCamera camera = visionSubsystem.getCamera();
+	private final PhotonCamera camera = visionSubsystem.getCamera();
 
 	private final SendableChooser<Command> autoChooser;
-	private final CommandXboxController primaryController = new CommandXboxController(
-			DriveConstants.PRIMARY_CONTROLLER_PORT);
+
+	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
+	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
+
+	private final RobotCommands robotCommands = new RobotCommands(
+			driveCommands, elevatorCommands, coralWristCommands, coralIntakeCommands,
+			algaeWristCommands, algaeIntakeCommands, visionCommands, primaryController.getHID());
+
+	// non-final variables
+	private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1; // for scoring coral
+	private ElevatorConstants.Level algaeTarget = ElevatorConstants.Level.L3; // for grabbing algae
 
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -93,8 +110,10 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
+
+		// drive controls based on cubic function-ified joystick values
 		driveSubsystem.setDefaultCommand(
-				driveCommands.driveTeleop(
+				robotCommands.driveTeleop(
 						() -> Utils.controlCurve(
 								-primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
@@ -104,9 +123,35 @@ public class RobotContainer {
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> Utils.controlCurve(
-								primaryController.getRightX(),
+								-primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
+
+		// 1234 -> coral target controls
+		// 3344 -> algae target controls
+		// OOOO }__ not used yet
+		// OOOO }/
+		// secondary controls
+		secondaryController.button(0).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L1; }));
+		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L2; }));
+		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L3; }));
+		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L4; }));
+
+		secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
+		secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
+
+		// various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
+		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
+		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
+
+		primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(coralTarget));
+		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
+
+		primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae(algaeTarget));
+		primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
+
+		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
+		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 	}
 
 	/**
@@ -115,7 +160,6 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
-		// An example command will be run in autonomous. THIS IS A PLACEHOLDER!
 		return autoChooser.getSelected();
 	}
 }

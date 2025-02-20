@@ -73,7 +73,6 @@ public class DriveSubsystem extends SubsystemBase {
 	 *                      its own rotation.
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
-		System.out.println(translation.getY());
 		swerveDrive.drive(translation, rotation, fieldRelative, false);
 	}
 

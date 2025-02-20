@@ -3,10 +3,10 @@ package org.ironriders.coral;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class CoralWristConstants {
-    
+
     public static final String DASHBOARD_PREFIX = "coralwrist/";
 
-    //motor IDs (-1 = unknow)
+    // motor IDs (-1 = unknow)
     public static final int CORALWRISTMOTOR = -1;
     public static final int CORALWRISTENCODER = -1;
 
@@ -21,10 +21,10 @@ public class CoralWristConstants {
     // public static final double CORALWRISTKV = 0.0; // The velocity gain in
     // V/(rad/s).
 
-    public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 30; //please test
-    public static final int CORAL_WRIST_COMPENSATED_VOLTAGE = 10; // ASK A MENTOR PLEASE
+    public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 30; // please test
+    // public static final int CORAL_WRIST_COMPENSATED_VOLTAGE = 10; // ASK A MENTOR PLEASE
     public static final double CORAL_WRIST_ENCODER_OFFSET = -1; // please test
-    public static final double Coral_Wrist_TOLERANCE = 10; // tune me please
+    public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
 
     public enum State {
         STATION(0),
@@ -44,7 +44,5 @@ public class CoralWristConstants {
 
     }
 
-
-    public static final TrapezoidProfile.Constraints PROFILE =
-                new TrapezoidProfile.Constraints(500, 850);
+    public static final TrapezoidProfile.Constraints PROFILE = new TrapezoidProfile.Constraints(500, 850);
 }

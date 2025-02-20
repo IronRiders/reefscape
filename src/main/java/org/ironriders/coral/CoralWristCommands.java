@@ -1,6 +1,5 @@
 package org.ironriders.coral;
 
-
 import org.ironriders.coral.CoralWristConstants.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.pathplanner.lib.auto.NamedCommands;

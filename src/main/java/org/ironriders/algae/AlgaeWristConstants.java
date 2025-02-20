@@ -3,10 +3,10 @@ package org.ironriders.algae;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class AlgaeWristConstants {
-    
+
     public static final String DASHBOARD_PREFIX = "algaewrist/";
 
-    //motor IDs (-1 = unknow)
+    // motor IDs (-1 = unknow)
     public static final int ALGAEWRISTMOTOR = -1;
     public static final int ALGAEWRISTENCODER = -1;
 
@@ -21,19 +21,19 @@ public class AlgaeWristConstants {
     // public static final double ALGAEWRISTKV = 0.0; // The velocity gain in
     // V/(rad/s).
 
-    public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 30; //please test
-    public static final int ALGAE_WRIST_COMPENSATED_VOLTAGE = 10; // ASK A MENTOR PLEASE
+    public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 1; // please test
+    // public static final int ALGAE_WRIST_COMPENSATED_VOLTAGE = 0; // ???
+    
     public static final double ALGAE_WRIST_ENCODER_OFFSET = -1; // please test
     public static final double ALGAE_WRIST_TOLERENCE = 10; // tune me please
 
-    public enum State {
+    public enum AlgaeWristState {
         STOWED(0), // tune me pls
-        INTAKING(0);
-
+        EXTENDED(0);
 
         final double postion;
 
-        State(int postion) {
+        AlgaeWristState(int postion) {
             this.postion = postion;
         }
 
@@ -43,7 +43,5 @@ public class AlgaeWristConstants {
 
     }
 
-
-    public static final TrapezoidProfile.Constraints PROFILE =
-                new TrapezoidProfile.Constraints(500, 850);
+    public static final TrapezoidProfile.Constraints PROFILE = new TrapezoidProfile.Constraints(500, 850);
 }
