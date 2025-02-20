@@ -55,17 +55,17 @@ public class RobotContainer {
 	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
-	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
-	private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
+	// private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
+	// private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
-	private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
-	private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
+	// private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
+	// private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
 
-	private final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
-	private final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
+	// private final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
+	// private final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
 
-	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
-	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
+	// private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
+	// private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
 
 	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
 	private final VisionCommands visionCommands = visionSubsystem.getCommands();
@@ -132,26 +132,31 @@ public class RobotContainer {
 		// OOOO }__ not used yet
 		// OOOO }/
 		// secondary controls
-		secondaryController.button(0).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L1; }));
-		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L2; }));
-		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L3; }));
-		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L4; }));
+		// secondaryController.button(0).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L1; }));
+		// secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L2; }));
+		// secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L3; }));
+		// secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L4; }));
 
-		secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
-		secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
+		// secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
+		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
 
-		// various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
-		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
-		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
+		// // various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
+		// primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
+		// primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
-		primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(coralTarget));
-		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
+		// primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(coralTarget));
+		// primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
 
-		primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae(algaeTarget));
-		primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
+		// primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae(algaeTarget));
+		// primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
 
-		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
-		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
+		// primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
+		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
+
+		primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
 	}
 
 	/**
