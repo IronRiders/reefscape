@@ -46,10 +46,10 @@ public class RobotCommands {
 
     private final DriveCommands driveCommands;
     private final ElevatorCommands elevatorCommands;
-    private final CoralWristCommands coralWristCommands;
-    private final CoralIntakeCommands coralIntakeCommands;
-    private final AlgaeWristCommands algaeWristCommands;
-    private final AlgaeIntakeCommands algaeIntakeCommands;
+    // private final CoralWristCommands coralWristCommands;
+    // private final CoralIntakeCommands coralIntakeCommands;
+    // private final AlgaeWristCommands algaeWristCommands;
+    // private final AlgaeIntakeCommands algaeIntakeCommands;
     private final VisionCommands visionCommands;
     private final GenericHID controller;
 
