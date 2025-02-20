@@ -22,9 +22,9 @@ public class CoralWristConstants {
     // V/(rad/s).
 
     public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 30; // please test
-    public static final int CORAL_WRIST_COMPENSATED_VOLTAGE = 10; // ASK A MENTOR PLEASE
+    // public static final int CORAL_WRIST_COMPENSATED_VOLTAGE = 10; // ASK A MENTOR PLEASE
     public static final double CORAL_WRIST_ENCODER_OFFSET = -1; // please test
-    public static final double Coral_Wrist_TOLERANCE = 10; // tune me please
+    public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
 
     public enum State {
         STATION(0),

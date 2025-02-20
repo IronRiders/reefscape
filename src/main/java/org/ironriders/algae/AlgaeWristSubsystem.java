@@ -46,7 +46,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
                                                                                  // https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
         motorConfig
                 .smartCurrentLimit(ALGAE_WRIST_CURRENT_STALL_LIMIT)
-                .voltageCompensation(ALGAE_WRIST_COMPENSATED_VOLTAGE)
+                // .voltageCompensation(ALGAE_WRIST_COMPENSATED_VOLTAGE)
                 .idleMode(IdleMode.kBrake).limitSwitch
                 .apply(forwardLimitSwitchConfig)
                 .apply(reverseLimitSwitchConfig);

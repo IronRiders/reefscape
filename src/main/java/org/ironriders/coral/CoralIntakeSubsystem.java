@@ -29,7 +29,7 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     public CoralIntakeSubsystem() {
         coralMotorConfig
                 .smartCurrentLimit(CORAL_INTAKE_CURRENT_STALL_LIMIT)
-                .voltageCompensation(CORAL_INTAKE_COMPENSATED_VOLTAGE)
+                // .voltageCompensation(CORAL_INTAKE_COMPENSATED_VOLTAGE)
                 .idleMode(IdleMode.kBrake);
         coralMotor.configure(coralMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         commands = new CoralIntakeCommands(this);

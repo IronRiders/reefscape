@@ -21,8 +21,9 @@ public class AlgaeWristConstants {
     // public static final double ALGAEWRISTKV = 0.0; // The velocity gain in
     // V/(rad/s).
 
-    public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 30; // please test
-    public static final int ALGAE_WRIST_COMPENSATED_VOLTAGE = 10; // ASK A MENTOR PLEASE
+    public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 1; // please test
+    // public static final int ALGAE_WRIST_COMPENSATED_VOLTAGE = 0; // ???
+    
     public static final double ALGAE_WRIST_ENCODER_OFFSET = -1; // please test
     public static final double ALGAE_WRIST_TOLERENCE = 10; // tune me please
 

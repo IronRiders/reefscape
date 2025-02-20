@@ -31,7 +31,7 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
     public AlgaeIntakeSubsystem() {
         algaeMotorConfig
                 .smartCurrentLimit(ALGAE_INTAKE_CURRENT_STALL_LIMIT)
-                .voltageCompensation(ALGAE_INTAKE_COMPENSATED_VOLTAGE)
+                // .voltageCompensation(ALGAE_INTAKE_COMPENSATED_VOLTAGE)
                 .idleMode(IdleMode.kBrake);
         algaeLeftMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         algaeRightMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
