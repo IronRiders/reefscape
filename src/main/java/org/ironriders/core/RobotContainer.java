@@ -81,7 +81,8 @@ public class RobotContainer {
 			algaeWristCommands, algaeIntakeCommands, visionCommands, primaryController.getHID());
 
 	// non-final variables
-	private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1;
+	private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1; // for scoring coral
+	private ElevatorConstants.Level algaeTarget = ElevatorConstants.Level.L3; // for grabbing algae
 
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -126,18 +127,31 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
+		// 1234 -> coral target controls
+		// 3344 -> algae target controls
+		// OOOO }__ not used yet
+		// OOOO }/
 		// secondary controls
 		secondaryController.button(0).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L1; }));
 		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L2; }));
 		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L3; }));
 		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L4; }));
 
-		// various scoring controls and such
+		secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
+		secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
+
+		// various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
 		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
-		primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(null));
+		primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(coralTarget));
 		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
+
+		primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae(algaeTarget));
+		primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
+
+		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
+		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 	}
 
 	/**
