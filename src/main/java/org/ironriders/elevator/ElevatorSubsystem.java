@@ -64,7 +64,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         encoder = primaryMotor.getEncoder();
 
         limitSwitchConfig.forwardLimitSwitchEnabled(false)
-                .forwardLimitSwitchType(Type.kNormallyClosed).reverseLimitSwitchEnabled(true).reverseLimitSwitchType(Type.kNormallyOpen);
+                .forwardLimitSwitchType(Type.kNormallyClosed).reverseLimitSwitchEnabled(true).reverseLimitSwitchType(Type.kNormallyClosed);
 
         // disabledLimitSwitchConfig.forwardLimitSwitchEnabled(false).forwardLimitSwitchType(Type.kNormallyClosed);
         primaryConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
