@@ -155,9 +155,9 @@ public class RobotContainer {
 		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
 		primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
+		primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
+		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
 	}
 
 	/**
