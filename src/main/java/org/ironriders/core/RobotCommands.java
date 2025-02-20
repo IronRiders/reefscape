@@ -24,6 +24,9 @@ import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -64,6 +67,23 @@ public class RobotCommands {
         this.algaeIntakeCommands = algaeIntakeCommands;
         this.visionCommands = visionCommands;
         this.controller = controller;
+
+        // register named commands
+        NamedCommands.registerCommand("Prepare to Score Algae", this.prepareToScoreAlgae());
+        NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
+
+        NamedCommands.registerCommand("Prepare to Score Coral L1", this.prepareToScoreCoral(ElevatorConstants.Level.L1));
+        NamedCommands.registerCommand("Prepare to Score Coral L2", this.prepareToScoreCoral(ElevatorConstants.Level.L2));
+        NamedCommands.registerCommand("Prepare to Score Coral L3", this.prepareToScoreCoral(ElevatorConstants.Level.L3));
+        NamedCommands.registerCommand("Prepare to Score Coral L4", this.prepareToScoreCoral(ElevatorConstants.Level.L4));
+        NamedCommands.registerCommand("Score Coral", this.scoreCoral());
+
+        NamedCommands.registerCommand("Prepare to Grab Low Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L3));
+        NamedCommands.registerCommand("Prepare to Grab High Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L4));
+        NamedCommands.registerCommand("Grab Algae", this.grabAlgae());
+
+        NamedCommands.registerCommand("Prepare to Grab Coral", this.prepareToGrabCoral());
+        NamedCommands.registerCommand("Grab Coral", this.grabCoral());
     }
 
     /**
