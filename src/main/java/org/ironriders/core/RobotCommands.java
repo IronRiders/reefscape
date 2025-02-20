@@ -1,5 +1,6 @@
 package org.ironriders.core;
 
+import java.lang.System.Logger.Level;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import org.ironriders.algae.AlgaeIntakeConstants;
@@ -42,26 +43,25 @@ public class RobotCommands {
 
     private final DriveCommands driveCommands;
     private final ElevatorCommands elevatorCommands;
-    // private final CoralWristCommands coralWristCommands;
-    // private final CoralIntakeCommands coralIntakeCommands;
-    // private final AlgaeWristCommands algaeWristCommands;
-    // private final AlgaeIntakeCommands algaeIntakeCommands;
+    private final CoralWristCommands coralWristCommands;
+    private final CoralIntakeCommands coralIntakeCommands;
+    private final AlgaeWristCommands algaeWristCommands;
+    private final AlgaeIntakeCommands algaeIntakeCommands;
     private final VisionCommands visionCommands;
     private final GenericHID controller;
 
     public RobotCommands(
-            DriveCommands driveCommands, 
+            DriveCommands driveCommands,
             ElevatorCommands elevatorCommands,
-            // CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands, 
-            // AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands, 
-            VisionCommands visionCommands, GenericHID controller
-    ) {
+            CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
+            AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
+            VisionCommands visionCommands, GenericHID controller) {
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
-        // this.coralWristCommands = coralWristCommands;
-        // this.coralIntakeCommands = coralIntakeCommands;
-        // this.algaeWristCommands = algaeWristCommands;
-        // this.algaeIntakeCommands = algaeIntakeCommands;
+        this.coralWristCommands = coralWristCommands;
+        this.coralIntakeCommands = coralIntakeCommands;
+        this.algaeWristCommands = algaeWristCommands;
+        this.algaeIntakeCommands = algaeIntakeCommands;
         this.visionCommands = visionCommands;
         this.controller = controller;
     }
@@ -99,38 +99,31 @@ public class RobotCommands {
         // TODO
     }
 
-    // public Command prepareToScoreAlgae() {
-    //     return Commands.parallel(
-    //             elevatorCommands.setLevel(ElevatorConstants.Level.L1),
-    //             algaeWristCommands.set(AlgaeWristState.EXTENDED));
-    // }
-
-    // public Command scoreAlgae() {
-    //     return Commands.sequence(
-    //             algaeIntakeCommands.set(AlgaeIntakeState.EJECT));
-    // }
-
-    // public Command prepareToScoreCoral(ElevatorConstants.Level level) {
-    //     return Commands.parallel(
-    //             elevatorCommands.setLevel(level),
-    //             coralWristCommands.set(level != ElevatorConstants.Level.L4 ? CoralWristConstants.State.L1toL3
-    //                     : CoralWristConstants.State.L4));
-    // }
-
-    // public Command scoreCoral() {
-    //     return Commands.sequence(
-    //             coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
-    //             elevatorCommands.setLevel(ElevatorConstants.Level.L1));
-    // }
-
-    public Command grabAlgae() {
-        return Commands.none();
-        // TODO: Implement option(?) for scoring algae at the same time, and option for
-        // golfball
+    public Command prepareToScoreAlgae() {
+        return Commands.parallel(
+                elevatorCommands.set(ElevatorConstants.Level.Down),
+                algaeWristCommands.set(AlgaeWristState.EXTENDED));
     }
 
-    public Command grabCoral() {
-        return Commands.none();
-        // TODO
+    public Command scoreAlgae() {
+        return Commands.sequence(
+                algaeIntakeCommands.set(AlgaeIntakeState.EJECT),
+                algaeIntakeCommands.set(AlgaeIntakeState.STOP),
+                algaeWristCommands.set(AlgaeWristState.STOWED));
+    }
+
+    public Command prepareToScoreCoral(ElevatorConstants.Level level, CoralWristConstants.State wristState) {
+        return Commands.parallel(
+                elevatorCommands.set(level),
+                coralWristCommands.set(wristState));
+    }
+
+    public Command scoreCoral() {
+        return Commands.sequence(
+                coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
+                coralIntakeCommands.set(CoralIntakeConstants.State.STOP),
+                Commands.parallel(
+                        coralWristCommands.set(CoralWristConstants.State.STOWED),
+                        elevatorCommands.set(ElevatorConstants.Level.Down)));
     }
 }

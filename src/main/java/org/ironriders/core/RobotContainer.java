@@ -51,23 +51,17 @@ public class RobotContainer {
 	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
-	// private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
-	// private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
+	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
+	private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
-	// private final CoralIntakeSubsystem coralIntakeSubsystem = new
-	// CoralIntakeSubsystem();
-	// private final CoralIntakeCommands coralIntakeCommands =
-	// coralIntakeSubsystem.getCommands();
+	private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
+	private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
 
-	// private final AlgaeWristSubsystem algaeWristSubystem = new
-	// AlgaeWristSubsystem();
-	// private final AlgaeWristCommands algaeWristCommands =
-	// algaeWristSubystem.getCommands();
+	private final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
+	private final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
 
-	// private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new
-	// AlgaeIntakeSubsystem();
-	// private final AlgaeIntakeCommands algaeIntakeCommands =
-	// algaeIntakeSubsystem.getCommands();
+	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
+	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
 
 	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
 	private final VisionCommands visionCommands = visionSubsystem.getCommands();
@@ -78,10 +72,8 @@ public class RobotContainer {
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
 
 	private final RobotCommands robotCommands = new RobotCommands(
-			driveCommands, elevatorCommands, visionCommands, primaryController.getHID()
-	// driveCommands, coralWristCommands, coralIntakeCommands, algaeWristCommands,
-	// algaeIntakeCommands, visionCommands
-	);
+			driveCommands, elevatorCommands, coralWristCommands, coralIntakeCommands,
+			algaeWristCommands, algaeIntakeCommands, visionCommands, primaryController.getHID());
 
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
