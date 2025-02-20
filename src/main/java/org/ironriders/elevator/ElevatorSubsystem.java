@@ -71,10 +71,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         primaryConfig.inverted(true); // probably make a constant out of this
         primaryConfig.apply(limitSwitchConfig);
 
-         
-                                                                                
-
-
         followerConfig.follow(ElevatorConstants.PRIMARY_MOTOR_ID, true);
         followerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
         // followerConfig.inverted(true); // probably make a constant out of this
