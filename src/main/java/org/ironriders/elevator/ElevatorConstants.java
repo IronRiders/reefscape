@@ -7,8 +7,7 @@ public class ElevatorConstants {
 
     public static final int ELEVATOR_MOTOR_STALL_LIMIT =   1; //in amps and applies to both primary and follower
 
-    public static final double GEAR_RATIO = 0.05;
-    public static final double SPROCKET_DIAMETER = 0.819*2;
+
 
     public static final double BOTTOM_POS = 0;
     public static final double DOWN_POS = 0;
@@ -21,15 +20,15 @@ public class ElevatorConstants {
     public static final double MIN_POSITION = 0;  //please tune
     public static final double MAX_POSITION = 40; //please tune ASK JIM (finn said it was 54)
     
-    public static final double P = 0.05; // please tune me!!!!
+    public static final double P = 2; // please tune me!!!!
     public static final double I = 0;
     public static final double D = 0;
 
-    public static final double MAX_VEL = .2;
-    public static final double MAX_ACC = .1;
+    public static final double MAX_VEL = 2;
+    public static final double MAX_ACC = 10;
     public static final double MAX_OUTPUT = 5; // please tune me tooooooo!!!!
 
-    public static final double T = .2;
+    public static final double T = .02;
     public static final double K_S = 0;
     public static final double K_G = 0;
     public static final double K_V = 0;
@@ -37,7 +36,12 @@ public class ElevatorConstants {
 
     public static final double FF_VEL = 0;
     public static final double FF_ACC = 0;
-    public static final double INCHES_PER_ROTATION = GEAR_RATIO * SPROCKET_DIAMETER * Math.PI; // please tune me pls pls pls 
+
+    public static final double GEAR_RATIO = 0.05;
+    public static final double SPROCKET_DIAMETER = 1.7567;
+    public static final int NUMBER_OF_STAGES = 2;
+    public static final double SCALEFACTOR =1;
+    public static final double INCHES_PER_ROTATION = GEAR_RATIO * SPROCKET_DIAMETER * Math.PI * NUMBER_OF_STAGES * SCALEFACTOR; // please tune me pls pls pls 
 
     public enum Level {
         Down (DOWN_POS),
