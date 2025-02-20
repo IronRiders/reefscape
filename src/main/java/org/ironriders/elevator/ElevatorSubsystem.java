@@ -103,7 +103,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     boolean isHoming = false;
     @Override
     public void periodic() {
-        currentPos = encoder.getPosition() / ElevatorConstants.INCHES_PER_ROTATION;
+        currentPos = encoder.getPosition() * ElevatorConstants.INCHES_PER_ROTATION;
         // Calculate the next state and update the current state
         currentState = profile.calculate(ElevatorConstants.T, currentState, goalState);
 

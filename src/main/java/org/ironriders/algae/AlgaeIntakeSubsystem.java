@@ -1,5 +1,6 @@
 package org.ironriders.algae;
 
+import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -15,12 +16,17 @@ import static org.ironriders.algae.AlgaeIntakeConstants.*;
 import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;;
 
 public class AlgaeIntakeSubsystem extends SubsystemBase {
+
     private final AlgaeIntakeCommands commands;
-    private boolean hasAlgae = false;
+
     // find acutal motor IDs
     private final SparkMax algaeLeftMotor = new SparkMax(ALGAELEFTINTAKEMOTOR, MotorType.kBrushless);
     private final SparkMax algaeRightMotor = new SparkMax(ALGAERIGHTINTAKEMOTOR, MotorType.kBrushless);
     private final SparkMaxConfig algaeMotorConfig = new SparkMaxConfig();
+
+    private final SparkLimitSwitch limitSwitch = algaeLeftMotor.getForwardLimitSwitch();
+
+    private boolean hasAlgae = false;
 
     public AlgaeIntakeSubsystem() {
         algaeMotorConfig
@@ -54,6 +60,10 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
 
     private double getSpeed() {
         return algaeLeftMotor.getEncoder().getVelocity();
+    }
+
+    public boolean getLimitSwitchTriggered() {
+        return limitSwitch.isPressed();
     }
 
     public void reset() {

@@ -1,5 +1,6 @@
 package org.ironriders.coral;
 
+import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -15,11 +16,15 @@ import static org.ironriders.coral.CoralIntakeConstants.*;
 import org.ironriders.coral.CoralIntakeConstants.State;
 
 public class CoralIntakeSubsystem extends SubsystemBase {
+
     private final CoralIntakeCommands commands;
-    private boolean hasCoral = false;
-    // find acutal motor IDs
+
     private final SparkMax coralMotor = new SparkMax(CORAL_INTAKE_MOTOR, MotorType.kBrushless);
     private final SparkMaxConfig coralMotorConfig = new SparkMaxConfig();
+
+    private final SparkLimitSwitch beamBreak = coralMotor.getForwardLimitSwitch();
+
+    private boolean hasCoral = false;
 
     public CoralIntakeSubsystem() {
         coralMotorConfig
@@ -50,6 +55,10 @@ public class CoralIntakeSubsystem extends SubsystemBase {
 
     private double getSpeed() {
         return coralMotor.getEncoder().getVelocity();
+    }
+
+    public boolean getLimitSwitchTriggered() {
+        return beamBreak.isPressed();
     }
 
     public void reset() {

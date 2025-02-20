@@ -106,13 +106,22 @@ public class RobotCommands {
     }
 
     public Command scoreAlgae() {
+        // TODO: option to grab coral in parallel
         return Commands.sequence(
                 algaeIntakeCommands.set(AlgaeIntakeState.EJECT),
                 algaeIntakeCommands.set(AlgaeIntakeState.STOP),
                 algaeWristCommands.set(AlgaeWristState.STOWED));
     }
 
-    public Command prepareToScoreCoral(ElevatorConstants.Level level, CoralWristConstants.State wristState) {
+    public Command prepareToScoreCoral(ElevatorConstants.Level level) {
+        CoralWristConstants.State wristState = switch (level) {
+            case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
+            case L4 -> CoralWristConstants.State.L4;
+            default -> {
+                throw new IllegalArgumentException("Cannot score coral to level: " + level);
+            }
+        };
+
         return Commands.parallel(
                 elevatorCommands.set(level),
                 coralWristCommands.set(wristState));
@@ -121,9 +130,34 @@ public class RobotCommands {
     public Command scoreCoral() {
         return Commands.sequence(
                 coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
-                coralIntakeCommands.set(CoralIntakeConstants.State.STOP),
                 Commands.parallel(
                         coralWristCommands.set(CoralWristConstants.State.STOWED),
                         elevatorCommands.set(ElevatorConstants.Level.Down)));
+    }
+
+    public Command prepareToGrabAlgae(ElevatorConstants.Level level) {
+        return Commands.parallel(
+                elevatorCommands.set(level),
+                algaeWristCommands.set(AlgaeWristState.EXTENDED),
+                algaeIntakeCommands.set(AlgaeIntakeState.GRAB));
+    }
+
+    public Command grabAlgae() {
+        return Commands.sequence(
+                algaeIntakeCommands.set(AlgaeIntakeState.GRAB),
+                algaeWristCommands.set(AlgaeWristState.STOWED));
+    }
+
+    public Command prepareToGrabCoral() {
+        return Commands.parallel(
+                elevatorCommands.set(ElevatorConstants.Level.Down),
+                coralWristCommands.set(CoralWristConstants.State.STATION)
+        );
+    }
+
+    public Command grabCoral() {
+        return Commands.sequence(
+                coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
+                coralWristCommands.set(CoralWristConstants.State.STOWED));
     }
 }

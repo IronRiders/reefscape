@@ -25,10 +25,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+
 import org.ironriders.vision.VisionCommands;
 import org.ironriders.vision.VisionSubsystem;
 import org.photonvision.PhotonCamera;
 
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 //import edu.wpi.*;
@@ -44,6 +47,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
 	// The robot's subsystems and commands are defined here...
 	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	private final DriveCommands driveCommands = driveSubsystem.getCommands();
@@ -68,12 +72,16 @@ public class RobotContainer {
 	private final PhotonCamera camera = visionSubsystem.getCamera();
 
 	private final SendableChooser<Command> autoChooser;
-	private final CommandXboxController primaryController = new CommandXboxController(
-			DriveConstants.PRIMARY_CONTROLLER_PORT);
+
+	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
+	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
 
 	private final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, elevatorCommands, coralWristCommands, coralIntakeCommands,
 			algaeWristCommands, algaeIntakeCommands, visionCommands, primaryController.getHID());
+
+	// non-final variables
+	private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1;
 
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -102,7 +110,7 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 
-		// drive controls based on cubic functionified joystick values
+		// drive controls based on cubic function-ified joystick values
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> Utils.controlCurve(
@@ -118,11 +126,18 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
-		// I ❤️ mini-autos
-		// primaryController.a().onTrue(visionCommands.alignCoral(camera));
+		// secondary controls
+		secondaryController.button(0).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L1; }));
+		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L2; }));
+		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L3; }));
+		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L4; }));
 
-		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		// various scoring controls and such
+		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
+		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
+
+		primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(null));
+		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
 	}
 
 	/**

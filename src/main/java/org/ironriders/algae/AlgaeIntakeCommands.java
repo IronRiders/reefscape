@@ -2,10 +2,11 @@ package org.ironriders.algae;
 
 import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import static org.ironriders.algae.AlgaeIntakeConstants.DISCHARGE_TIMEOUT;
+import static org.ironriders.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AlgaeIntakeCommands {
     private final AlgaeIntakeSubsystem intake;
@@ -20,15 +21,20 @@ public class AlgaeIntakeCommands {
 
     public Command set(AlgaeIntakeConstants.AlgaeIntakeState state) {
         Command command = intake.run(() -> intake.set(state));
-
-        if (state.equals(AlgaeIntakeState.EJECT)) {// turns off after one second
-            return command
-                    .withTimeout(DISCHARGE_TIMEOUT) // Maybe in the future have this be overriden by the driver holding
-                                                    // down the button
-                    .finallyDo(() -> intake.set(AlgaeIntakeState.STOP));
+        switch (state) {
+            case GRAB:
+                return command
+                        .andThen(Commands.race(
+                                Commands.runOnce(() -> {
+                                    intake.getLimitSwitchTriggered();
+                                }),
+                                Commands.waitSeconds(INTAKE_IMPATIENCE)))
+                        .finallyDo(() -> intake.set(AlgaeIntakeState.STOP));
+            case EJECT:
+                return command.withTimeout(DISCHARGE_TIMEOUT).finallyDo(() -> intake.set(AlgaeIntakeState.STOP));
+            default:
+                return command.finallyDo(() -> intake.set(AlgaeIntakeState.STOP));
         }
-
-        return command.finallyDo(() -> intake.set(AlgaeIntakeState.STOP)); // turns off manipulator after command stops
     }
 
     public Command reset() {
