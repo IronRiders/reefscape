@@ -47,8 +47,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     private Level currentTarget = Level.Down;
     private boolean isHomed = false;
     private double setpoint = 0.0;
-    
-    double currentPos;
 
     public ElevatorSubsystem() {
         goalState.position =0;
@@ -103,7 +101,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     boolean isHoming = false;
     @Override
     public void periodic() {
-        currentPos = encoder.getPosition() * ElevatorConstants.INCHES_PER_ROTATION;
+        currentState.position = encoder.getPosition() * ElevatorConstants.INCHES_PER_ROTATION;
         // Calculate the next state and update the current state
         currentState = profile.calculate(ElevatorConstants.T, currentState, goalState);
 
@@ -174,7 +172,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Elevator Reverse Limit Switch", primaryMotor.getReverseLimitSwitch().isPressed());
         SmartDashboard.putNumber("Elevator Follower Motor Current", followerMotor.getOutputCurrent());
         SmartDashboard.putNumber("Elevator Setpoint", setpoint);
-        SmartDashboard.putNumber("Elevator Current Position", currentPos);
+        SmartDashboard.putNumber("Elevator Current Position", currentState.position);
         SmartDashboard.putNumber("Elevator goal Position", goalState.position);
 
     }
