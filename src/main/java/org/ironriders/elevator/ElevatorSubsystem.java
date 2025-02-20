@@ -76,8 +76,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         // followerConfig.inverted(true); // probably make a constant out of this
         
 
-        primaryMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
-        followerMotor.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        primaryMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        followerMotor.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ElevatorConstants.MAX_VEL, ElevatorConstants.MAX_ACC);
         profile = new TrapezoidProfile(constraints);
         goalState = new TrapezoidProfile.State();
