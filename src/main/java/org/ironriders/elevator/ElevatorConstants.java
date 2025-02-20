@@ -5,7 +5,7 @@ public class ElevatorConstants {
     public static final int PRIMARY_MOTOR_ID = 11;
     public static final int FOLLOW_MOTOR_ID = 10;
 
-    public static final int ELEVATOR_MOTOR_STALL_LIMIT =   1; //in amps and applies to both primary and follower
+    public static final int ELEVATOR_MOTOR_STALL_LIMIT =   30; //in amps and applies to both primary and follower
 
 
 
@@ -20,11 +20,11 @@ public class ElevatorConstants {
     public static final double MIN_POSITION = 0;  //please tune
     public static final double MAX_POSITION = 40; //please tune ASK JIM (finn said it was 54)
     
-    public static final double P = 2; // please tune me!!!!
+    public static final double P = .1; // please tune me!!!!
     public static final double I = 0;
     public static final double D = 0;
 
-    public static final double MAX_VEL = 2;
+    public static final double MAX_VEL = 8;
     public static final double MAX_ACC = 10;
     public static final double MAX_OUTPUT = 5; // please tune me tooooooo!!!!
 
