@@ -69,21 +69,21 @@ public class RobotCommands {
         this.controller = controller;
 
         // register named commands
-        NamedCommands.registerCommand("Prepare to Score Algae", this.prepareToScoreAlgae());
-        NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
+        // NamedCommands.registerCommand("Prepare to Score Algae", this.prepareToScoreAlgae());
+        // NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
 
-        NamedCommands.registerCommand("Prepare to Score Coral L1", this.prepareToScoreCoral(ElevatorConstants.Level.L1));
-        NamedCommands.registerCommand("Prepare to Score Coral L2", this.prepareToScoreCoral(ElevatorConstants.Level.L2));
-        NamedCommands.registerCommand("Prepare to Score Coral L3", this.prepareToScoreCoral(ElevatorConstants.Level.L3));
-        NamedCommands.registerCommand("Prepare to Score Coral L4", this.prepareToScoreCoral(ElevatorConstants.Level.L4));
-        NamedCommands.registerCommand("Score Coral", this.scoreCoral());
+        // NamedCommands.registerCommand("Prepare to Score Coral L1", this.prepareToScoreCoral(ElevatorConstants.Level.L1));
+        // NamedCommands.registerCommand("Prepare to Score Coral L2", this.prepareToScoreCoral(ElevatorConstants.Level.L2));
+        // NamedCommands.registerCommand("Prepare to Score Coral L3", this.prepareToScoreCoral(ElevatorConstants.Level.L3));
+        // NamedCommands.registerCommand("Prepare to Score Coral L4", this.prepareToScoreCoral(ElevatorConstants.Level.L4));
+        // NamedCommands.registerCommand("Score Coral", this.scoreCoral());
 
-        NamedCommands.registerCommand("Prepare to Grab Low Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L3));
-        NamedCommands.registerCommand("Prepare to Grab High Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L4));
-        NamedCommands.registerCommand("Grab Algae", this.grabAlgae());
+        // NamedCommands.registerCommand("Prepare to Grab Low Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L3));
+        // NamedCommands.registerCommand("Prepare to Grab High Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L4));
+        // NamedCommands.registerCommand("Grab Algae", this.grabAlgae());
 
-        NamedCommands.registerCommand("Prepare to Grab Coral", this.prepareToGrabCoral());
-        NamedCommands.registerCommand("Grab Coral", this.grabCoral());
+        // NamedCommands.registerCommand("Prepare to Grab Coral", this.prepareToGrabCoral());
+        // NamedCommands.registerCommand("Grab Coral", this.grabCoral());
     }
 
     /**
@@ -119,67 +119,67 @@ public class RobotCommands {
         // TODO
     }
 
-    public Command prepareToScoreAlgae() {
-        return Commands.parallel(
-                elevatorCommands.set(ElevatorConstants.Level.Down),
-                algaeWristCommands.set(AlgaeWristState.EXTENDED));
-    }
+    // public Command prepareToScoreAlgae() {
+    //     return Commands.parallel(
+    //             elevatorCommands.set(ElevatorConstants.Level.Down),
+    //             algaeWristCommands.set(AlgaeWristState.EXTENDED));
+    // }
 
-    public Command scoreAlgae() {
-        // TODO: option to grab coral in parallel
-        return Commands.sequence(
-                algaeIntakeCommands.set(AlgaeIntakeState.EJECT),
-                algaeIntakeCommands.set(AlgaeIntakeState.STOP),
-                algaeWristCommands.set(AlgaeWristState.STOWED));
-    }
+    // public Command scoreAlgae() {
+    //     // TODO: option to grab coral in parallel
+    //     return Commands.sequence(
+    //             algaeIntakeCommands.set(AlgaeIntakeState.EJECT),
+    //             algaeIntakeCommands.set(AlgaeIntakeState.STOP),
+    //             algaeWristCommands.set(AlgaeWristState.STOWED));
+    // }
 
-    public Command prepareToScoreCoral(ElevatorConstants.Level level) {
-        CoralWristConstants.State wristState = switch (level) {
-            case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
-            case L4 -> CoralWristConstants.State.L4;
-            default -> {
-                throw new IllegalArgumentException("Cannot score coral to level: " + level);
-            }
-        };
+    // public Command prepareToScoreCoral(ElevatorConstants.Level level) {
+    //     CoralWristConstants.State wristState = switch (level) {
+    //         case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
+    //         case L4 -> CoralWristConstants.State.L4;
+    //         default -> {
+    //             throw new IllegalArgumentException("Cannot score coral to level: " + level);
+    //         }
+    //     };
 
-        return Commands.parallel(
-                elevatorCommands.set(level),
-                coralWristCommands.set(wristState));
-    }
+    //     return Commands.parallel(
+    //             elevatorCommands.set(level),
+    //             coralWristCommands.set(wristState));
+    // }
 
-    public Command scoreCoral() {
-        return Commands.sequence(
-                coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
-                Commands.parallel(
-                        coralWristCommands.set(CoralWristConstants.State.STOWED),
-                        elevatorCommands.set(ElevatorConstants.Level.Down)));
-    }
+    // public Command scoreCoral() {
+    //     return Commands.sequence(
+    //             coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
+    //             Commands.parallel(
+    //                     coralWristCommands.set(CoralWristConstants.State.STOWED),
+    //                     elevatorCommands.set(ElevatorConstants.Level.Down)));
+    // }
 
-    public Command prepareToGrabAlgae(ElevatorConstants.Level level) {
-        return Commands.parallel(
-                elevatorCommands.set(level),
-                algaeWristCommands.set(AlgaeWristState.EXTENDED),
-                algaeIntakeCommands.set(AlgaeIntakeState.GRAB));
-    }
+    // public Command prepareToGrabAlgae(ElevatorConstants.Level level) {
+    //     return Commands.parallel(
+    //             elevatorCommands.set(level),
+    //             algaeWristCommands.set(AlgaeWristState.EXTENDED),
+    //             algaeIntakeCommands.set(AlgaeIntakeState.GRAB));
+    // }
 
-    public Command grabAlgae() {
-        return Commands.sequence(
-                algaeIntakeCommands.set(AlgaeIntakeState.GRAB),
-                algaeWristCommands.set(AlgaeWristState.STOWED),
-                this.rumble());
-    }
+    // public Command grabAlgae() {
+    //     return Commands.sequence(
+    //             algaeIntakeCommands.set(AlgaeIntakeState.GRAB),
+    //             algaeWristCommands.set(AlgaeWristState.STOWED),
+    //             this.rumble());
+    // }
 
-    public Command prepareToGrabCoral() {
-        return Commands.parallel(
-                elevatorCommands.set(ElevatorConstants.Level.Down),
-                coralWristCommands.set(CoralWristConstants.State.STATION)
-        );
-    }
+    // public Command prepareToGrabCoral() {
+    //     return Commands.parallel(
+    //             elevatorCommands.set(ElevatorConstants.Level.Down),
+    //             coralWristCommands.set(CoralWristConstants.State.STATION)
+    //     );
+    // }
 
-    public Command grabCoral() {
-        return Commands.sequence(
-                coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
-                coralWristCommands.set(CoralWristConstants.State.STOWED),
-                rumble());
-    }
+    // public Command grabCoral() {
+    //     return Commands.sequence(
+    //             coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
+    //             coralWristCommands.set(CoralWristConstants.State.STOWED),
+    //             rumble());
+    // }
 }
