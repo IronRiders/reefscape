@@ -22,8 +22,7 @@ import org.ironriders.drive.DriveSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.drive.DriveConstants;
-import org.ironriders.vision.VisionCommands;
-import org.ironriders.vision.VisionSubsystem;
+import org.ironriders.vision.Vision;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -50,7 +49,6 @@ public class RobotCommands {
     // private final CoralIntakeCommands coralIntakeCommands;
     // private final AlgaeWristCommands algaeWristCommands;
     // private final AlgaeIntakeCommands algaeIntakeCommands;
-    private final VisionCommands visionCommands;
     private final GenericHID controller;
 
     public RobotCommands(
@@ -58,14 +56,13 @@ public class RobotCommands {
             ElevatorCommands elevatorCommands,
             // CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
             // AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
-            VisionCommands visionCommands, GenericHID controller) {
+            GenericHID controller) {
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
         // this.coralWristCommands = coralWristCommands;
         // this.coralIntakeCommands = coralIntakeCommands;
         // this.algaeWristCommands = algaeWristCommands;
         // this.algaeIntakeCommands = algaeIntakeCommands;
-        this.visionCommands = visionCommands;
         this.controller = controller;
 
         // register named commands

@@ -20,29 +20,15 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import swervelib.SwerveDrive;
 
-public class VisionSubsystem extends SubsystemBase {
-    private VisionCommands commands;
+public class Vision {
+
     private PhotonCamera camera = new PhotonCamera(VisionConstants.CAM_NAME);
-    private DriveSubsystem driveSubsystem;
-    public boolean canAlignCoral;// you can get this if you want!
 
-    public VisionSubsystem(DriveSubsystem driveSubsystem) {
-        this.driveSubsystem = driveSubsystem;
-        this.commands = new VisionCommands(this, driveSubsystem);
-    }
+    private boolean canAlignCoral;
 
-    /** Fetch the VisionCommands instance */
-    public VisionCommands getCommands() {
-        return commands;
-    }
-
-    public PhotonCamera getCamera() {
-        return this.camera;
-    }
-
-    @Override
-    public void periodic() {
+    public void addPoseEstimate(SwerveDrive swerveDrive) {
         PhotonPipelineResult result = camera.getLatestResult();
         if (!result.hasTargets()) {
             SmartDashboard.putString("IDs", "None");
@@ -56,7 +42,7 @@ public class VisionSubsystem extends SubsystemBase {
         SmartDashboard.putString("IDs", ids);
         Field2d m_field = new Field2d();
         SmartDashboard.putData("pose", m_field);
-        m_field.setRobotPose(driveSubsystem.getSwerveDrive().getPose());
+        m_field.setRobotPose(swerveDrive.getPose());
 
         if (VisionConstants.CAM_OFFSETS.length == 0) {
             return;
@@ -111,8 +97,16 @@ public class VisionSubsystem extends SubsystemBase {
         averageRotationZ = averageRotationZ / cams.size();
         Pose3d averagePose = new Pose3d(averageX, averageY, averageZ,
                 new Rotation3d(averageRotationX, averageRotationY, averageRotationZ));// yay
-        driveSubsystem.getSwerveDrive().addVisionMeasurement(
+        swerveDrive.addVisionMeasurement(
                 new Pose2d(averagePose.getX(), averagePose.getY(), averagePose.getRotation().toRotation2d()),
                 lastTimeStamp);// update the swerve drives position stuff
+    }
+
+    public PhotonCamera getCamera() {
+        return this.camera;
+    }
+
+    public boolean getCanAlignCoral() {
+        return this.canAlignCoral;
     }
 }
