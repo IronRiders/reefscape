@@ -28,7 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 import org.ironriders.vision.VisionCommands;
-import org.ironriders.vision.VisionSubsystem;
+import org.ironriders.vision.Vision;
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
@@ -49,7 +49,9 @@ import com.pathplanner.lib.auto.AutoBuilder;
 public class RobotContainer {
 
 	// The robot's subsystems and commands are defined here...
-	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+	private final Vision vision = new Vision();
+
+	private final DriveSubsystem driveSubsystem = new DriveSubsystem(vision);
 	private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
 	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -67,10 +69,6 @@ public class RobotContainer {
 	// private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 	// private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
 
-	private final VisionSubsystem visionSubsystem = new VisionSubsystem(driveSubsystem);
-	private final VisionCommands visionCommands = visionSubsystem.getCommands();
-	private final PhotonCamera camera = visionSubsystem.getCamera();
-
 	private final SendableChooser<Command> autoChooser;
 
 	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
@@ -79,7 +77,7 @@ public class RobotContainer {
 	private final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, elevatorCommands, 
 			// coralWristCommands, coralIntakeCommands, algaeWristCommands, algaeIntakeCommands, 
-			visionCommands, primaryController.getHID());
+			primaryController.getHID());
 
 	// non-final variables
 	private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1; // for scoring coral

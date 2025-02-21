@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.ironriders.vision.Vision;
 
 /**
  * The SwerveSubsystem encompasses everything that the Swerve Drive needs to
@@ -22,9 +23,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveSubsystem extends SubsystemBase {
 
 	private DriveCommands commands;
-	private SwerveDrive swerveDrive;
 
-	public DriveSubsystem() throws RuntimeException {
+	private SwerveDrive swerveDrive;
+	private Vision vision;
+
+	public DriveSubsystem(Vision vision) throws RuntimeException {
 		try {
 			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
 																					// directory.
@@ -60,6 +63,11 @@ public class DriveSubsystem extends SubsystemBase {
 					return false;
 				},
 				this);
+	}
+
+	@Override
+	public void periodic() {
+		vision.addPoseEstimate(swerveDrive);
 	}
 
 	/**
