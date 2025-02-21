@@ -63,7 +63,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         SparkMaxConfig primaryConfig = new SparkMaxConfig();
         SparkMaxConfig followerConfig = new SparkMaxConfig();
         LimitSwitchConfig limitSwitchConfig = new LimitSwitchConfig();
-        LimitSwitchConfig disabledLimitSwitchConfig = new LimitSwitchConfig();
 
         encoder = primaryMotor.getEncoder();
 
@@ -98,7 +97,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.goalState = new TrapezoidProfile.State(goal.positionInches, 0d);
     }
 
-    boolean isHoming = false;
     @Override
     public void periodic() {
         // Calculate the next state and update the current state
