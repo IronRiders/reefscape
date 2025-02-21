@@ -18,7 +18,7 @@ public class CoralWristCommands {
 
     public Command set(State state) {
         return coralWrist
-                .runOnce(() -> coralWrist.set(state.getPostion()))
+                .runOnce(() -> coralWrist.setGoal(state.getPostion()))
                 .until(coralWrist::atPosition)
                 .handleInterrupt(coralWrist::reset);
     }

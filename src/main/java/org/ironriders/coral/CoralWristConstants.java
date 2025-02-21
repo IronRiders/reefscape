@@ -11,7 +11,7 @@ public class CoralWristConstants {
     public static final int CORALWRISTENCODER = -1;
 
     // Need to tune
-    public static final double CORALWRISTKP = 0.55;
+    public static final double CORALWRISTKP = 0.5;
     public static final double CORALWRISTKI = 0;
     public static final double CORALWRISTKD = 0.0;
     // public static final double CORALWRISTKS = 0.0; //The static gain in volts. //
@@ -21,9 +21,8 @@ public class CoralWristConstants {
     // public static final double CORALWRISTKV = 0.0; // The velocity gain in
     // V/(rad/s).
 
-    public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 30; // please test
-    // public static final int CORAL_WRIST_COMPENSATED_VOLTAGE = 10; // ASK A MENTOR PLEASE
-    public static final double CORAL_WRIST_ENCODER_OFFSET = -1; // please test
+    public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 1; // please test
+    public static final double CORAL_WRIST_ENCODER_OFFSET = 0; // please test
     public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
 
     public enum State {
