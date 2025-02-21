@@ -25,7 +25,10 @@ public class DriveCommands {
 	}
 
 	public Command driveToPose(Pose2d targetPose) {
-		return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-				DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO / 2, 10, 5));
+		return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(
+				DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+				DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO, 
+				DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO, 
+				DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
 	}
 }

@@ -103,6 +103,15 @@ public class RobotCommands {
                 () -> true);
     }
 
+    // public Command scoreCoralMiniauto(ElevatorConstants.Level level) {
+    //     return Commands.sequence(
+    //             Commands.parallel(
+    //                 driveCommands.driveToPose()
+    //                 this.prepareToScoreCoral(level)),
+    //             this.scoreCoral());
+
+    // }
+
     public Command rumble() {
         return Commands.sequence(
                 Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 1)),
