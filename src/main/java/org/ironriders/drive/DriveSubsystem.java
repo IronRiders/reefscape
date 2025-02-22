@@ -37,6 +37,7 @@ public class DriveSubsystem extends SubsystemBase {
 		}
 
 		commands = new DriveCommands(this);
+		this.vision = vision;
 
 		swerveDrive.setHeadingCorrection(false);
 		SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -67,7 +68,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		vision.addPoseEstimate(swerveDrive);
+		// vision.addPoseEstimate(swerveDrive);
 	}
 
 	/**

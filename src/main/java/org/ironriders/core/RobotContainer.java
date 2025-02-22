@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 //import edu.wpi.*;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -151,10 +152,7 @@ public class RobotContainer {
 		// primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
-		primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
-		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
+		primaryController.y().onTrue(driveCommands.test());
 	}
 
 	/**

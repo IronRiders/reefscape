@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import java.util.function.Supplier;
 
@@ -50,6 +51,10 @@ public class DriveCommands {
 		return Commands.none();
 	}
 
+	public Command test() {
+		return this.driveToPose(new Pose2d(1.0, 0.0, new Rotation2d()));
+	}
+
 	public Command alignToClosestTag() {
 		OptionalInt closestTag = driveSubsystem.getVision().getClosestTag();
 		if (closestTag.isPresent()) {
@@ -65,5 +70,9 @@ public class DriveCommands {
 				DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO, 
 				DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO, 
 				DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
+
+			// .until(() -> 
+			// (AutoBuilder.getCurrentPose().getTranslation().getDistance(targetPose.getTranslation()) <= 0.01) 
+			// && (AutoBuilder.getCurrentPose().getRotation().minus(targetPose.getRotation()).getDegrees() <= 3.0));
 	}
 }

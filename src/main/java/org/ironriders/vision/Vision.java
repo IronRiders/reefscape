@@ -28,60 +28,36 @@ public class Vision {
 
     private PhotonCamera camera = new PhotonCamera(VisionConstants.CAM_NAME);
 
+    List<PhotonCamera> cams = new ArrayList<>();
+    List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
+
     private boolean canAlignCoral;
 
-    public OptionalInt getClosestTag() {
-        PhotonPipelineResult result = camera.getLatestResult();
-        if (!result.hasTargets())
-            return OptionalInt.empty();
+    public Vision() {
 
-        Iterator<PhotonTrackedTarget> iterator = result.getTargets().iterator();
-        PhotonTrackedTarget closest = iterator.next();
-        
-        while (iterator.hasNext()) {
-            PhotonTrackedTarget target = iterator.next();
-            if (target.getBestCameraToTarget().getX() < closest.getBestCameraToTarget().getX()) {
-                closest = target;
-            }
-        }
-
-        return OptionalInt.of(closest.fiducialId);
-    }
-
-    public void addPoseEstimate(SwerveDrive swerveDrive) {
-        PhotonPipelineResult result = camera.getLatestResult();
-        if (!result.hasTargets()) {
-            SmartDashboard.putString("IDs", "None");
-            return;
-        }
-        List<PhotonTrackedTarget> targets = result.getTargets();
-        String ids = "IDs: ";
-        for (PhotonTrackedTarget target : targets) {
-            ids += (target.fiducialId) + " ";
-        }
-        SmartDashboard.putString("IDs", ids);
-        Field2d m_field = new Field2d();
-        SmartDashboard.putData("pose", m_field);
-        m_field.setRobotPose(swerveDrive.getPose());
-
-        if (VisionConstants.CAM_OFFSETS.length == 0) {
-            return;
-        }
-        // this has to be changed to our custom field for testing
-        AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-        List<PhotonCamera> cams = new ArrayList<>();
         for (String name : VisionConstants.CAM_NAMES) {
             cams.add(new PhotonCamera(name));
         }
+
         if (cams.size() != VisionConstants.CAM_OFFSETS.length) {
-            System.out.print("VISION ARRAY MISMATCH!!!!!!!");
+            System.out.print("Vision array mismatch, please review VisionConstants");
             return;
         }
-        List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
-        for (Transform3d offsett : VisionConstants.CAM_OFFSETS) {
+
+        for (Transform3d offset : VisionConstants.CAM_OFFSETS) {
             poseEstimators
-                    .add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
+                    .add(new PhotonPoseEstimator(AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField),
+                            PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offset));
         }
+    }
+
+    /**
+     * Takes a swerve drive and adds pose estimate
+     * @param swerveDrive The swerve drive.
+     */
+    public void addPoseEstimate(SwerveDrive swerveDrive) {
+
+        PhotonPipelineResult result = camera.getLatestResult();
         int index = 0;
         List<EstimatedRobotPose> poses = new ArrayList<>();
         for (PhotonPoseEstimator estimate : poseEstimators) {
@@ -89,6 +65,7 @@ public class Vision {
             poses.add(estimate.update(result).get());
             index++;
         }
+
         // great now we have a estimate from all the cameras. I don't really know what
         // to do with this so i'll contruct an average pose i guess;
         double averageX = 0;
@@ -120,6 +97,29 @@ public class Vision {
         swerveDrive.addVisionMeasurement(
                 new Pose2d(averagePose.getX(), averagePose.getY(), averagePose.getRotation().toRotation2d()),
                 lastTimeStamp);// update the swerve drives position stuff
+    }
+
+    /**
+     * Gets the closest tag to the camera
+     * @return An OptionalInt representing the id of the closest tagg if present.
+     */
+    public OptionalInt getClosestTag() {
+
+        PhotonPipelineResult result = camera.getLatestResult();
+        if (!result.hasTargets())
+            return OptionalInt.empty();
+
+        Iterator<PhotonTrackedTarget> iterator = result.getTargets().iterator();
+        PhotonTrackedTarget closest = iterator.next();
+
+        while (iterator.hasNext()) {
+            PhotonTrackedTarget target = iterator.next();
+            if (target.getBestCameraToTarget().getX() < closest.getBestCameraToTarget().getX()) {
+                closest = target;
+            }
+        }
+
+        return OptionalInt.of(closest.fiducialId);
     }
 
     public PhotonCamera getCamera() {
