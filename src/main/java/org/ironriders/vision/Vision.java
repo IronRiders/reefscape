@@ -1,7 +1,9 @@
 package org.ironriders.vision;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.OptionalInt;
 
 import org.ironriders.drive.DriveSubsystem;
 import org.photonvision.EstimatedRobotPose;
@@ -27,6 +29,24 @@ public class Vision {
     private PhotonCamera camera = new PhotonCamera(VisionConstants.CAM_NAME);
 
     private boolean canAlignCoral;
+
+    public OptionalInt getClosestTag() {
+        PhotonPipelineResult result = camera.getLatestResult();
+        if (!result.hasTargets())
+            return OptionalInt.empty();
+
+        Iterator<PhotonTrackedTarget> iterator = result.getTargets().iterator();
+        PhotonTrackedTarget closest = iterator.next();
+        
+        while (iterator.hasNext()) {
+            PhotonTrackedTarget target = iterator.next();
+            if (target.getBestCameraToTarget().getX() < closest.getBestCameraToTarget().getX()) {
+                closest = target;
+            }
+        }
+
+        return OptionalInt.of(closest.fiducialId);
+    }
 
     public void addPoseEstimate(SwerveDrive swerveDrive) {
         PhotonPipelineResult result = camera.getLatestResult();

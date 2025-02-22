@@ -89,15 +89,17 @@ public class DriveSubsystem extends SubsystemBase {
 		return commands;
 	}
 
-
 	/** Fetch the SwerveDrive instance */
 	public SwerveDrive getSwerveDrive() {
 		return swerveDrive;
 	}
 
-	// ** Resets the Odemetry to the current position*/
+	public Vision getVision() {
+		return vision;
+	}
+
+	/** Resets the Odemetry to the current position */
 	public void resetOdometry(Pose2d pose2d) {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
 	}
-
 }
