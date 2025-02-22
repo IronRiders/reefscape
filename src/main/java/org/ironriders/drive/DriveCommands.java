@@ -1,5 +1,6 @@
 package org.ironriders.drive;
 
+import java.util.OptionalInt;
 import java.util.function.*;
 import java.util.function.DoubleSupplier;
 
@@ -9,6 +10,9 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import java.util.function.Supplier;
+
+import org.ironriders.core.FieldConstants;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -44,6 +48,15 @@ public class DriveCommands {
 	public Command alignToBarge() {
 		// TODO
 		return Commands.none();
+	}
+
+	public Command alignToClosestTag() {
+		OptionalInt closestTag = driveSubsystem.getVision().getClosestTag();
+		if (closestTag.isPresent()) {
+			return this.driveToPose(FieldConstants.getPose(closestTag.getAsInt()));
+		} else {
+			return Commands.none();
+		}
 	}
 
 	public Command driveToPose(Pose2d targetPose) {
