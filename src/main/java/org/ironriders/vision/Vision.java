@@ -15,6 +15,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -48,7 +49,8 @@ public class Vision {
         int index = 0;
         List<EstimatedRobotPose> poses = new ArrayList<>();
         for (PhotonPoseEstimator estimate : poseEstimators) {
-            poses.add(estimate.update(cams.get(index).getLatestResult()).get());
+            if (cams.get(index).getLatestResult().hasTargets())
+                poses.add(estimate.update(cams.get(index).getLatestResult()).get());
             index++;
         }
 

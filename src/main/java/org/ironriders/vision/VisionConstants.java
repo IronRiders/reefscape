@@ -1,16 +1,14 @@
 package org.ironriders.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 public class VisionConstants {
 
     public static final Camera[] CAMERAS = {
-            new Camera("front", new Transform3d()),
-            new Camera("frontLeft", new Transform3d()),
-            new Camera("frontRight", new Transform3d()),
-            new Camera("backLeft", new Transform3d()),
-            new Camera("backRight", new Transform3d())
+            new Camera("front", new Transform3d(new Translation3d(12.0, 0.0, 0.0), new Rotation3d()))
     };
 
     public static final Pose2d[] STATION_LOCATIONS_RED = { new Pose2d() };
