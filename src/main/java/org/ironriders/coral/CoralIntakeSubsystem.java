@@ -22,6 +22,7 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     private final SparkMax coralMotor = new SparkMax(CORAL_INTAKE_MOTOR, MotorType.kBrushless);
     private final SparkMaxConfig coralMotorConfig = new SparkMaxConfig();
 
+
     private final SparkLimitSwitch beamBreak = coralMotor.getForwardLimitSwitch();
 
     private boolean hasCoral = false;
@@ -29,8 +30,7 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     public CoralIntakeSubsystem() {
         coralMotorConfig
                 .smartCurrentLimit(CORAL_INTAKE_CURRENT_STALL_LIMIT)
-                // .voltageCompensation(CORAL_INTAKE_COMPENSATED_VOLTAGE)
-                .idleMode(IdleMode.kBrake);
+                .idleMode(IdleMode.kCoast);
         coralMotor.configure(coralMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         commands = new CoralIntakeCommands(this);
 
