@@ -6,9 +6,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 
 public class FieldConstants {
 
-    private static final AprilTagFieldLayout field = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
     public static Pose2d getPose(int id) {
-        return field.getTagPose(id).get().toPose2d();
+        return FIELD_LAYOUT.getTagPose(id).get().toPose2d();
     }
 }
