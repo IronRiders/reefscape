@@ -26,28 +26,16 @@ import swervelib.SwerveDrive;
 
 public class Vision {
 
-    private PhotonCamera camera = new PhotonCamera(VisionConstants.CAM_NAME);
-
     List<PhotonCamera> cams = new ArrayList<>();
     List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
 
-    private boolean canAlignCoral;
-
     public Vision() {
 
-        for (String name : VisionConstants.CAM_NAMES) {
-            cams.add(new PhotonCamera(name));
-        }
-
-        if (cams.size() != VisionConstants.CAM_OFFSETS.length) {
-            System.out.print("Vision array mismatch, please review VisionConstants");
-            return;
-        }
-
-        for (Transform3d offset : VisionConstants.CAM_OFFSETS) {
+        for (VisionConstants.Camera cam : VisionConstants.CAMERAS) {
+            cams.add(new PhotonCamera(cam.name));
             poseEstimators
                     .add(new PhotonPoseEstimator(AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField),
-                            PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offset));
+                            PoseStrategy.CLOSEST_TO_REFERENCE_POSE, cam.offset));
         }
     }
 
@@ -57,12 +45,10 @@ public class Vision {
      */
     public void addPoseEstimate(SwerveDrive swerveDrive) {
 
-        PhotonPipelineResult result = camera.getLatestResult();
         int index = 0;
         List<EstimatedRobotPose> poses = new ArrayList<>();
         for (PhotonPoseEstimator estimate : poseEstimators) {
-            result = cams.get(index).getLatestResult();
-            poses.add(estimate.update(result).get());
+            poses.add(estimate.update(cams.get(index).getLatestResult()).get());
             index++;
         }
 
@@ -100,12 +86,12 @@ public class Vision {
     }
 
     /**
-     * Gets the closest tag to the camera
+     * Gets the closest tag to the front camera
      * @return An OptionalInt representing the id of the closest tagg if present.
      */
-    public OptionalInt getClosestTag() {
+    public OptionalInt getClosestTagToFront() {
 
-        PhotonPipelineResult result = camera.getLatestResult();
+        PhotonPipelineResult result = cams.get(0).getLatestResult();
         if (!result.hasTargets())
             return OptionalInt.empty();
 
@@ -120,13 +106,5 @@ public class Vision {
         }
 
         return OptionalInt.of(closest.fiducialId);
-    }
-
-    public PhotonCamera getCamera() {
-        return this.camera;
-    }
-
-    public boolean getCanAlignCoral() {
-        return this.canAlignCoral;
     }
 }

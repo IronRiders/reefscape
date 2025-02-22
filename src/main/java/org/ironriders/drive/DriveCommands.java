@@ -56,7 +56,7 @@ public class DriveCommands {
 	}
 
 	public Command alignToClosestTag() {
-		OptionalInt closestTag = driveSubsystem.getVision().getClosestTag();
+		OptionalInt closestTag = driveSubsystem.getVision().getClosestTagToFront();
 		if (closestTag.isPresent()) {
 			return this.driveToPose(FieldConstants.getPose(closestTag.getAsInt()));
 		} else {
