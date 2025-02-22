@@ -19,7 +19,7 @@ public class CoralIntakeConstants {
 
     public enum State {
         GRAB(.1),
-        EJECT(-1),
+        EJECT(-.5),
         STOP(0);
 
         private final double speed;

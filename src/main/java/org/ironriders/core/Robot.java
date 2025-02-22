@@ -6,6 +6,7 @@ package org.ironriders.core;
 
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
+import org.ironriders.coral.CoralWristCommands;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -98,6 +99,10 @@ public class Robot extends TimedRobot {
 		if (!robotContainer.elevatorSubsystem.isHomed()) {
 			robotContainer.elevatorCommands.home().schedule();
 		}
+		if(robotContainer.elevatorSubsystem.isHomed()){
+			robotContainer.elevatorCommands.reset().schedule();
+		}
+		robotContainer.coralWristCommands.reset().schedule();
 	}
 
 	/** This function is called periodically during operator control. */

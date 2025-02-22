@@ -17,6 +17,7 @@ public class ElevatorCommands {
         NamedCommands.registerCommand("Elevator rising to L3", set(Level.L3));
         NamedCommands.registerCommand("Elevator rising to L4", set(Level.L4));
         NamedCommands.registerCommand("Elevator going home", set(Level.Down));
+        NamedCommands.registerCommand("Elevator going to Coral Station", set(Level.CoralStation));
     }
 
     public Command set(ElevatorConstants.Level level) {

@@ -58,7 +58,7 @@ public class RobotContainer {
 	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
 	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
-	private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
+	public final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
 	private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
 	private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
@@ -80,7 +80,8 @@ public class RobotContainer {
 
 	private final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, elevatorCommands, 
-			// coralWristCommands, coralIntakeCommands, algaeWristCommands, algaeIntakeCommands, 
+			coralWristCommands, coralIntakeCommands, 
+			// algaeWristCommands, algaeIntakeCommands, 
 			visionCommands, primaryController.getHID());
 
 	// non-final variables
