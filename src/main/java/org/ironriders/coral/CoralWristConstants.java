@@ -23,7 +23,7 @@ public class CoralWristConstants {
     // V/(rad/s).
 
     public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 1; // please test
-    public static final double CORAL_WRIST_ENCODER_OFFSET = 0; // please test
+    // public static final double CORAL_WRIST_ENCODER_OFFSET = 0; // please test
     public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
 
     public static final double MAX_POSITION = 0.3;
