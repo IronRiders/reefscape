@@ -54,7 +54,7 @@ public class CoralWristSubsystem extends SubsystemBase {
                                                                                  // https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
         motorConfig
                 .smartCurrentLimit(CORAL_WRIST_CURRENT_STALL_LIMIT)
-                .idleMode(IdleMode.kBrake)
+                .idleMode(IdleMode.kCoast)
                 .inverted(false)
                 .apply(forwardLimitSwitchConfig)
                 .apply(reverseLimitSwitchConfig);
@@ -73,11 +73,12 @@ public class CoralWristSubsystem extends SubsystemBase {
         setPointState = profile.calculate(t, setPointState, goalState);
         SmartDashboard.putNumber("Coral Wrist Set Postion", setPointState.position);
         double output = pid.calculate(getRotation(),setPointState.position);
+        if(motor.getForwardLimitSwitch().isPressed()){
+            handleTopLimitSwitch();
+        }
         if(isHomed){
             motor.set(output);
-            if(motor.getForwardLimitSwitch().isPressed()){
-                handleTopLimitSwitch();
-            }
+            
         }
         
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "Homed", isHomed);
@@ -86,6 +87,7 @@ public class CoralWristSubsystem extends SubsystemBase {
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", goalState.position);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "fowardSwitch", motor.getForwardLimitSwitch().isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", motor.getReverseLimitSwitch().isPressed());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "motor current", motor.getOutputCurrent());
     }
 
     public void setGoal(double position) {
@@ -104,7 +106,7 @@ public class CoralWristSubsystem extends SubsystemBase {
 
 
     private double getRotation() {
-        return encoder.getPosition() * 360 / GEAR_RATIO;
+        return encoder.getPosition() * 360 * GEAR_RATIO;
     }
 
     public boolean atPosition() {

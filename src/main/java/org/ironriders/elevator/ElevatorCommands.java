@@ -24,10 +24,16 @@ public class ElevatorCommands {
             elevatorSubsystem.setPositionInches(level.positionInches);
         })
                 .until(() -> elevatorSubsystem.isAtPosition(level))
-                .handleInterrupt(() -> elevatorSubsystem.stopMotor());
+                .handleInterrupt(() -> elevatorSubsystem.reset());
     }
 
     public Command home() {
         return elevatorSubsystem.runOnce(elevatorSubsystem::homeElevator);
     }
+
+    public Command reset(){
+        return elevatorSubsystem.runOnce(elevatorSubsystem::reset);
+    }
 }
+
+    
