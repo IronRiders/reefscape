@@ -29,6 +29,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * This subsystem controls the big ol' elevator that moves the algae and coral
+ * manipulators vertically.
+ */
 public class ElevatorSubsystem extends SubsystemBase {
 
     private final ElevatorCommands commands;

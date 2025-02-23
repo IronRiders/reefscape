@@ -1,5 +1,8 @@
 package org.ironriders.lib;
 
+/**
+ * Utility class to encourage the robot's dangerous math addiction.
+ */
 public class RobotUtils {
 
     /**

@@ -25,6 +25,7 @@ import static org.ironriders.elevator.ElevatorConstants.P;
 public class CoralWristSubsystem extends SubsystemBase {
     // Why do we extend subsystem base?
     // it publishes it to the command sceduler -tyler
+    // no flirting in the comments, please -mischa
     private final CoralWristCommands commands;
 
     // find acutal motor IDs

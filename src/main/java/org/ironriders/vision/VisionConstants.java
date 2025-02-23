@@ -15,6 +15,7 @@ public class VisionConstants {
     public static final Pose2d[] STATION_LOCATIONS_RED = { new Pose2d() };
     public static final Pose2d[] STATION_LOCATIONS_BLUE = { new Pose2d() };
 
+    /** represents a name and offset for convenience/simplicity */
     public static class Camera {
         public String name;
         public Transform3d offset;

@@ -26,6 +26,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import swervelib.SwerveDrive;
 
+/**
+ * Vision is not a subsystem. It has no commands because it does not need to.
+ * This class is a utility class for the DriveSubsystem and controls all of the
+ * apriltag processing and pose estimation.
+ */
 public class Vision {
 
     List<PhotonCamera> cams = new ArrayList<>();
