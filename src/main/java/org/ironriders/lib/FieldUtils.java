@@ -34,6 +34,10 @@ public class FieldUtils {
         return false;
     }
 
+    public static Pose2d applyOffset(Pose2d pose, Transform2d offset) {
+        return pose.transformBy(offset);
+    }
+
     /** Creates basic offset Pose2d from x, y, and rotation */
     public static Transform2d createOffset(double x, double y, double r) {
         return new Transform2d(new Translation2d(Units.inchesToMeters(x), Units.inchesToMeters(y)), new Rotation2d(r));

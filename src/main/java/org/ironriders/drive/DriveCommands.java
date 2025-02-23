@@ -49,11 +49,11 @@ public class DriveCommands {
 			System.out.println("Known Pose: " + driveSubsystem.getSwerveDrive().getPose());
 			System.out.println("Base Pose: " + basePose);
 			System.out.println("Robot Pose: " + robotPose);
-			System.out.println("Offset Pose: " + basePose.transformBy(FieldUtils.REEFSIDE_LEFT_OFFSET));
+			System.out.println("Offset Pose 1: " + basePose.transformBy(FieldUtils.REEFSIDE_LEFT_OFFSET));
 
 			System.out.println("Origin Point: " + FieldUtils.FIELD_LAYOUT.getOrigin());
 
-			return this.driveToPose(robotPose);
+			return this.driveToPose(new Pose2d(new Translation2d(12, 7), new Rotation2d()));// robotPose);
 		});
 	}
 
