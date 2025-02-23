@@ -19,7 +19,8 @@ public class FieldUtils {
     public static final int[] REEF_TAG_IDS_RED = { 17, 18, 19, 20, 21, 22 };
     public static final int[] REEF_TAG_IDS_BLUE = { 6, 7, 8, 9, 10, 11 };
 
-    public static final Pose2d REEFSIDE_OFFSET = createOffset(11.25, 0, 0);
+    public static final Pose2d REEFSIDE_LEFT_OFFSET = createOffset(11.5, 0, 0);
+    public static final Pose2d REEFSIDE_RIGHT_OFFSET = createOffset(11.5, 13, 0);
 
     /** Checks if a tag is valid for the reef and the current alliance. */
     public static boolean isValidReefTag(int id) {

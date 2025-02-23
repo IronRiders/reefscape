@@ -1,5 +1,6 @@
 package org.ironriders.drive;
 
+import java.lang.reflect.Field;
 import java.util.OptionalInt;
 import java.util.function.*;
 import java.util.function.DoubleSupplier;
@@ -35,7 +36,7 @@ public class DriveCommands {
 	// aligns to the closest visible side of the reef
 	public Command alignToReef(boolean offsetRight) {
 		OptionalInt optID = driveSubsystem.getVision().getClosestTagToFront();
-		if (!optID.isPresent()) 
+		if (!optID.isPresent())
 			return Commands.none();
 
 		int id = optID.getAsInt();
@@ -43,7 +44,8 @@ public class DriveCommands {
 			return Commands.none();
 
 		Pose2d basePose = FieldUtils.getPose(id);
-		Pose2d robotPose = new Pose2d(new Translation2d(-0.0, offsetRight ? Units.inchesToMeters(13) : 0.0), new Rotation2d()).relativeTo(basePose);
+		Pose2d robotPose = (offsetRight ? FieldUtils.REEFSIDE_RIGHT_OFFSET : FieldUtils.REEFSIDE_LEFT_OFFSET)
+				.relativeTo(basePose);
 		return this.driveToPose(robotPose);
 	}
 
@@ -74,12 +76,15 @@ public class DriveCommands {
 	public Command driveToPose(Pose2d targetPose) {
 		return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(
 				DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-				DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO, 
-				DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO, 
+				DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
+				DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
 				DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
 
-			// .until(() -> 
-			// (AutoBuilder.getCurrentPose().getTranslation().getDistance(targetPose.getTranslation()) <= 0.01) 
-			// && (AutoBuilder.getCurrentPose().getRotation().minus(targetPose.getRotation()).getDegrees() <= 3.0));
+		// .until(() ->
+		// (AutoBuilder.getCurrentPose().getTranslation().getDistance(targetPose.getTranslation())
+		// <= 0.01)
+		// &&
+		// (AutoBuilder.getCurrentPose().getRotation().minus(targetPose.getRotation()).getDegrees()
+		// <= 3.0));
 	}
 }
