@@ -1,7 +1,7 @@
 package org.ironriders.coral;
 
-import org.ironriders.core.Utils;
 import org.ironriders.elevator.ElevatorConstants;
+import org.ironriders.lib.RobotUtils;
 
 import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
@@ -93,7 +93,7 @@ public class CoralWristSubsystem extends SubsystemBase {
     }
 
     private double getRotation() {
-        return Utils.absoluteRotation(absoluteEncoder.get() * 360 - CORAL_WRIST_ENCODER_OFFSET);
+        return RobotUtils.absoluteRotation(absoluteEncoder.get() * 360 - CORAL_WRIST_ENCODER_OFFSET);
     }
 
     public boolean atPosition() {

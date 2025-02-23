@@ -5,8 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.Optional;
-import org.ironriders.core.FieldConstants;
+
 import org.ironriders.drive.DriveSubsystem;
+import org.ironriders.lib.FieldUtils;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -35,7 +36,7 @@ public class Vision {
         for (VisionConstants.Camera cam : VisionConstants.CAMERAS) {
             cams.add(new PhotonCamera(cam.name));
             poseEstimators
-                    .add(new PhotonPoseEstimator(FieldConstants.FIELD_LAYOUT,
+                    .add(new PhotonPoseEstimator(FieldUtils.FIELD_LAYOUT,
                             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cam.offset));
         }
     }

@@ -10,9 +10,11 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
+
 import java.util.function.Supplier;
 
-import org.ironriders.core.FieldConstants;
+import org.ironriders.lib.FieldUtils;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -32,8 +34,17 @@ public class DriveCommands {
 
 	// aligns to the closest visible side of the reef
 	public Command alignToReef(boolean offsetRight) {
-		// TODO
-		return Commands.none();
+		OptionalInt optID = driveSubsystem.getVision().getClosestTagToFront();
+		if (!optID.isPresent()) 
+			return Commands.none();
+
+		int id = optID.getAsInt();
+		if (!FieldUtils.isValidReefTag(id))
+			return Commands.none();
+
+		Pose2d basePose = FieldUtils.getPose(id);
+		Pose2d robotPose = new Pose2d(new Translation2d(-0.0, offsetRight ? Units.inchesToMeters(13) : 0.0), new Rotation2d()).relativeTo(basePose);
+		return this.driveToPose(robotPose);
 	}
 
 	public Command alignToStation() {
@@ -51,14 +62,10 @@ public class DriveCommands {
 		return Commands.none();
 	}
 
-	public Command test() {
-		return this.driveToPose(new Pose2d(1.0, 0.0, new Rotation2d()));
-	}
-
 	public Command alignToClosestTag() {
 		OptionalInt closestTag = driveSubsystem.getVision().getClosestTagToFront();
 		if (closestTag.isPresent()) {
-			return this.driveToPose(FieldConstants.getPose(closestTag.getAsInt()));
+			return this.driveToPose(FieldUtils.getPose(closestTag.getAsInt()));
 		} else {
 			return Commands.none();
 		}

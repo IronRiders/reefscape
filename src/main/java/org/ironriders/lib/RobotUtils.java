@@ -1,6 +1,6 @@
-package org.ironriders.core;
+package org.ironriders.lib;
 
-public class Utils {
+public class RobotUtils {
 
     /**
      * Applies a control curve (currently just an exponential function)

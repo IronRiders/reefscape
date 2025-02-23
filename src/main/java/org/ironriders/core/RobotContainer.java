@@ -20,6 +20,7 @@ import org.ironriders.coral.CoralWristCommands;
 import org.ironriders.coral.CoralWristSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
+import org.ironriders.lib.RobotUtils;
 import org.ironriders.elevator.ElevatorConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -113,15 +114,15 @@ public class RobotContainer {
 		// drive controls based on cubic function-ified joystick values
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
-						() -> Utils.controlCurve(
+						() -> RobotUtils.controlCurve(
 								-primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-						() -> Utils.controlCurve(
+						() -> RobotUtils.controlCurve(
 								-primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
-						() -> Utils.controlCurve(
+						() -> RobotUtils.controlCurve(
 								-primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
@@ -151,8 +152,6 @@ public class RobotContainer {
 
 		// primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
-
-		primaryController.y().onTrue(driveCommands.test());
 	}
 
 	/**

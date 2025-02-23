@@ -15,9 +15,6 @@ public class VisionConstants {
     public static final Pose2d[] STATION_LOCATIONS_RED = { new Pose2d() };
     public static final Pose2d[] STATION_LOCATIONS_BLUE = { new Pose2d() };
 
-    public static final int[] REEF_TAG_IDS_RED = { 17, 18, 19, 20, 21, 22 };
-    public static final int[] REEF_TAG_IDS_BLUE = { 6, 7, 8, 9, 10, 11 };
-
     public static class Camera {
         public String name;
         public Transform3d offset;

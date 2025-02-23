@@ -1,7 +1,5 @@
 package org.ironriders.algae;
 
-import org.ironriders.core.Utils;
-
 import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -19,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.ironriders.algae.AlgaeWristConstants.*;
 
 import org.ironriders.algae.AlgaeWristCommands;
+import org.ironriders.lib.RobotUtils;
 
 public class AlgaeWristSubsystem extends SubsystemBase {
     // Why do we extend subsystem base?
@@ -82,7 +81,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
     }
 
     private double getRotation() {
-        return Utils.absoluteRotation(absoluteEncoder.get() * 360 - ALGAE_WRIST_ENCODER_OFFSET);
+        return RobotUtils.absoluteRotation(absoluteEncoder.get() * 360 - ALGAE_WRIST_ENCODER_OFFSET);
     }
 
     public boolean atPosition() {
