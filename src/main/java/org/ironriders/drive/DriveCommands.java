@@ -47,6 +47,14 @@ public class DriveCommands {
 
 			Pose2d basePose = FieldUtils.getPose(id);
 			Pose2d robotPose = new Pose2d(basePose.getTranslation(), basePose.getRotation().unaryMinus());
+
+			System.out.println("Known Pose: " + driveSubsystem.getSwerveDrive().getPose());
+			System.out.println("Base Pose: " + basePose);
+			System.out.println("Robot Pose: " + robotPose);
+			System.out.println("Offset Pose: " + basePose.transformBy(FieldUtils.REEFSIDE_LEFT_OFFSET));
+			
+			System.out.println("Origin Point: " + FieldUtils.FIELD_LAYOUT.getOrigin());
+
 			return this.driveToPose(robotPose);
 		});
 	}
