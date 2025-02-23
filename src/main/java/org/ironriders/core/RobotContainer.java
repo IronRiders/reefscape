@@ -152,6 +152,8 @@ public class RobotContainer {
 
 		// primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
+
+		primaryController.y().onTrue(driveCommands.alignToReef(false));
 	}
 
 	/**

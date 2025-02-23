@@ -16,6 +16,7 @@ import edu.wpi.first.math.util.Units;
 import java.util.function.Supplier;
 
 import org.ironriders.lib.FieldUtils;
+import org.opencv.core.Mat;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -35,18 +36,19 @@ public class DriveCommands {
 
 	// aligns to the closest visible side of the reef
 	public Command alignToReef(boolean offsetRight) {
-		OptionalInt optID = driveSubsystem.getVision().getClosestTagToFront();
-		if (!optID.isPresent())
-			return Commands.none();
+		return driveSubsystem.defer(() -> {
+			OptionalInt optID = driveSubsystem.getVision().getClosestTagToFront();
+			if (!optID.isPresent())
+				return Commands.none();
 
-		int id = optID.getAsInt();
-		if (!FieldUtils.isValidReefTag(id))
-			return Commands.none();
+			int id = optID.getAsInt();
+			// if (!FieldUtils.isValidReefTag(id))
+			// return Commands.none();
 
-		Pose2d basePose = FieldUtils.getPose(id);
-		Pose2d robotPose = (offsetRight ? FieldUtils.REEFSIDE_RIGHT_OFFSET : FieldUtils.REEFSIDE_LEFT_OFFSET)
-				.relativeTo(basePose);
-		return this.driveToPose(robotPose);
+			Pose2d basePose = FieldUtils.getPose(id);
+			Pose2d robotPose = new Pose2d(basePose.getTranslation(), basePose.getRotation().unaryMinus());
+			return this.driveToPose(robotPose);
+		});
 	}
 
 	public Command alignToStation() {
@@ -65,12 +67,14 @@ public class DriveCommands {
 	}
 
 	public Command alignToClosestTag() {
-		OptionalInt closestTag = driveSubsystem.getVision().getClosestTagToFront();
-		if (closestTag.isPresent()) {
-			return this.driveToPose(FieldUtils.getPose(closestTag.getAsInt()));
-		} else {
-			return Commands.none();
-		}
+		return driveSubsystem.defer(() -> {
+			OptionalInt closestTag = driveSubsystem.getVision().getClosestTagToFront();
+			if (closestTag.isPresent()) {
+				return this.driveToPose(FieldUtils.getPose(closestTag.getAsInt()));
+			} else {
+				return Commands.none();
+			}
+		});
 	}
 
 	public Command driveToPose(Pose2d targetPose) {
@@ -79,12 +83,5 @@ public class DriveCommands {
 				DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
 				DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
 				DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
-
-		// .until(() ->
-		// (AutoBuilder.getCurrentPose().getTranslation().getDistance(targetPose.getTranslation())
-		// <= 0.01)
-		// &&
-		// (AutoBuilder.getCurrentPose().getRotation().minus(targetPose.getRotation()).getDegrees()
-		// <= 3.0));
 	}
 }

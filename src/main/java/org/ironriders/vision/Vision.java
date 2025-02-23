@@ -33,8 +33,8 @@ import swervelib.SwerveDrive;
  */
 public class Vision {
 
-    List<PhotonCamera> cams = new ArrayList<>();
-    List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
+    private List<PhotonCamera> cams = new ArrayList<>();
+    public List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
 
     public Vision() {
 
