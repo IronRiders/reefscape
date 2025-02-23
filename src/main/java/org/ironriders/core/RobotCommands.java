@@ -95,11 +95,13 @@ public class RobotCommands {
         if (DriverStation.isAutonomous())
             return Commands.none();
 
+        double invert = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 1 : -1;
+
         return driveCommands.drive(
                 () -> new Translation2d(
-                        inputTranslationX.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP,
-                        inputTranslationY.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP),
-                () -> inputRotation.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP,
+                        inputTranslationX.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert,
+                        inputTranslationY.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert),
+                () -> inputRotation.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert,
                 () -> true);
     }
 

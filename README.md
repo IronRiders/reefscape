@@ -1,5 +1,4 @@
-[![CI](https://github.com/IronRiders/reefscape/actions/workflows/gradle.yml/badge.svg)](https://github.com/IronRiders/reefscape/actions/workflows/gradle.yml)
-# *Iron Riders* - Season 2025 Repository
+![8x2 Banner](https://github.com/user-attachments/assets/ca7bddfc-8815-40c6-bc6c-3a8b020dff7a)
 
 ![image](https://github.com/user-attachments/assets/65a361c1-4db4-4ecb-b378-381c4e049c19)
 
