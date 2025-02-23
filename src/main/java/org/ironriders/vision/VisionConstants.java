@@ -4,11 +4,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 
 public class VisionConstants {
 
     public static final Camera[] CAMERAS = {
-            new Camera("front", new Transform3d(new Translation3d(12.0, 0.0, 0.0), new Rotation3d()))
+            new Camera("front", new Transform3d(new Translation3d(Units.inchesToMeters(14), 0.0, 6.5), new Rotation3d()))
     };
 
     public static final Pose2d[] STATION_LOCATIONS_RED = { new Pose2d() };
