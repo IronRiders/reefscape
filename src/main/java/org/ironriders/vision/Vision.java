@@ -23,7 +23,9 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import swervelib.SwerveDrive;
@@ -38,7 +40,15 @@ public class Vision {
     private List<VisionCamera> cams = new ArrayList<>();
 
     public Vision() {
-        cams.add(new VisionCamera("front", new Transform3d(), VecBuilder.fill(0, 0, 0)));
+        cams.add(new VisionCamera("front",
+                createOffset(0, 0, 0, 0, 0),
+                VecBuilder.fill(0, 0, 0)));
+        cams.add(new VisionCamera("frontRight",
+                createOffset(0, 0, 0, 0, 0),
+                VecBuilder.fill(0, 0, 0)));
+        cams.add(new VisionCamera("backLeft",
+                createOffset(0, 0, 0, 0, 0),
+                VecBuilder.fill(0, 0, 0)));
     }
 
     /**
@@ -52,10 +62,14 @@ public class Vision {
             Optional<EstimatedRobotPose> estimate = v.getEstimate();
             if (estimate.isPresent())
                 swerveDrive.addVisionMeasurement(
-                    estimate.get().estimatedPose.toPose2d(), 
-                    v.latestResult.getTimestampSeconds(), 
-                    v.deviations);
+                        estimate.get().estimatedPose.toPose2d(),
+                        v.latestResult.getTimestampSeconds(),
+                        v.deviations);
         }
+    }
+
+    public Transform3d createOffset(double x, double y, double z, double pitch, double yaw) {
+        return new Transform3d(new Translation3d(x, y, z), new Rotation3d(0, pitch, yaw));
     }
 
     public VisionCamera getCamera(String name) throws NameNotFoundException {
