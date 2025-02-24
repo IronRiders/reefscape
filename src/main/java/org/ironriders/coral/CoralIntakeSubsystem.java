@@ -22,6 +22,7 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     private final SparkMax coralMotor = new SparkMax(CORAL_INTAKE_MOTOR, MotorType.kBrushless);
     private final SparkMaxConfig coralMotorConfig = new SparkMaxConfig();
 
+
     private final SparkLimitSwitch beamBreak = coralMotor.getForwardLimitSwitch();
 
     private boolean hasCoral = false;
@@ -29,8 +30,8 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     public CoralIntakeSubsystem() {
         coralMotorConfig
                 .smartCurrentLimit(CORAL_INTAKE_CURRENT_STALL_LIMIT)
-                // .voltageCompensation(CORAL_INTAKE_COMPENSATED_VOLTAGE)
-                .idleMode(IdleMode.kBrake);
+                .inverted(true)
+                .idleMode(IdleMode.kCoast);
         coralMotor.configure(coralMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         commands = new CoralIntakeCommands(this);
 
@@ -38,8 +39,10 @@ public class CoralIntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        hasCoral = coralMotor.getForwardLimitSwitch().isPressed();
         SmartDashboard.putNumber(DASHBOARD_PREFIX_CORAL + "velocity", getSpeed());
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX_CORAL + "has Coral", hasCoral);
+        
 
     }
 

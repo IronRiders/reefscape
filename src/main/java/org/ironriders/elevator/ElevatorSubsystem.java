@@ -66,17 +66,22 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         SparkMaxConfig primaryConfig = new SparkMaxConfig();
         SparkMaxConfig followerConfig = new SparkMaxConfig();
-        LimitSwitchConfig limitSwitchConfig = new LimitSwitchConfig();
+        // LimitSwitchConfig limitSwitchConfig = new LimitSwitchConfig();
+        LimitSwitchConfig forwardLimitSwitchConfig = new LimitSwitchConfig();
+        LimitSwitchConfig reverseLimitSwitchConfig = new LimitSwitchConfig();
 
         encoder = primaryMotor.getEncoder();
 
-        limitSwitchConfig.forwardLimitSwitchEnabled(false)
-                .forwardLimitSwitchType(Type.kNormallyClosed).reverseLimitSwitchEnabled(true).reverseLimitSwitchType(Type.kNormallyClosed);
+        // limitSwitchConfig.forwardLimitSwitchEnabled(false)
+        //         .forwardLimitSwitchType(Type.kNormallyClosed).reverseLimitSwitchEnabled(true).reverseLimitSwitchType(Type.kNormallyClosed);
+        forwardLimitSwitchConfig.forwardLimitSwitchEnabled(false).forwardLimitSwitchType(Type.kNormallyClosed);
+        reverseLimitSwitchConfig.reverseLimitSwitchEnabled(true).reverseLimitSwitchType(Type.kNormallyClosed);
 
         // disabledLimitSwitchConfig.forwardLimitSwitchEnabled(false).forwardLimitSwitchType(Type.kNormallyClosed);
         primaryConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
         primaryConfig.inverted(true); // probably make a constant out of this
-        primaryConfig.apply(limitSwitchConfig);
+        primaryConfig.apply(forwardLimitSwitchConfig);
+        primaryConfig.apply(reverseLimitSwitchConfig);
 
         followerConfig.follow(ElevatorConstants.PRIMARY_MOTOR_ID, true);
         followerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
@@ -138,6 +143,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void stopMotor() {
         primaryMotor.set(0);
         pidController.reset();
+    }
+
+    public void reset(){
+        setPositionInches(getHeightInches());
+        stopMotor();
     }
 
     private void handleBottomLimit() {

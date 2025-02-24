@@ -9,22 +9,24 @@ public class ElevatorConstants {
 
 
 
-    public static final double BOTTOM_POS = 0;
-    public static final double DOWN_POS = 0;
+    public static final double BOTTOM_POS = 0; //Homed postion
 
-    public static final double L1_HEIGHT = 0;
-    public static final double L2_HEIGHT = 10;
-    public static final double L3_HEIGHT = 20;
-    public static final double L4_HEIGHT = 30;
+    public static final double DOWN_POS = 0; // Elevator at min postion
+    public static final double CORAL_STATION_POS = 12;
+    public static final double L1_HEIGHT = 4;
+    public static final double L2_HEIGHT = 6;
+    public static final double L3_HEIGHT = 22;
+    public static final double L4_HEIGHT = 53;
+
 
     public static final double MIN_POSITION = 0;  //please tune
-    public static final double MAX_POSITION = 40; //please tune ASK JIM (finn said it was 54)
+    public static final double MAX_POSITION = 53; //please tune ASK JIM (finn said it was 54) 53 is the safe tested number unless limit switch is working
     
     public static final double P = .1; // please tune me!!!!
     public static final double I = 0;
     public static final double D = 0;
 
-    public static final double MAX_VEL = 8;
+    public static final double MAX_VEL = 4; //8
     public static final double MAX_ACC = 10;
     public static final double MAX_OUTPUT = 5; // please tune me tooooooo!!!!
 
@@ -45,6 +47,7 @@ public class ElevatorConstants {
 
     public enum Level {
         Down (DOWN_POS),
+        CoralStation (CORAL_STATION_POS),
         L1 (L1_HEIGHT),
         L2 (L2_HEIGHT),
         L3 (L3_HEIGHT),
