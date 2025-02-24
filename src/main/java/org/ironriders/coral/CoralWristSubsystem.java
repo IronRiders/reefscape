@@ -54,7 +54,7 @@ public class CoralWristSubsystem extends SubsystemBase {
                                                                                  // https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
         motorConfig
                 .smartCurrentLimit(CORAL_WRIST_CURRENT_STALL_LIMIT)
-                .idleMode(IdleMode.kCoast)
+                .idleMode(IdleMode.kBrake)
                 .inverted(false)
                 .apply(forwardLimitSwitchConfig)
                 .apply(reverseLimitSwitchConfig);
@@ -111,6 +111,18 @@ public class CoralWristSubsystem extends SubsystemBase {
 
     public boolean atPosition() {
         return pid.atSetpoint();
+    }
+
+    public void homeCoralWrist(){
+        boolean Bottomlimit = false;
+        motor.set(.1);
+        if(motor.getForwardLimitSwitch().isPressed()){
+            motor.set(-0.05);
+            Bottomlimit = true;
+        }
+        if(!motor.getForwardLimitSwitch().isPressed()&& Bottomlimit){
+            encoder.setPosition(0);
+        }
     }
 
     public CoralWristCommands getCommands() {

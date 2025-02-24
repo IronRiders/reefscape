@@ -7,12 +7,12 @@ public class AlgaeIntakeConstants {
     public static final String DASHBOARD_PREFIX_ALGAE = "algae intake/";
 
     // motor IDs (-1 = unknow)
-    public static final int ALGAELEFTINTAKEMOTOR = -1;
-    public static final int ALGAERIGHTINTAKEMOTOR = -1;
-    public static final int ALGAE_LIMITSWITCH = -1;
+    public static final int ALGAELEFTINTAKEMOTOR = 15;
+    public static final int ALGAERIGHTINTAKEMOTOR = 16;
+    // public static final int ALGAE_LIMITSWITCH = -1;
 
     public static final int ALGAE_INTAKE_CURRENT_STALL_LIMIT = 1; // FOR TESTING!!!
-    // public static final int ALGAE_INTAKE_COMPENSATED_VOLTAGE = 1; // ???
+
 
     public static final int DISCHARGE_TIMEOUT = 1; // these are both in SECONDS
     public static final int INTAKE_IMPATIENCE = 1; // how much time to wait for the limit switch before

@@ -35,14 +35,14 @@ public class CoralWristConstants {
 
 
     public enum State {
-        STATION(-20),
+        STATION(-27.5),
         STOWED(0),
-        L1toL3(-45),
-        L4(-65);
+        L1toL3(-60),
+        L4(-90);
 
         final double postion;
 
-        State(int postion) {
+        State(double postion) {
             this.postion = postion;
         }
 

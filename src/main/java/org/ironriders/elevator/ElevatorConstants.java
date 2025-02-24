@@ -12,10 +12,10 @@ public class ElevatorConstants {
     public static final double BOTTOM_POS = 0; //Homed postion
 
     public static final double DOWN_POS = 0; // Elevator at min postion
-    public static final double CORAL_STATION_POS = 12;
+    public static final double CORAL_STATION_POS = 8.15;
     public static final double L1_HEIGHT = 4;
     public static final double L2_HEIGHT = 6;
-    public static final double L3_HEIGHT = 22;
+    public static final double L3_HEIGHT = 20;
     public static final double L4_HEIGHT = 53;
 
 
@@ -26,7 +26,7 @@ public class ElevatorConstants {
     public static final double I = 0;
     public static final double D = 0;
 
-    public static final double MAX_VEL = 4; //8
+    public static final double MAX_VEL = 8; //8
     public static final double MAX_ACC = 10;
     public static final double MAX_OUTPUT = 5; // please tune me tooooooo!!!!
 

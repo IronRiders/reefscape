@@ -7,11 +7,15 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,34 +30,38 @@ public class AlgaeWristSubsystem extends SubsystemBase {
 
     // find acutal motor IDs
     private final SparkMax motor = new SparkMax(ALGAEWRISTMOTOR, MotorType.kBrushless);
-    private final ProfiledPIDController pid = new ProfiledPIDController(ALGAEWRISTKP, ALGAEWRISTKI, ALGAEWRISTKD,
-            PROFILE);
-    private final DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(ALGAEWRISTENCODER);
+    private final PIDController pid = new PIDController(ALGAEWRISTKP, ALGAEWRISTKI, ALGAEWRISTKD);
+    private  RelativeEncoder encoder = motor.getEncoder();
     private final SparkLimitSwitch forwardLimitSwitch = motor.getForwardLimitSwitch();
     private final SparkLimitSwitch reverseLimitSwitch = motor.getReverseLimitSwitch();
     private final LimitSwitchConfig forwardLimitSwitchConfig = new LimitSwitchConfig();
     private final LimitSwitchConfig reverseLimitSwitchConfig = new LimitSwitchConfig();
     private final SparkMaxConfig motorConfig = new SparkMaxConfig();
+     private TrapezoidProfile.State goalState = new TrapezoidProfile.State();
+    private TrapezoidProfile.State setPointState = new TrapezoidProfile.State();
+    private TrapezoidProfile profile;
+    private boolean isHomed = false;
 
     public AlgaeWristSubsystem() {
-
+        TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC);
+        profile = new TrapezoidProfile(constraints);
         forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true)
                 .forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // this sets allows the limit switch to
                                                                                  // disable the motor
-        forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true)
-                .forwardLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // It also sets the Type to k normally
+        reverseLimitSwitchConfig.reverseLimitSwitchEnabled(true)
+                .reverseLimitSwitchType(LimitSwitchConfig.Type.kNormallyClosed); // It also sets the Type to k normally
                                                                                  // closed see
                                                                                  // https://docs.revrobotics.com/brushless/spark-max/specs/data-port#limit-switch-operation
         motorConfig
                 .smartCurrentLimit(ALGAE_WRIST_CURRENT_STALL_LIMIT)
-                // .voltageCompensation(ALGAE_WRIST_COMPENSATED_VOLTAGE)
-                .idleMode(IdleMode.kBrake).limitSwitch
+
+                .idleMode(IdleMode.kCoast)
                 .apply(forwardLimitSwitchConfig)
                 .apply(reverseLimitSwitchConfig);
 
         motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        set(getRotation());
+        setGoal(getRotation());
 
         pid.setTolerance(ALGAE_WRIST_TOLERENCE);
 
@@ -62,31 +70,49 @@ public class AlgaeWristSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double output = pid.calculate(getRotation());
-        motor.set(output);
-
+        setPointState = profile.calculate(t, setPointState, goalState);
+        SmartDashboard.putNumber("Coral Wrist Set Postion", setPointState.position);
+        double output = pid.calculate(getRotation(),setPointState.position);
+        if(motor.getReverseLimitSwitch().isPressed()){
+            handleBottomLimitSwitch();
+        }
+        if(isHomed){
+            motor.set(output);
+            
+        }
+        
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "Homed", isHomed);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "encoder", motor.getEncoder().getPosition());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", pid.getGoal().position);
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", goalState.position);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "fowardSwitch", forwardLimitSwitch.isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseLimitSwitch.isPressed());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "motor current", motor.getOutputCurrent());
     }
 
-    public void set(double position) {
-        pid.setGoal(position);
+    public void setGoal(double position) {
+        goalState = new TrapezoidProfile.State(MathUtil.clamp(position, MIN_POSITION, MAX_POSITION), 0);
     }
 
     public void reset() {
-        pid.setGoal(getRotation()); // Stops the wrist from moving
-        pid.reset(getRotation()); // sets the error to zero but asssums it has no velocity
+        goalState = new TrapezoidProfile.State(setPointState.position, 0);
+        pid.reset();
     }
 
     private double getRotation() {
-        return Utils.absoluteRotation(absoluteEncoder.get() * 360 - ALGAE_WRIST_ENCODER_OFFSET);
+        // System.out.println(encoder.getPosition() * 360);
+        return encoder.getPosition() * 360 * GEAR_RATIO;
+    }
+
+    private void handleBottomLimitSwitch() {
+        // System.out.println("SET TO ZERO");
+        encoder.setPosition(0);
+        isHomed = true;
     }
 
     public boolean atPosition() {
-        return pid.atGoal();
+        return pid.atSetpoint();
     }
 
     public AlgaeWristCommands getCommands() {
