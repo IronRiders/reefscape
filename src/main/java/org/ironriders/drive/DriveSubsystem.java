@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.ironriders.vision.Vision;
 
 /**
  * The SwerveSubsystem encompasses everything that the Swerve Drive needs to
@@ -22,9 +23,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class DriveSubsystem extends SubsystemBase {
 
 	private DriveCommands commands;
-	private SwerveDrive swerveDrive;
 
-	public DriveSubsystem() throws RuntimeException {
+	private SwerveDrive swerveDrive;
+	private Vision vision;
+
+	public DriveSubsystem(Vision vision) throws RuntimeException {
 		try {
 			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
 																					// directory.
@@ -62,6 +65,11 @@ public class DriveSubsystem extends SubsystemBase {
 				this);
 	}
 
+	@Override
+	public void periodic() {
+		vision.addPoseEstimate(swerveDrive);
+	}
+
 	/**
 	 * Vrrrrooooooooom brrrrrrrrr BRRRRRR wheeee BRRR brrrr
 	 * VRRRRROOOOOOM ZOOOOOOM ZOOOOM WAHOOOOOOOOO WAHAHAHHA
@@ -81,15 +89,17 @@ public class DriveSubsystem extends SubsystemBase {
 		return commands;
 	}
 
-
 	/** Fetch the SwerveDrive instance */
 	public SwerveDrive getSwerveDrive() {
 		return swerveDrive;
 	}
 
-	// ** Resets the Odemetry to the current position*/
+	public Vision getVision() {
+		return vision;
+	}
+
+	/** Resets the Odemetry to the current position */
 	public void resetOdometry(Pose2d pose2d) {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
 	}
-
 }

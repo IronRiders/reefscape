@@ -22,8 +22,7 @@ import org.ironriders.drive.DriveSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.drive.DriveConstants;
-import org.ironriders.vision.VisionCommands;
-import org.ironriders.vision.VisionSubsystem;
+import org.ironriders.vision.Vision;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -50,23 +49,23 @@ public class RobotCommands {
     private final CoralIntakeCommands coralIntakeCommands;
     private final AlgaeWristCommands algaeWristCommands;
     // private final AlgaeIntakeCommands algaeIntakeCommands;
-    private final VisionCommands visionCommands;
     private final GenericHID controller;
 
     public RobotCommands(
             DriveCommands driveCommands,
             ElevatorCommands elevatorCommands,
+
             CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
             AlgaeWristCommands algaeWristCommands, 
             // AlgaeIntakeCommands algaeIntakeCommands,
             VisionCommands visionCommands, GenericHID controller) {
+
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
         this.coralWristCommands = coralWristCommands;
         this.coralIntakeCommands = coralIntakeCommands;
         this.algaeWristCommands = algaeWristCommands;
         // this.algaeIntakeCommands = algaeIntakeCommands;
-        this.visionCommands = visionCommands;
         this.controller = controller;
 
         // register named commands
@@ -99,13 +98,24 @@ public class RobotCommands {
         if (DriverStation.isAutonomous())
             return Commands.none();
 
+        double invert = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 1 : -1;
+
         return driveCommands.drive(
                 () -> new Translation2d(
-                        inputTranslationX.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP,
-                        inputTranslationY.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP),
-                () -> inputRotation.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP,
+                        inputTranslationX.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert,
+                        inputTranslationY.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert),
+                () -> inputRotation.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert,
                 () -> true);
     }
+
+    // public Command scoreCoralMiniauto(ElevatorConstants.Level level) {
+    //     return Commands.sequence(
+    //             Commands.parallel(
+    //                 driveCommands.driveToPose()
+    //                 this.prepareToScoreCoral(level)),
+    //             this.scoreCoral());
+
+    // }
 
     public Command rumble() {
         return Commands.sequence(
