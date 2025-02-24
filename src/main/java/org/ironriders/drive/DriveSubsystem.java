@@ -26,7 +26,7 @@ public class DriveSubsystem extends SubsystemBase {
 	private SwerveDrive swerveDrive;
 	private Vision vision;
 
-	public DriveSubsystem(Vision vision) throws RuntimeException {
+	public DriveSubsystem() throws RuntimeException {
 		try {
 			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
 																					// directory.
@@ -36,7 +36,7 @@ public class DriveSubsystem extends SubsystemBase {
 		}
 
 		commands = new DriveCommands(this);
-		this.vision = vision;
+		this.vision = new Vision();
 
 		swerveDrive.setHeadingCorrection(false);
 		SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;

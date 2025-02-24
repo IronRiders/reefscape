@@ -35,7 +35,7 @@ public class DriveCommands {
 	// aligns to the closest visible side of the reef
 	public Command alignToReef(boolean offsetRight) {
 		return driveSubsystem.defer(() -> {
-			OptionalInt optID = driveSubsystem.getVision().getClosestTagToFront();
+			OptionalInt optID = driveSubsystem.getVision().getCamera("front").getClosestVisible();
 			if (!optID.isPresent())
 				return Commands.none();
 
@@ -53,7 +53,7 @@ public class DriveCommands {
 
 			System.out.println("Origin Point: " + FieldUtils.FIELD_LAYOUT.getOrigin());
 
-			return this.driveToPose(new Pose2d(new Translation2d(12, 7), new Rotation2d()));// robotPose);
+			return this.driveToPose(new Pose2d(new Translation2d(basePose.getX(), basePose.getY() + 2.0), new Rotation2d()));
 		});
 	}
 

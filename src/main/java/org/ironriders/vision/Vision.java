@@ -1,17 +1,31 @@
 package org.ironriders.vision;
 
+import static org.ironriders.elevator.ElevatorConstants.I;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalInt;
+
+import javax.naming.NameNotFoundException;
+
 import java.util.Optional;
 import org.ironriders.lib.FieldUtils;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.proto.Photon;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import swervelib.SwerveDrive;
 
 /**
@@ -21,59 +35,115 @@ import swervelib.SwerveDrive;
  */
 public class Vision {
 
-    private List<PhotonCamera> cams = new ArrayList<>();
-    public List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
+    private List<VisionCamera> cams = new ArrayList<>();
 
     public Vision() {
-
-        for (VisionConstants.Camera cam : VisionConstants.CAMERAS) {
-            cams.add(new PhotonCamera(cam.name));
-            poseEstimators
-                    .add(new PhotonPoseEstimator(FieldUtils.FIELD_LAYOUT,
-                            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cam.offset));
-        }
+        cams.add(new VisionCamera("front", new Transform3d(), VecBuilder.fill(0, 0, 0)));
     }
 
     /**
      * Takes a swerve drive and adds pose estimate
+     * 
      * @param swerveDrive The swerve drive.
      */
     public void addPoseEstimates(SwerveDrive swerveDrive) {
 
-        int index = 0;
-        for (PhotonPoseEstimator estimator : poseEstimators) {
-            if (cams.get(index).getLatestResult().hasTargets()) {
-                Optional<EstimatedRobotPose> optional = estimator.update(cams.get(index).getLatestResult());
-                if (optional.isEmpty())
-                    break;
-                
-                EstimatedRobotPose poseEstimate = optional.get();
-                swerveDrive.addVisionMeasurement(poseEstimate.estimatedPose.toPose2d(), poseEstimate.timestampSeconds);
-            }
-            index++;
+        for (VisionCamera v : cams) {
+            Optional<EstimatedRobotPose> estimate = v.getEstimate();
+            if (estimate.isPresent())
+                swerveDrive.addVisionMeasurement(
+                    estimate.get().estimatedPose.toPose2d(), 
+                    v.latestResult.getTimestampSeconds(), 
+                    v.deviations);
         }
     }
 
-    /**
-     * Gets the closest tag to the front camera
-     * @return An OptionalInt representing the id of the closest tagg if present.
-     */
-    public OptionalInt getClosestTagToFront() {
+    public VisionCamera getCamera(String name) throws NameNotFoundException {
+        for (VisionCamera v : cams) {
+            if (v.photonCamera.getName().equals(name))
+                return v;
+        }
+        throw new NameNotFoundException("Camera with name '" + name + "' not found");
+    }
 
-        PhotonPipelineResult result = cams.get(0).getLatestResult();
-        if (!result.hasTargets())
-            return OptionalInt.empty();
+    public class VisionCamera {
 
-        Iterator<PhotonTrackedTarget> iterator = result.getTargets().iterator();
-        PhotonTrackedTarget closest = iterator.next();
+        private PhotonCamera photonCamera;
+        private PhotonPoseEstimator estimator;
+        private Matrix<N3, N1> deviations;
 
-        while (iterator.hasNext()) {
-            PhotonTrackedTarget target = iterator.next();
-            if (target.getBestCameraToTarget().getX() < closest.getBestCameraToTarget().getX()) {
-                closest = target;
-            }
+        private PhotonPipelineResult latestResult;
+        private Optional<EstimatedRobotPose> currentEstimate;
+
+        private VisionCamera(String camName, Transform3d offset, Matrix<N3, N1> deviations) {
+
+            photonCamera = new PhotonCamera(camName);
+
+            estimator = new PhotonPoseEstimator(
+                    FieldUtils.FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, offset);
+            estimator.setMultiTagFallbackStrategy(PoseStrategy.AVERAGE_BEST_TARGETS);
+
+            this.deviations = deviations;
         }
 
-        return OptionalInt.of(closest.fiducialId);
+        /** Updates the camera/estimator, only run once per loop. */
+        public void update() {
+            // check results, if none are good just return
+            List<PhotonPipelineResult> results = photonCamera.getAllUnreadResults();
+            if (results.isEmpty()) {
+                currentEstimate = Optional.empty();
+                return;
+            }
+
+            // find most recent result
+            latestResult = results.get(0);
+            for (PhotonPipelineResult r : results) {
+                if (r.getTimestampSeconds() > latestResult.getTimestampSeconds())
+                    latestResult = r;
+            }
+
+            Optional<EstimatedRobotPose> optional = estimator.update(latestResult);
+            if (!optional.isPresent()) {
+                currentEstimate = Optional.empty();
+                return;
+            }
+
+            currentEstimate = refineMacrodata(optional.get());
+        }
+
+        public OptionalInt getClosestVisible() {
+            if (!latestResult.hasTargets())
+                return OptionalInt.empty();
+
+            Iterator<PhotonTrackedTarget> iterator = latestResult.getTargets().iterator();
+            PhotonTrackedTarget closest = iterator.next();
+
+            while (iterator.hasNext()) {
+                PhotonTrackedTarget target = iterator.next();
+                if (target.getBestCameraToTarget().getX() < closest.getBestCameraToTarget().getX()) {
+                    closest = target;
+                }
+            }
+
+            return OptionalInt.of(closest.fiducialId);
+        }
+
+        public Optional<EstimatedRobotPose> getEstimate() {
+            return currentEstimate;
+        }
+
+        private Optional<EstimatedRobotPose> refineMacrodata(EstimatedRobotPose pose) {
+
+            double minAmbiguity = 1;
+            // find best ambiguity between all targets
+            for (PhotonTrackedTarget t : pose.targetsUsed) {
+                if (t.poseAmbiguity != -1 && t.poseAmbiguity < minAmbiguity)
+                    minAmbiguity = t.poseAmbiguity;
+            }
+            if (minAmbiguity >= 0.3)
+                return Optional.empty();
+
+            return Optional.of(pose);
+        }
     }
 }

@@ -50,9 +50,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 public class RobotContainer {
 
 	// The robot's subsystems and commands are defined here...
-	private final Vision vision = new Vision();
-
-	private final DriveSubsystem driveSubsystem = new DriveSubsystem(vision);
+	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	private final DriveCommands driveCommands = driveSubsystem.getCommands();
 
 	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
