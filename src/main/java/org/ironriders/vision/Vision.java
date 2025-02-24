@@ -28,6 +28,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import swervelib.SwerveDrive;
 
 /**
@@ -41,14 +42,14 @@ public class Vision {
 
     public Vision() {
         cams.add(new VisionCamera("front",
-                createOffset(0, 0, 0, 0, 0),
-                VecBuilder.fill(0, 0, 0)));
+                createOffset(14, 0, 6.5, 0, 0),
+                VecBuilder.fill(0.1, 0.1, 0.5)));
         cams.add(new VisionCamera("frontRight",
-                createOffset(0, 0, 0, 0, 0),
-                VecBuilder.fill(0, 0, 0)));
+                createOffset(11.5, -11.5, 6.5, 15, 45),
+                VecBuilder.fill(0.1, 0.1, 0.5)));
         cams.add(new VisionCamera("backLeft",
-                createOffset(0, 0, 0, 0, 0),
-                VecBuilder.fill(0, 0, 0)));
+                createOffset(-11.5, 11.5, 6.5, 15, -135),
+                VecBuilder.fill(0.1, 0.1, 0.5)));
     }
 
     /**
@@ -68,18 +69,42 @@ public class Vision {
         }
     }
 
+    /**
+     * Utility method, creates an offset transform.
+     * @param x The x offset in inches.
+     * @param y The y offset in inches.
+     * @param z The z offset in inches.
+     * @param pitch The pitch offset in degrees.
+     * @param yaw The yaw offset in degrees.
+     */
     public Transform3d createOffset(double x, double y, double z, double pitch, double yaw) {
-        return new Transform3d(new Translation3d(x, y, z), new Rotation3d(0, pitch, yaw));
+        return new Transform3d(
+            new Translation3d(Units.inchesToMeters(x), Units.inchesToMeters(y), Units.inchesToMeters(z)), 
+            new Rotation3d(0, Units.degreesToRadians(pitch), Units.degreesToRadians(yaw)));
     }
 
-    public VisionCamera getCamera(String name) throws NameNotFoundException {
+    /**
+     * Gets a camera based on supplied id, set in Photon Client GUI.
+     * @throws RuntimeException If the camera name supplied does not exist.
+     */
+    public VisionCamera getCamera(String name) throws RuntimeException {
         for (VisionCamera v : cams) {
             if (v.photonCamera.getName().equals(name))
                 return v;
         }
-        throw new NameNotFoundException("Camera with name '" + name + "' not found");
+        throw new RuntimeException("Camera with name '" + name + "' not found");
     }
 
+    public void updateAll() {
+        for (VisionCamera v : cams) {
+            v.update();
+        }
+    }
+
+    /**
+     * Class representing a single camera and its respective pose estimator and 
+     * standard deviations. Results and estimates are gettable.
+     */
     public class VisionCamera {
 
         private PhotonCamera photonCamera;
@@ -100,7 +125,9 @@ public class Vision {
             this.deviations = deviations;
         }
 
-        /** Updates the camera/estimator, only run once per loop. */
+        /** 
+         * Updates the camera/estimator, only run once per loop. 
+         * */
         public void update() {
             // check results, if none are good just return
             List<PhotonPipelineResult> results = photonCamera.getAllUnreadResults();
@@ -125,6 +152,10 @@ public class Vision {
             currentEstimate = refineMacrodata(optional.get());
         }
 
+        /**
+         * Gets the april tag fiducial id of the closest tag currently visible.
+         * @return An optional int, empty if there are no targets visible.
+         */
         public OptionalInt getClosestVisible() {
             if (!latestResult.hasTargets())
                 return OptionalInt.empty();
@@ -146,6 +177,9 @@ public class Vision {
             return currentEstimate;
         }
 
+        /**
+         * A TV show reference? In my code? It's more likely than you think.
+         */
         private Optional<EstimatedRobotPose> refineMacrodata(EstimatedRobotPose pose) {
 
             double minAmbiguity = 1;

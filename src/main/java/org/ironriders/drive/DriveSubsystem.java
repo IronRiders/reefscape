@@ -67,6 +67,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+		vision.updateAll();
 		vision.addPoseEstimates(swerveDrive);
 	}
 

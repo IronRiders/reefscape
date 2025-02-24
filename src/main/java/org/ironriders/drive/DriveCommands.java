@@ -74,7 +74,7 @@ public class DriveCommands {
 
 	public Command alignToClosestTag() {
 		return driveSubsystem.defer(() -> {
-			OptionalInt closestTag = driveSubsystem.getVision().getClosestTagToFront();
+			OptionalInt closestTag = driveSubsystem.getVision().getCamera("front").getClosestVisible();
 			if (closestTag.isPresent()) {
 				return this.driveToPose(FieldUtils.getPose(closestTag.getAsInt()));
 			} else {
