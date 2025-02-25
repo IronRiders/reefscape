@@ -1,28 +1,21 @@
 package org.ironriders.vision;
 
-import static org.ironriders.elevator.ElevatorConstants.I;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalInt;
-
-import javax.naming.NameNotFoundException;
 
 import java.util.Optional;
 import org.ironriders.lib.FieldUtils;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonUtils;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.proto.Photon;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
