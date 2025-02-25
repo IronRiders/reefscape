@@ -26,7 +26,7 @@ public class ElevatorConstants {
     public static final double I = 0;
     public static final double D = 0;
 
-    public static final double MAX_VEL = 8; //8
+    public static final double MAX_VEL = 4; //8
     public static final double MAX_ACC = 10;
     public static final double MAX_OUTPUT = 5; // please tune me tooooooo!!!!
 

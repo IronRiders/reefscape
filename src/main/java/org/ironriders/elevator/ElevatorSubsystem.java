@@ -57,8 +57,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         primaryMotor = new SparkMax(PRIMARY_MOTOR_ID, MotorType.kBrushless); 
         followerMotor = new SparkMax(FOLLOW_MOTOR_ID, MotorType.kBrushless);
 
-        topLimitSwitch = primaryMotor.getReverseLimitSwitch();
-        bottomLimitSwitch = primaryMotor.getForwardLimitSwitch();
+        topLimitSwitch = primaryMotor.getForwardLimitSwitch();
+        bottomLimitSwitch = primaryMotor.getReverseLimitSwitch();
 
         SparkMaxConfig primaryConfig = new SparkMaxConfig();
         SparkMaxConfig followerConfig = new SparkMaxConfig();
