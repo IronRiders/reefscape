@@ -6,7 +6,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import static org.ironriders.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
 import static org.ironriders.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
 
-import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;

@@ -11,7 +11,7 @@ import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
 import org.ironriders.algae.AlgaeWristSubsystem;
-import org.ironriders.algae.AlgaeWristConstants.AlgaeWristState;
+import org.ironriders.algae.AlgaeWristConstants.*;
 import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.coral.CoralIntakeCommands;
 import org.ironriders.coral.CoralIntakeSubsystem;
@@ -45,23 +45,26 @@ public class RobotCommands {
 
     private final DriveCommands driveCommands;
     private final ElevatorCommands elevatorCommands;
-    // private final CoralWristCommands coralWristCommands;
-    // private final CoralIntakeCommands coralIntakeCommands;
-    // private final AlgaeWristCommands algaeWristCommands;
+    private final CoralWristCommands coralWristCommands;
+    private final CoralIntakeCommands coralIntakeCommands;
+    private final AlgaeWristCommands algaeWristCommands;
     // private final AlgaeIntakeCommands algaeIntakeCommands;
     private final GenericHID controller;
 
     public RobotCommands(
             DriveCommands driveCommands,
             ElevatorCommands elevatorCommands,
-            // CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-            // AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
-            GenericHID controller) {
+
+            CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
+            AlgaeWristCommands algaeWristCommands, 
+            // AlgaeIntakeCommands algaeIntakeCommands,
+             GenericHID controller) {
+
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
-        // this.coralWristCommands = coralWristCommands;
-        // this.coralIntakeCommands = coralIntakeCommands;
-        // this.algaeWristCommands = algaeWristCommands;
+        this.coralWristCommands = coralWristCommands;
+        this.coralIntakeCommands = coralIntakeCommands;
+        this.algaeWristCommands = algaeWristCommands;
         // this.algaeIntakeCommands = algaeIntakeCommands;
         this.controller = controller;
 
@@ -69,11 +72,11 @@ public class RobotCommands {
         // NamedCommands.registerCommand("Prepare to Score Algae", this.prepareToScoreAlgae());
         // NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
 
-        // NamedCommands.registerCommand("Prepare to Score Coral L1", this.prepareToScoreCoral(ElevatorConstants.Level.L1));
-        // NamedCommands.registerCommand("Prepare to Score Coral L2", this.prepareToScoreCoral(ElevatorConstants.Level.L2));
-        // NamedCommands.registerCommand("Prepare to Score Coral L3", this.prepareToScoreCoral(ElevatorConstants.Level.L3));
-        // NamedCommands.registerCommand("Prepare to Score Coral L4", this.prepareToScoreCoral(ElevatorConstants.Level.L4));
-        // NamedCommands.registerCommand("Score Coral", this.scoreCoral());
+        NamedCommands.registerCommand("Prepare to Score Coral L1", this.prepareToScoreCoral(ElevatorConstants.Level.L1));
+        NamedCommands.registerCommand("Prepare to Score Coral L2", this.prepareToScoreCoral(ElevatorConstants.Level.L2));
+        NamedCommands.registerCommand("Prepare to Score Coral L3", this.prepareToScoreCoral(ElevatorConstants.Level.L3));
+        NamedCommands.registerCommand("Prepare to Score Coral L4", this.prepareToScoreCoral(ElevatorConstants.Level.L4));
+        NamedCommands.registerCommand("Score Coral", this.scoreCoral());
 
         // NamedCommands.registerCommand("Prepare to Grab Low Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L3));
         // NamedCommands.registerCommand("Prepare to Grab High Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L4));
@@ -141,27 +144,27 @@ public class RobotCommands {
     //             algaeWristCommands.set(AlgaeWristState.STOWED));
     // }
 
-    // public Command prepareToScoreCoral(ElevatorConstants.Level level) {
-    //     CoralWristConstants.State wristState = switch (level) {
-    //         case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
-    //         case L4 -> CoralWristConstants.State.L4;
-    //         default -> {
-    //             throw new IllegalArgumentException("Cannot score coral to level: " + level);
-    //         }
-    //     };
+    public Command prepareToScoreCoral(ElevatorConstants.Level level) {
+        CoralWristConstants.State wristState = switch (level) {
+            case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
+            case L4 -> CoralWristConstants.State.L4;
+            default -> {
+                throw new IllegalArgumentException("Cannot score coral to level: " + level);
+            }
+        };
 
-    //     return Commands.parallel(
-    //             elevatorCommands.set(level),
-    //             coralWristCommands.set(wristState));
-    // }
+        return Commands.parallel(
+                elevatorCommands.set(level),
+                coralWristCommands.set(wristState));
+    }
 
-    // public Command scoreCoral() {
-    //     return Commands.sequence(
-    //             coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
-    //             Commands.parallel(
-    //                     coralWristCommands.set(CoralWristConstants.State.STOWED),
-    //                     elevatorCommands.set(ElevatorConstants.Level.Down)));
-    // }
+    public Command scoreCoral() {
+        return Commands.sequence(
+                coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
+                Commands.parallel(
+                        coralWristCommands.set(CoralWristConstants.State.STOWED),
+                        elevatorCommands.set(ElevatorConstants.Level.Down)));
+    }
 
     // public Command prepareToGrabAlgae(ElevatorConstants.Level level) {
     //     return Commands.parallel(
@@ -177,17 +180,17 @@ public class RobotCommands {
     //             this.rumble());
     // }
 
-    // public Command prepareToGrabCoral() {
-    //     return Commands.parallel(
-    //             elevatorCommands.set(ElevatorConstants.Level.Down),
-    //             coralWristCommands.set(CoralWristConstants.State.STATION)
-    //     );
-    // }
+    public Command prepareToGrabCoral() {
+        return Commands.parallel(
+                elevatorCommands.set(ElevatorConstants.Level.CoralStation),
+                coralWristCommands.set(CoralWristConstants.State.STATION)
+        );
+    }
 
-    // public Command grabCoral() {
-    //     return Commands.sequence(
-    //             coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
-    //             coralWristCommands.set(CoralWristConstants.State.STOWED),
-    //             rumble());
-    // }
+    public Command grabCoral() {
+        return Commands.sequence(
+                coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
+                coralWristCommands.set(CoralWristConstants.State.STOWED),
+                rumble());
+    }
 }

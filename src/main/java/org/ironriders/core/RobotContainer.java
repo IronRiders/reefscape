@@ -13,10 +13,13 @@ import java.lang.ModuleLayer.Controller;
 import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
+import org.ironriders.algae.AlgaeWristConstants;
 import org.ironriders.algae.AlgaeWristSubsystem;
 import org.ironriders.coral.CoralIntakeCommands;
+import org.ironriders.coral.CoralIntakeConstants;
 import org.ironriders.coral.CoralIntakeSubsystem;
 import org.ironriders.coral.CoralWristCommands;
+import org.ironriders.coral.CoralWristConstants;
 import org.ironriders.coral.CoralWristSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
@@ -56,14 +59,14 @@ public class RobotContainer {
 	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
-	// private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
-	// private final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
+	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
+	public final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
-	// private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
-	// private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
+	private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
+	private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
 
-	// private final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
-	// private final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
+	private final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
+	private final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
 
 	// private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 	// private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
@@ -72,11 +75,16 @@ public class RobotContainer {
 
 	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
+	private final CommandXboxController tertiaryController = new CommandXboxController(1);
 
 	private final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, elevatorCommands, 
-			// coralWristCommands, coralIntakeCommands, algaeWristCommands, algaeIntakeCommands, 
-			primaryController.getHID());
+
+			coralWristCommands, coralIntakeCommands, 
+			algaeWristCommands, 
+			// algaeIntakeCommands, 
+			 primaryController.getHID());
+
 
 	// non-final variables
 	private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1; // for scoring coral
@@ -113,11 +121,11 @@ public class RobotContainer {
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> Utils.controlCurve(
-								-primaryController.getLeftY(),
+								primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> Utils.controlCurve(
-								-primaryController.getLeftX(),
+								primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> Utils.controlCurve(
@@ -151,10 +159,33 @@ public class RobotContainer {
 		// primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
-		primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
-		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
+		// // primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		// primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		// primaryController.leftBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
+		// // primaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
+		// // primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
+		// primaryController.b().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
+		// primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
+		// primaryController.leftTrigger().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
+		// primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STOWED));
+		// primaryController.y().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
+		// primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
+		// // primaryController.rightTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB))
+		primaryController.a().onTrue(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED));
+		primaryController.b().onTrue(algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
+
+		primaryController.rightTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
+		primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB));
+		primaryController.leftBumper().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
+
+		primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
+		primaryController.y().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
+
+		tertiaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		tertiaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
+		tertiaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
+		tertiaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
+		tertiaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.CoralStation));
 	}
 
 	/**
