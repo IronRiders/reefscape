@@ -83,7 +83,7 @@ public class RobotContainer {
 			coralWristCommands, coralIntakeCommands, 
 			algaeWristCommands, 
 			// algaeIntakeCommands, 
-			visionCommands, primaryController.getHID());
+			 primaryController.getHID());
 
 
 	// non-final variables

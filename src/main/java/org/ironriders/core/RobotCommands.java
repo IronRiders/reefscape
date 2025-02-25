@@ -58,7 +58,7 @@ public class RobotCommands {
             CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
             AlgaeWristCommands algaeWristCommands, 
             // AlgaeIntakeCommands algaeIntakeCommands,
-            VisionCommands visionCommands, GenericHID controller) {
+             GenericHID controller) {
 
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
