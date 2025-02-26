@@ -79,7 +79,10 @@ public class AlgaeWristSubsystem extends SubsystemBase {
         pidController.setI(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
         pidController.setD(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
 
+        System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());
+
         setPointState = profile.calculate(t, setPointState, goalState);
+
         SmartDashboard.putNumber("Coral Wrist Set Postion", setPointState.position);
         double output = pidController.calculate(getRotation(),setPointState.position);
         if(motor.getReverseLimitSwitch().isPressed()){
