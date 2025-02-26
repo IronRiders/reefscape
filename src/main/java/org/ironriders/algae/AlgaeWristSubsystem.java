@@ -79,12 +79,16 @@ public class AlgaeWristSubsystem extends SubsystemBase {
         pidController.setI(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
         pidController.setD(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
 
-        System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());
+        System.out.println(SmartDashboard.getNumber("Algae P", AlgaeWristConstants.P));
+       // System.out.println(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
+        //System.out.println(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
+      //  System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());
 
         setPointState = profile.calculate(t, setPointState, goalState);
 
         SmartDashboard.putNumber("Coral Wrist Set Postion", setPointState.position);
         double output = pidController.calculate(getRotation(),setPointState.position);
+        output=RobotUtils.clamp(-1, 1, output);
         if(motor.getReverseLimitSwitch().isPressed()){
             handleBottomLimitSwitch();
         }
