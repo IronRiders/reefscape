@@ -112,7 +112,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Calculate the next state and update the current state
         setPointState = profile.calculate(ElevatorConstants.T, setPointState, goalState);
         SmartDashboard.putNumber("Elevator set postion", setPointState.position);
-        if (bottomLimitSwitch.isPressed()&& !isHomed) {
+        if (bottomLimitSwitch.isPressed() && !isHomed) {
             homeElevator();
         }
         // Only run if homed
@@ -181,14 +181,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void homeElevator() {
-        boolean HomeStarted = false;
-        primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
-        System.out.println("ELEVATOR HOMED");
-        if (bottomLimitSwitch.isPressed()) {
-            //primaryMotor.set(0.05);
-            HomeStarted = true;
-        }
-        if(!bottomLimitSwitch.isPressed() && HomeStarted){
+        primaryMotor.set(-0.1);
+        if(!bottomLimitSwitch.isPressed()){
             encoder.setPosition(0);
             isHomed = true;
         }
