@@ -156,7 +156,7 @@ public class RobotContainer {
 		// primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
-		primaryController.y().onTrue(driveCommands.alignToReef(false));
+		// primaryController.y().onTrue(driveCommands.alignToReef(false));
 
 		// // primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
 		// primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
@@ -178,13 +178,13 @@ public class RobotContainer {
 		primaryController.leftBumper().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
 
 		primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
-		primaryController.y().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
+		// primaryController.y().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
 
-		primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
 		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
-		primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
-		primaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.CoralStation));
+		// primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
+		// primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
+		primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.CoralStation));
 		// primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
 		// primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
 		// primaryController.leftBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));

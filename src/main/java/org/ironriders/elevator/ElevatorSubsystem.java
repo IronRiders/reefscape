@@ -1,8 +1,10 @@
 package org.ironriders.elevator;
 
 import static org.ironriders.elevator.ElevatorConstants.BOTTOM_POS;
+import static org.ironriders.elevator.ElevatorConstants.D;
 import static org.ironriders.elevator.ElevatorConstants.ELEVATOR_MOTOR_STALL_LIMIT;
 import static org.ironriders.elevator.ElevatorConstants.FOLLOW_MOTOR_ID;
+import static org.ironriders.elevator.ElevatorConstants.I;
 import static org.ironriders.elevator.ElevatorConstants.INCHES_PER_ROTATION;
 import static org.ironriders.elevator.ElevatorConstants.MAX_POSITION;
 import static org.ironriders.elevator.ElevatorConstants.MIN_POSITION;
@@ -106,6 +108,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         feedforward = new ElevatorFeedforward(ElevatorConstants.K_S, ElevatorConstants.K_G, ElevatorConstants.K_V);
         pidController.setTolerance(.01);
+        SmartDashboard.putNumber("Elevator P", P);
+        SmartDashboard.putNumber("Elevator I", I);
+        SmartDashboard.putNumber("Elevator D", D);
         commands = new ElevatorCommands(this);
     }
 
@@ -168,7 +173,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private void updateTelemetry() {
         SmartDashboard.putNumber("Elevator Height", getHeightInches());
-
+        
+        pidController.setP(SmartDashboard.getNumber("Elevator P", P));
+        pidController.setI(SmartDashboard.getNumber("Elevator I", I));
+        pidController.setD(SmartDashboard.getNumber("Elevator D", D));
         SmartDashboard.putBoolean("Elevator Homed", isHomed);
         SmartDashboard.putString("Elevator State", currentTarget.toString());
         SmartDashboard.putNumber("Elevator Primary Motor Current", primaryMotor.getOutputCurrent());
@@ -197,6 +205,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void homeElevator() {
         boolean HomeStarted = false;
         primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
+<<<<<<< HEAD
         // System.out.println("ELEVATOR HOMED");
         if (bottomLimitSwitch.isPressed()) {
             // primaryMotor.set(0.05);
@@ -205,7 +214,23 @@ public class ElevatorSubsystem extends SubsystemBase {
         if(!bottomLimitSwitch.isPressed() && HomeStarted){
             encoder.setPosition(0);
             isHomed = true;
+=======
+        
+        if (bottomLimitSwitch.isPressed()) {
+            primaryMotor.set(0.1);
+            if(!isHomed){
+                encoder.setPosition(0);
+                    System.out.println("ELEVATOR HOMED");
+                    isHomed = true;
+            }
+            // HomeStarted = true;
+>>>>>>> f662496 (Stuff that Ryan did)
         }
+        // if(!bottomLimitSwitch.isPressed() && HomeStarted){
+        //     encoder.setPosition(0);
+        //     System.out.println("ELEVATOR HOMED");
+        //     isHomed = true;
+        // }
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {
