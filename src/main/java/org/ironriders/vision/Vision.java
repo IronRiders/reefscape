@@ -41,15 +41,15 @@ public class Vision {
     private List<VisionCamera> cams = new ArrayList<>();
 
     public Vision() {
-        cams.add(new VisionCamera("front",
-                createOffset(14, 0, 6.5, 0, 0),
-                VecBuilder.fill(0.1, 0.1, 0.5)));
+        // cams.add(new VisionCamera("front",
+        //         createOffset(14, 0, 6.5, 0, 0),
+        //         VecBuilder.fill(0.1, 0.1, 0.5)));
         cams.add(new VisionCamera("frontRight",
                 createOffset(11.5, -11.5, 6.5, 15, 45),
-                VecBuilder.fill(0.1, 0.1, 0.5)));
-        cams.add(new VisionCamera("backLeft",
-                createOffset(-11.5, 11.5, 6.5, 15, -135),
-                VecBuilder.fill(0.1, 0.1, 0.5)));
+                VecBuilder.fill(0.5, 0.5, 1.0)));
+        // cams.add(new VisionCamera("backLeft",
+        //         createOffset(-11.5, 11.5, 6.5, 15, -135),
+        //         VecBuilder.fill(0.1, 0.1, 0.5)));
     }
 
     /**
@@ -188,7 +188,21 @@ public class Vision {
                 if (t.poseAmbiguity != -1 && t.poseAmbiguity < minAmbiguity)
                     minAmbiguity = t.poseAmbiguity;
             }
+            // trash past 30% ambiguity
             if (minAmbiguity >= 0.3)
+                return Optional.empty();
+
+            double minDistance = 1.0;
+            // find closest distance between all targets
+            for (PhotonTrackedTarget t : pose.targetsUsed) {
+                double dist = 
+                    Math.sqrt(Math.pow(t.bestCameraToTarget.getX(), 2) + Math.pow(t.bestCameraToTarget.getY(), 2));
+
+                if (dist < minDistance)
+                    minDistance = dist;
+            }
+            // trash past 1 meter
+            if (minDistance >= 1.0)
                 return Optional.empty();
 
             return Optional.of(pose);

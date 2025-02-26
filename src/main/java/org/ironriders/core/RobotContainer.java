@@ -154,17 +154,19 @@ public class RobotContainer {
 		// primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
+		primaryController.y().onTrue(driveCommands.alignToReef(false));
+
 		// primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		primaryController.leftBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		// primaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
-		// primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
-		primaryController.b().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
-		primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
-		// primaryController.leftTrigger().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
-		primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STOWED));
-		primaryController.y().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
-		primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
+		// primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		// primaryController.leftBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
+		// // primaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
+		// // primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
+		// primaryController.b().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
+		// primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
+		// // primaryController.leftTrigger().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
+		// primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STOWED));
+		// primaryController.y().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
+		// primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
 		// primaryController.rightTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB));
 
 	}

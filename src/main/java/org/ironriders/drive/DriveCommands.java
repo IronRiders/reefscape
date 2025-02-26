@@ -35,7 +35,7 @@ public class DriveCommands {
 	// aligns to the closest visible side of the reef
 	public Command alignToReef(boolean offsetRight) {
 		return driveSubsystem.defer(() -> {
-			OptionalInt optID = driveSubsystem.getVision().getCamera("front").getClosestVisible();
+			OptionalInt optID = driveSubsystem.getVision().getCamera("frontRight").getClosestVisible();
 			if (!optID.isPresent())
 				return Commands.none();
 
