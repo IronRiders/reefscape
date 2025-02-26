@@ -85,7 +85,6 @@ public class RobotContainer {
   private void configureBindings() {
 
     secondaryController.button(1).onTrue(driveCommands.runPath("Example Path"));
-    //secondaryController.button(2).onTrue(driveCommands.runPath("NAMEME"));
 
 
     driveSubsystem.setDefaultCommand(

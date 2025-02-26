@@ -56,8 +56,8 @@ public class DriveCommands {
         // Create a path following command using AutoBuilder. This will also trigger event markers.
         return AutoBuilder.followPath(autoPath);
     } catch (Exception e) {
-		System.out.println("eroor");
-        DriverStation.reportError("Something bad happen !!: " + e.getMessage(), e.getStackTrace());
+		System.out.println("Error while following path: ".concat(Path));
+        DriverStation.reportError("Error" + e.getMessage(), e.getStackTrace());
         return Commands.none();
 		
     }
