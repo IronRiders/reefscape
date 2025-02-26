@@ -170,8 +170,8 @@ public class RobotContainer {
 		// primaryController.y().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
 		// primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
 		// // primaryController.rightTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB))
-		primaryController.a().onTrue(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED));
-		primaryController.b().onTrue(algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
+		// primaryController.a().onTrue(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED));
+		// primaryController.b().onTrue(algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
 
 		primaryController.rightTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
 		primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB));
@@ -180,11 +180,11 @@ public class RobotContainer {
 		primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
 		primaryController.y().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
 
-		tertiaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		tertiaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		tertiaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
-		tertiaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
-		tertiaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.CoralStation));
+		primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
+		primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
+		primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
+		primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
+		primaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.CoralStation));
 		// primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
 		// primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
 		// primaryController.leftBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
