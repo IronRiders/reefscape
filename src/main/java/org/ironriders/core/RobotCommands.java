@@ -11,7 +11,7 @@ import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
 import org.ironriders.algae.AlgaeWristSubsystem;
-import org.ironriders.algae.AlgaeWristConstants.AlgaeWristState;
+import org.ironriders.algae.AlgaeWristConstants.*;
 import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.coral.CoralIntakeCommands;
 import org.ironriders.coral.CoralIntakeSubsystem;
@@ -55,8 +55,10 @@ public class RobotCommands {
             DriveCommands driveCommands,
             ElevatorCommands elevatorCommands,
             CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-            // AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
+            // AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands
+            // algaeIntakeCommands,
             GenericHID controller) {
+
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
         this.coralWristCommands = coralWristCommands;
@@ -66,20 +68,28 @@ public class RobotCommands {
         this.controller = controller;
 
         // register named commands
-        // NamedCommands.registerCommand("Prepare to Score Algae", this.prepareToScoreAlgae());
+        // NamedCommands.registerCommand("Prepare to Score Algae",
+        // this.prepareToScoreAlgae());
         // NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
 
-        NamedCommands.registerCommand("Prepare to Score Coral L1", this.prepareToScoreCoral(ElevatorConstants.Level.L1));
-        NamedCommands.registerCommand("Prepare to Score Coral L2", this.prepareToScoreCoral(ElevatorConstants.Level.L2));
-        NamedCommands.registerCommand("Prepare to Score Coral L3", this.prepareToScoreCoral(ElevatorConstants.Level.L3));
-        NamedCommands.registerCommand("Prepare to Score Coral L4", this.prepareToScoreCoral(ElevatorConstants.Level.L4));
+        NamedCommands.registerCommand("Prepare to Score Coral L1",
+                this.prepareToScoreCoral(ElevatorConstants.Level.L1));
+        NamedCommands.registerCommand("Prepare to Score Coral L2",
+                this.prepareToScoreCoral(ElevatorConstants.Level.L2));
+        NamedCommands.registerCommand("Prepare to Score Coral L3",
+                this.prepareToScoreCoral(ElevatorConstants.Level.L3));
+        NamedCommands.registerCommand("Prepare to Score Coral L4",
+                this.prepareToScoreCoral(ElevatorConstants.Level.L4));
         NamedCommands.registerCommand("Score Coral", this.scoreCoral());
 
-        // NamedCommands.registerCommand("Prepare to Grab Low Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L3));
-        // NamedCommands.registerCommand("Prepare to Grab High Algae", this.prepareToGrabAlgae(ElevatorConstants.Level.L4));
+        // NamedCommands.registerCommand("Prepare to Grab Low Algae",
+        // this.prepareToGrabAlgae(ElevatorConstants.Level.L3));
+        // NamedCommands.registerCommand("Prepare to Grab High Algae",
+        // this.prepareToGrabAlgae(ElevatorConstants.Level.L4));
         // NamedCommands.registerCommand("Grab Algae", this.grabAlgae());
 
-        // NamedCommands.registerCommand("Prepare to Grab Coral", this.prepareToGrabCoral());
+        // NamedCommands.registerCommand("Prepare to Grab Coral",
+        // this.prepareToGrabCoral());
         // NamedCommands.registerCommand("Grab Coral", this.grabCoral());
     }
 
@@ -98,19 +108,19 @@ public class RobotCommands {
         double invert = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 1 : -1;
 
         return driveCommands.drive(
-                () -> new Translation2d(
-                        inputTranslationX.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert,
-                        inputTranslationY.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert),
+                () -> new Translation2d(inputTranslationX.getAsDouble(), inputTranslationY.getAsDouble())
+                        .times(DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP)
+                        .times(invert),
                 () -> inputRotation.getAsDouble() * DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP * invert,
                 () -> true);
     }
 
     // public Command scoreCoralMiniauto(ElevatorConstants.Level level) {
-    //     return Commands.sequence(
-    //             Commands.parallel(
-    //                 driveCommands.driveToPose()
-    //                 this.prepareToScoreCoral(level)),
-    //             this.scoreCoral());
+    // return Commands.sequence(
+    // Commands.parallel(
+    // driveCommands.driveToPose()
+    // this.prepareToScoreCoral(level)),
+    // this.scoreCoral());
 
     // }
 
@@ -128,17 +138,17 @@ public class RobotCommands {
     }
 
     // public Command prepareToScoreAlgae() {
-    //     return Commands.parallel(
-    //             elevatorCommands.set(ElevatorConstants.Level.Down),
-    //             algaeWristCommands.set(AlgaeWristState.EXTENDED));
+    // return Commands.parallel(
+    // elevatorCommands.set(ElevatorConstants.Level.Down),
+    // algaeWristCommands.set(AlgaeWristState.EXTENDED));
     // }
 
     // public Command scoreAlgae() {
-    //     // TODO: option to grab coral in parallel
-    //     return Commands.sequence(
-    //             algaeIntakeCommands.set(AlgaeIntakeState.EJECT),
-    //             algaeIntakeCommands.set(AlgaeIntakeState.STOP),
-    //             algaeWristCommands.set(AlgaeWristState.STOWED));
+    // // TODO: option to grab coral in parallel
+    // return Commands.sequence(
+    // algaeIntakeCommands.set(AlgaeIntakeState.EJECT),
+    // algaeIntakeCommands.set(AlgaeIntakeState.STOP),
+    // algaeWristCommands.set(AlgaeWristState.STOWED));
     // }
 
     public Command prepareToScoreCoral(ElevatorConstants.Level level) {
@@ -164,24 +174,23 @@ public class RobotCommands {
     }
 
     // public Command prepareToGrabAlgae(ElevatorConstants.Level level) {
-    //     return Commands.parallel(
-    //             elevatorCommands.set(level),
-    //             algaeWristCommands.set(AlgaeWristState.EXTENDED),
-    //             algaeIntakeCommands.set(AlgaeIntakeState.GRAB));
+    // return Commands.parallel(
+    // elevatorCommands.set(level),
+    // algaeWristCommands.set(AlgaeWristState.EXTENDED),
+    // algaeIntakeCommands.set(AlgaeIntakeState.GRAB));
     // }
 
     // public Command grabAlgae() {
-    //     return Commands.sequence(
-    //             algaeIntakeCommands.set(AlgaeIntakeState.GRAB),
-    //             algaeWristCommands.set(AlgaeWristState.STOWED),
-    //             this.rumble());
+    // return Commands.sequence(
+    // algaeIntakeCommands.set(AlgaeIntakeState.GRAB),
+    // algaeWristCommands.set(AlgaeWristState.STOWED),
+    // this.rumble());
     // }
 
     public Command prepareToGrabCoral() {
         return Commands.parallel(
                 elevatorCommands.set(ElevatorConstants.Level.CoralStation),
-                coralWristCommands.set(CoralWristConstants.State.STATION)
-        );
+                coralWristCommands.set(CoralWristConstants.State.STATION));
     }
 
     public Command grabCoral() {

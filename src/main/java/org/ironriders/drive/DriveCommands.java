@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
@@ -35,7 +36,7 @@ public class DriveCommands {
 	// aligns to the closest visible side of the reef
 	public Command alignToReef(boolean offsetRight) {
 		return driveSubsystem.defer(() -> {
-			OptionalInt optID = driveSubsystem.getVision().getCamera("front").getClosestVisible();
+			OptionalInt optID = driveSubsystem.getVision().getCamera("frontRight").getClosestVisible();
 			if (!optID.isPresent())
 				return Commands.none();
 
@@ -46,14 +47,7 @@ public class DriveCommands {
 			Pose2d basePose = FieldUtils.getPose(id);
 			Pose2d robotPose = new Pose2d(basePose.getTranslation(), basePose.getRotation().unaryMinus());
 
-			System.out.println("Known Pose: " + driveSubsystem.getSwerveDrive().getPose());
-			System.out.println("Base Pose: " + basePose);
-			System.out.println("Robot Pose: " + robotPose);
-			System.out.println("Offset Pose 1: " + basePose.transformBy(FieldUtils.REEFSIDE_LEFT_OFFSET));
-
-			System.out.println("Origin Point: " + FieldUtils.FIELD_LAYOUT.getOrigin());
-
-			return this.driveToPose(new Pose2d(new Translation2d(basePose.getX(), basePose.getY() + 2.0), new Rotation2d()));
+			return this.driveToPose(driveSubsystem.getSwerveDrive().getPose().plus(new Transform2d(new Translation2d(1.0, 0.0), new Rotation2d())));
 		});
 	}
 
