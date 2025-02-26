@@ -15,6 +15,7 @@ import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
 import org.ironriders.algae.AlgaeWristConstants;
 import org.ironriders.algae.AlgaeWristSubsystem;
+import org.ironriders.algae.AlgaeWristConstants.State;
 import org.ironriders.coral.CoralIntakeCommands;
 import org.ironriders.coral.CoralIntakeConstants;
 import org.ironriders.coral.CoralIntakeSubsystem;
@@ -157,6 +158,10 @@ public class RobotContainer {
 		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
 		primaryController.y().onTrue(driveCommands.alignToReef(false));
+
+
+		primaryController.x().onTrue(algaeWristCommands.set(State.EXTENDED));
+		primaryController.a().onTrue(algaeWristCommands.set(State.STOWED));
 
 		// // primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
 		// primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
