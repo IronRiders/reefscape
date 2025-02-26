@@ -31,6 +31,9 @@ import swervelib.SwerveDrive;
  */
 public class Vision {
 
+    private static final double AMBIGUITY_TOLERANCE = 0.4; // percentage
+    private static final double DISTANCE_TOLERANCE = 7.5; // meters
+
     private List<VisionCamera> cams = new ArrayList<>();
 
     public Vision() {
@@ -105,7 +108,7 @@ public class Vision {
         private Matrix<N3, N1> deviations;
 
         private PhotonPipelineResult latestResult;
-        private Optional<EstimatedRobotPose> currentEstimate;
+        private Optional<EstimatedRobotPose> currentEstimate = Optional.empty();
 
         private VisionCamera(String camName, Transform3d offset, Matrix<N3, N1> deviations) {
 
@@ -182,10 +185,10 @@ public class Vision {
                     minAmbiguity = t.poseAmbiguity;
             }
             // trash past 30% ambiguity
-            if (minAmbiguity >= 0.3)
+            if (minAmbiguity >= AMBIGUITY_TOLERANCE)
                 return Optional.empty();
 
-            double minDistance = 1.0;
+            double minDistance = DISTANCE_TOLERANCE;
             // find closest distance between all targets
             for (PhotonTrackedTarget t : pose.targetsUsed) {
                 double dist = 
@@ -195,7 +198,7 @@ public class Vision {
                     minDistance = dist;
             }
             // trash past 1 meter
-            if (minDistance >= 1.0)
+            if (minDistance >= DISTANCE_TOLERANCE)
                 return Optional.empty();
 
             return Optional.of(pose);

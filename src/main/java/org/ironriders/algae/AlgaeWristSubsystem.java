@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.ironriders.algae.AlgaeWristConstants.*;
 
 import org.ironriders.algae.AlgaeWristCommands;
+import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.lib.RobotUtils;
 
 public class AlgaeWristSubsystem extends SubsystemBase {
@@ -29,7 +30,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
 
     // find acutal motor IDs
     private final SparkMax motor = new SparkMax(ALGAEWRISTMOTOR, MotorType.kBrushless);
-    private final PIDController pid = new PIDController(ALGAEWRISTKP, ALGAEWRISTKI, ALGAEWRISTKD);
+    private final PIDController pidController = new PIDController(P, I, D);
     private  RelativeEncoder encoder = motor.getEncoder();
     private final SparkLimitSwitch forwardLimitSwitch = motor.getForwardLimitSwitch();
     private final SparkLimitSwitch reverseLimitSwitch = motor.getReverseLimitSwitch();
@@ -42,6 +43,10 @@ public class AlgaeWristSubsystem extends SubsystemBase {
     private boolean isHomed = false;
 
     public AlgaeWristSubsystem() {
+        SmartDashboard.putNumber("Algae P", AlgaeWristConstants.P);
+        SmartDashboard.putNumber("Algae I", AlgaeWristConstants.I);
+        SmartDashboard.putNumber("Algae D", AlgaeWristConstants.D);
+
         TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC);
         profile = new TrapezoidProfile(constraints);
         forwardLimitSwitchConfig.forwardLimitSwitchEnabled(true)
@@ -62,16 +67,24 @@ public class AlgaeWristSubsystem extends SubsystemBase {
 
         setGoal(getRotation());
 
-        pid.setTolerance(ALGAE_WRIST_TOLERENCE);
+        pidController.setTolerance(ALGAE_WRIST_TOLERENCE);
 
         commands = new AlgaeWristCommands(this);
     }
 
     @Override
     public void periodic() {
+
+        pidController.setP(SmartDashboard.getNumber("Algae P", AlgaeWristConstants.P));
+        pidController.setI(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
+        pidController.setD(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
+
+        System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());
+
         setPointState = profile.calculate(t, setPointState, goalState);
+
         SmartDashboard.putNumber("Coral Wrist Set Postion", setPointState.position);
-        double output = pid.calculate(getRotation(),setPointState.position);
+        double output = pidController.calculate(getRotation(),setPointState.position);
         if(motor.getReverseLimitSwitch().isPressed()){
             handleBottomLimitSwitch();
         }
@@ -83,6 +96,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "Homed", isHomed);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "encoder", motor.getEncoder().getPosition());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "encoder converted",getRotation() );
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", goalState.position);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "fowardSwitch", forwardLimitSwitch.isPressed());
@@ -96,7 +110,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
 
     public void reset() {
         goalState = new TrapezoidProfile.State(setPointState.position, 0);
-        pid.reset();
+        pidController.reset();
     }
 
     private double getRotation() {
@@ -111,7 +125,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
     }
 
     public boolean atPosition() {
-        return pid.atSetpoint();
+        return pidController.atSetpoint();
     }
 
     public AlgaeWristCommands getCommands() {

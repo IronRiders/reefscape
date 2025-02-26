@@ -1,15 +1,11 @@
 package org.ironriders.elevator;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class ElevatorConstants {
 
     public static final int PRIMARY_MOTOR_ID = 11;
     public static final int FOLLOW_MOTOR_ID = 10;
 
     public static final int ELEVATOR_MOTOR_STALL_LIMIT =   30; //in amps and applies to both primary and follower
-
-
 
     public static final double BOTTOM_POS = 0; //Homed postion
 
@@ -24,9 +20,8 @@ public class ElevatorConstants {
     public static final double MIN_POSITION = 0;  //please tune
     public static final double MAX_POSITION = 53; //please tune ASK JIM (finn said it was 54) 53 is the safe tested number unless limit switch is working
     
-    public static final double P = .1; // please tune me!!!!
-    
-    public static final double I = 0;
+    public static final double P = 0.55; // Mostly good
+    public static final double I = 0.15;
     public static final double D = 0;
 
     public static final double MAX_VEL = 40;

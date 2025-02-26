@@ -36,4 +36,13 @@ public class DriveConstants {
     public static final double SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO = 10; // rad/s
     public static final double SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO = 5; // rad/s^2
 
+    public enum DriveSpeed {
+        SLOW(0.5), NORMAL(1.0), FAST(1.5);
+
+        public final double multiplier;
+
+        DriveSpeed(double multiplier) {
+            this.multiplier = multiplier;
+        }
+    }
 }

@@ -10,15 +10,17 @@ public class AlgaeWristConstants {
     public static final int ALGAEWRISTMOTOR = 14;
 
     // Need to tune
-    public static final double ALGAEWRISTKP = 0.25;
-    public static final double ALGAEWRISTKI = 0;
-    public static final double ALGAEWRISTKD = 0.0;
+    public static final double P = 0.25;
+    public static final double I = 0;
+    public static final double D = 0.0;
     public static final double t = 0.02;
     public static final double GEAR_RATIO = 0.01;
-    public static final double MIN_POSITION =0;
-    public static final double MAX_POSITION =100;
-    public static final double MAX_ACC = 10;
+    public static final double MIN_POSITION = 0;
+    public static final double MAX_POSITION = 100;
+    public static final double MAX_ACC = 30;
     public static final double MAX_VEL = 30;
+
+
     // public static final double ALGAEWRISTKS = 0.0; //The static gain in volts. //
     // Need to test
     // public static final double ALGAEWRISTKG = 0.0; //The gravity gain in volts.
