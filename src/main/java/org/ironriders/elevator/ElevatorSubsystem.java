@@ -185,7 +185,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
         System.out.println("ELEVATOR HOMED");
         if (bottomLimitSwitch.isPressed()) {
-            primaryMotor.set(0.05);
+            //primaryMotor.set(0.05);
             HomeStarted = true;
         }
         if(!bottomLimitSwitch.isPressed() && HomeStarted){
