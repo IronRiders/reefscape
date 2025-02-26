@@ -136,73 +136,26 @@ public class RobotContainer {
 		// OOOO }__ not used yet
 		// OOOO }/
 		// secondary controls
-		// secondaryController.button(0).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L1; }));
-		// secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L2; }));
-		// secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L3; }));
-		// secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L4; }));
+		secondaryController.button(0).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L1; }));
+		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L2; }));
+		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L3; }));
+		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L4; }));
 
 		// secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
 		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
 
-		// // various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
+		// various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
 		// primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
 		// primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
-		// primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(coralTarget));
-		// primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
+		primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(coralTarget));
+		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
 
 		// primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae(algaeTarget));
 		// primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
 
-		// primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
-		// primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
-
-		primaryController.y().onTrue(driveCommands.alignToReef(false));
-
-
-		primaryController.x().onTrue(algaeWristCommands.set(State.EXTENDED));
-		primaryController.a().onTrue(algaeWristCommands.set(State.STOWED));
-
-		// // primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		// primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		// primaryController.leftBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		// // primaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
-		// // primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
-		// primaryController.b().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
-		// primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
-		// primaryController.leftTrigger().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
-		// primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STOWED));
-		// primaryController.y().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
-		// primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
-		// // primaryController.rightTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB))
-		// primaryController.a().onTrue(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED));
-		// primaryController.b().onTrue(algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
-
-		// primaryController.rightTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
-		// primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB));
-		// primaryController.leftBumper().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
-
-		// primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
-		// primaryController.y().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
-
-		// primaryController.a().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
-		// primaryController.b().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		// primaryController.x().onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
-		// primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
-		// primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.CoralStation));
-		// primaryController.y().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		// primaryController.rightBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L1));
-		// primaryController.leftBumper().onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		// // primaryController.rightTrigger().onTrue(elevatorCommands.set(ElevatorConstants.Level.L4));
-		// // primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.STATION));
-		// primaryController.b().onTrue(coralWristCommands.set(CoralWristConstants.State.L1toL3));
-		// primaryController.a().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
-		// // primaryController.leftTrigger().onTrue(coralWristCommands.set(CoralWristConstants.State.L4));
-		// primaryController.x().onTrue(coralWristCommands.set(CoralWristConstants.State.STOWED));
-		// primaryController.y().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
-		// primaryController.leftTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
-		// primaryController.rightTrigger().onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB));
-
+		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
+		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 	}
 
 	/**

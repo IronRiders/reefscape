@@ -39,7 +39,7 @@ public class Vision {
         //         VecBuilder.fill(0.1, 0.1, 0.5)));
         cams.add(new VisionCamera("frontRight",
                 createOffset(11.5, -11.5, 6.5, 15, 45),
-                VecBuilder.fill(0.5, 0.5, 1.0)));
+                VecBuilder.fill(0.1, 0.1, 0.5)));
         // cams.add(new VisionCamera("backLeft",
         //         createOffset(-11.5, 11.5, 6.5, 15, -135),
         //         VecBuilder.fill(0.1, 0.1, 0.5)));
@@ -105,7 +105,7 @@ public class Vision {
         private Matrix<N3, N1> deviations;
 
         private PhotonPipelineResult latestResult;
-        private Optional<EstimatedRobotPose> currentEstimate;
+        private Optional<EstimatedRobotPose> currentEstimate = Optional.empty();
 
         private VisionCamera(String camName, Transform3d offset, Matrix<N3, N1> deviations) {
 
