@@ -76,7 +76,7 @@ public class RobotContainer {
 
 	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
-	private final CommandXboxController tertiaryController = new CommandXboxController(1);
+	private final CommandXboxController tertiaryController = new CommandXboxController(DriveConstants.TERTIARY_CONTROLLER_PORT);
 
 	private final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, elevatorCommands, 

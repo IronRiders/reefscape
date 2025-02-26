@@ -10,6 +10,7 @@ public class DriveConstants {
     // Ports, IDs, Configs, etc.
     public static final int PRIMARY_CONTROLLER_PORT = 0;
     public static final int KEYPAD_CONTROLLER_PORT = 1;
+    public static final int TERTIARY_CONTROLLER_PORT = 2;
 
     public static final File SWERVE_JSON_DIRECTORY = new File(Filesystem.getDeployDirectory(), "swerve");
     public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController( // PPHolonomicController

@@ -115,7 +115,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
 
     private double getRotation() {
         // System.out.println(encoder.getPosition() * 360);
-        return encoder.getPosition() * 360 * GEAR_RATIO;
+        return encoder.getPosition() * 360 * GEAR_RATIO * SPROCKET_RATIO;
     }
 
     private void handleBottomLimitSwitch() {
