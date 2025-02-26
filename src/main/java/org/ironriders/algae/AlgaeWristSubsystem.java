@@ -96,6 +96,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "Homed", isHomed);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "encoder", motor.getEncoder().getPosition());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "encoder converted",getRotation() );
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", goalState.position);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "fowardSwitch", forwardLimitSwitch.isPressed());

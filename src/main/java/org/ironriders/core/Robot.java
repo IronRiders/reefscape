@@ -7,8 +7,7 @@ package org.ironriders.core;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.coral.CoralWristCommands;
-import org.ironriders.coral.CoralWristConstants.State;
-
+import org.ironriders.algae.AlgaeWristConstants.State;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -42,7 +41,7 @@ public class Robot extends TimedRobot {
 		if (autonomousCommand != null) {
 			autonomousCommand.schedule();
 		}
-		robotContainer.coralWristCommands.reset().andThen(robotContainer.coralWristCommands.set(State.STOWED)).schedule();
+		robotContainer.algaeWristCommands.reset().andThen(robotContainer.algaeWristCommands.set(State.EXTENDED)).schedule();
 	}
 	@Override
 	public void autonomousPeriodic() {}
@@ -60,7 +59,7 @@ public class Robot extends TimedRobot {
 		if(robotContainer.elevatorSubsystem.isHomed()){
 			robotContainer.elevatorCommands.reset().schedule();
 		}
-		robotContainer.coralWristCommands.reset().andThen(robotContainer.coralWristCommands.set(State.STOWED)).schedule();
+		robotContainer.algaeWristCommands.reset().andThen(robotContainer.algaeWristCommands.set(State.EXTENDED)).schedule();
 	}
 
 	@Override

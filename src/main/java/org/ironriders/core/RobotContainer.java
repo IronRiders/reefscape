@@ -67,7 +67,7 @@ public class RobotContainer {
 	private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
 
 	private final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
-	private final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
+	final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
 
 	// private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 	// private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
