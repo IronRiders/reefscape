@@ -203,18 +203,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void homeElevator() {
-        boolean HomeStarted = false;
         primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
-<<<<<<< HEAD
-        // System.out.println("ELEVATOR HOMED");
-        if (bottomLimitSwitch.isPressed()) {
-            // primaryMotor.set(0.05);
-            HomeStarted = true;
-        }
-        if(!bottomLimitSwitch.isPressed() && HomeStarted){
-            encoder.setPosition(0);
-            isHomed = true;
-=======
         
         if (bottomLimitSwitch.isPressed()) {
             primaryMotor.set(0.1);
@@ -224,7 +213,6 @@ public class ElevatorSubsystem extends SubsystemBase {
                     isHomed = true;
             }
             // HomeStarted = true;
->>>>>>> f662496 (Stuff that Ryan did)
         }
         // if(!bottomLimitSwitch.isPressed() && HomeStarted){
         //     encoder.setPosition(0);
