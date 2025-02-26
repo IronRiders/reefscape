@@ -11,7 +11,7 @@ import org.ironriders.algae.AlgaeIntakeCommands;
 import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
 import org.ironriders.algae.AlgaeWristSubsystem;
-import org.ironriders.algae.AlgaeWristConstants.AlgaeWristState;
+import org.ironriders.algae.AlgaeWristConstants.*;
 import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.coral.CoralIntakeCommands;
 import org.ironriders.coral.CoralIntakeSubsystem;
@@ -47,21 +47,24 @@ public class RobotCommands {
     private final ElevatorCommands elevatorCommands;
     private final CoralWristCommands coralWristCommands;
     private final CoralIntakeCommands coralIntakeCommands;
-    // private final AlgaeWristCommands algaeWristCommands;
+    private final AlgaeWristCommands algaeWristCommands;
     // private final AlgaeIntakeCommands algaeIntakeCommands;
     private final GenericHID controller;
 
     public RobotCommands(
             DriveCommands driveCommands,
             ElevatorCommands elevatorCommands,
+
             CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-            // AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
-            GenericHID controller) {
+            AlgaeWristCommands algaeWristCommands, 
+            // AlgaeIntakeCommands algaeIntakeCommands,
+             GenericHID controller) {
+
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
         this.coralWristCommands = coralWristCommands;
         this.coralIntakeCommands = coralIntakeCommands;
-        // this.algaeWristCommands = algaeWristCommands;
+        this.algaeWristCommands = algaeWristCommands;
         // this.algaeIntakeCommands = algaeIntakeCommands;
         this.controller = controller;
 

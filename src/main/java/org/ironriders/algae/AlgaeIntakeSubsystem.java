@@ -7,6 +7,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,15 +26,14 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
     private final SparkMax algaeRightMotor = new SparkMax(ALGAERIGHTINTAKEMOTOR, MotorType.kBrushless);
     private final SparkMaxConfig algaeMotorConfig = new SparkMaxConfig();
 
-    private final SparkLimitSwitch limitSwitch = algaeLeftMotor.getForwardLimitSwitch();
 
     private boolean hasAlgae = false;
 
     public AlgaeIntakeSubsystem() {
         algaeMotorConfig
                 .smartCurrentLimit(ALGAE_INTAKE_CURRENT_STALL_LIMIT)
-                // .voltageCompensation(ALGAE_INTAKE_COMPENSATED_VOLTAGE)
-                .idleMode(IdleMode.kBrake);
+                .inverted(false)
+                .idleMode(IdleMode.kCoast);
         algaeLeftMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         algaeRightMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -44,7 +45,8 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
     public void periodic() {
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX_ALGAE + "velocity", getSpeed());
-
+        SmartDashboard.putNumber(DASHBOARD_PREFIX_ALGAE+ "forward left motor current", algaeLeftMotor.getOutputCurrent());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX_ALGAE+ "forward right motor current", algaeRightMotor.getOutputCurrent());
     }
 
     public void setHasAlgae(boolean hasAlgae) {
@@ -63,7 +65,8 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
     }
 
     public boolean getLimitSwitchTriggered() {
-        return limitSwitch.isPressed();
+        // return limitSwitch.isPressed(); //hasn't been put on the robot
+        return false;
     }
 
     public void reset() {
