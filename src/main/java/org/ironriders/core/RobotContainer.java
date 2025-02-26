@@ -79,7 +79,6 @@ public class RobotContainer {
 
 	private final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, elevatorCommands, 
-
 			coralWristCommands, coralIntakeCommands, 
 			// algaeWristCommands, algaeIntakeCommands, 
 			primaryController.getHID());

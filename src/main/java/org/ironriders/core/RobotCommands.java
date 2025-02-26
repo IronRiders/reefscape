@@ -47,24 +47,22 @@ public class RobotCommands {
     private final ElevatorCommands elevatorCommands;
     private final CoralWristCommands coralWristCommands;
     private final CoralIntakeCommands coralIntakeCommands;
-    private final AlgaeWristCommands algaeWristCommands;
+    // private final AlgaeWristCommands algaeWristCommands;
     // private final AlgaeIntakeCommands algaeIntakeCommands;
     private final GenericHID controller;
 
     public RobotCommands(
             DriveCommands driveCommands,
             ElevatorCommands elevatorCommands,
-
             CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-            AlgaeWristCommands algaeWristCommands, 
-            // AlgaeIntakeCommands algaeIntakeCommands,
+            // AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
              GenericHID controller) {
 
         this.driveCommands = driveCommands;
         this.elevatorCommands = elevatorCommands;
         this.coralWristCommands = coralWristCommands;
         this.coralIntakeCommands = coralIntakeCommands;
-        this.algaeWristCommands = algaeWristCommands;
+        // this.algaeWristCommands = algaeWristCommands;
         // this.algaeIntakeCommands = algaeIntakeCommands;
         this.controller = controller;
 
