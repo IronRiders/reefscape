@@ -40,7 +40,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private final ElevatorCommands commands;
 
-    // private final double ff = 0;
     private final SparkMax primaryMotor; // lead motor
     private final SparkMax followerMotor;
 
@@ -64,7 +63,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Elevator I", ElevatorConstants.I);
         SmartDashboard.putNumber("Elevator D", ElevatorConstants.D);
 
-        goalState.position =0;
+        goalState.position = 0;
         primaryMotor = new SparkMax(PRIMARY_MOTOR_ID, MotorType.kBrushless); 
         followerMotor = new SparkMax(FOLLOW_MOTOR_ID, MotorType.kBrushless);
 
@@ -93,7 +92,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         followerConfig.follow(ElevatorConstants.PRIMARY_MOTOR_ID, true);
         followerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
         // followerConfig.inverted(true); // probably make a constant out of this
-    
 
 
         primaryMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -108,9 +106,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         feedforward = new ElevatorFeedforward(ElevatorConstants.K_S, ElevatorConstants.K_G, ElevatorConstants.K_V);
         pidController.setTolerance(.01);
-        SmartDashboard.putNumber("Elevator P", P);
-        SmartDashboard.putNumber("Elevator I", I);
-        SmartDashboard.putNumber("Elevator D", D);
         commands = new ElevatorCommands(this);
     }
 
