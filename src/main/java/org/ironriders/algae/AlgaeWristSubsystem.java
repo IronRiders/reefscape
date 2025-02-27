@@ -12,16 +12,11 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.ironriders.algae.AlgaeWristConstants.*;
 
-import org.ironriders.algae.AlgaeWristCommands;
-import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.lib.RobotUtils;
 
 public class AlgaeWristSubsystem extends SubsystemBase {

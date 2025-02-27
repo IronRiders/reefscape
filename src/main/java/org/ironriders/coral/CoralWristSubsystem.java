@@ -1,7 +1,5 @@
 package org.ironriders.coral;
 
-import org.ironriders.elevator.ElevatorConstants;
-import org.ironriders.lib.RobotUtils;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLimitSwitch;

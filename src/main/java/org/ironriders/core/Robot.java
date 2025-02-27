@@ -4,9 +4,6 @@
 
 package org.ironriders.core;
 
-import org.ironriders.elevator.ElevatorCommands;
-import org.ironriders.elevator.ElevatorSubsystem;
-import org.ironriders.coral.CoralWristCommands;
 import org.ironriders.algae.AlgaeWristConstants.State;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
