@@ -9,7 +9,7 @@ public class DriveConstants {
 
     // Ports, IDs, Configs, etc.
     public static final int PRIMARY_CONTROLLER_PORT = 0;
-    public static final int SECONDARY_CONTROLLER_PORT = 1;
+    public static final int KEYPAD_CONTROLLER_PORT = 1;
 
     public static final File SWERVE_JSON_DIRECTORY = new File(Filesystem.getDeployDirectory(), "swerve");
     public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController( // PPHolonomicController
@@ -28,5 +28,12 @@ public class DriveConstants {
     public static final double ROTATION_CONTROL_EXPONENT = 3.0;
     public static final double ROTATION_CONTROL_DEADBAND = 0.8;
 
-    public static final double SWERVE_MAXIMUM_SPEED = 0.25; // m/s
+
+    public static final double SWERVE_MAXIMUM_SPEED_TELEOP = 1; // m/s
+
+    public static final double SWERVE_MAXIMUM_SPEED_AUTO = .25; // m/s
+    public static final double SWERVE_MAXIMUM_ACCELERATION_AUTO = SWERVE_MAXIMUM_SPEED_AUTO / 2; // m/s^2
+    public static final double SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO = 10; // rad/s
+    public static final double SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO = 5; // rad/s^2
+
 }
