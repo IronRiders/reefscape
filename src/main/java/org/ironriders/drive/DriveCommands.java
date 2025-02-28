@@ -36,18 +36,26 @@ public class DriveCommands {
 	// aligns to the closest visible side of the reef
 	public Command alignToReef(boolean offsetRight) {
 		return driveSubsystem.defer(() -> {
-			OptionalInt optID = driveSubsystem.getVision().getCamera("frontRight").getClosestVisible();
-			if (!optID.isPresent())
-				return Commands.none();
+			// OptionalInt optID = driveSubsystem.getVision().getCamera("frontRight").getClosestVisible();
+			// if (!optID.isPresent())
+			// 	return Commands.none();
 
-			int id = optID.getAsInt();
+			// int id = optID.getAsInt();
 			// if (!FieldUtils.isValidReefTag(id))
 			// return Commands.none();
 
-			Pose2d basePose = FieldUtils.getPose(id);
-			Pose2d robotPose = new Pose2d(basePose.getTranslation(), basePose.getRotation().unaryMinus());
+			Pose2d basePose = FieldUtils.getPose(14);
+			Pose2d robotPose = new Pose2d(
+				basePose.getTranslation(), 
+				basePose.getRotation().unaryMinus())
+				.transformBy(new Transform2d(new Translation2d(1.5, 0), new Rotation2d()));
 
-			return this.driveToPose(driveSubsystem.getSwerveDrive().getPose().plus(new Transform2d(new Translation2d(1.0, 0.0), new Rotation2d())));
+			System.out.println("BASE POSE: " + basePose);
+			System.out.println("ROBOT POSE: " + robotPose);
+			System.out.println("OFFSET POSE: " + basePose.transformBy(FieldUtils.REEFSIDE_LEFT_OFFSET));
+			System.out.println("CURRENT POSE: " + driveSubsystem.getSwerveDrive().getPose());
+
+			return this.driveToPose(robotPose);
 		});
 	}
 

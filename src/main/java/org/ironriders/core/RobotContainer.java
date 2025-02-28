@@ -54,20 +54,20 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 public class RobotContainer {
 
 	// The robot's subsystems and commands are defined here...
-	private final DriveSubsystem driveSubsystem = new DriveSubsystem();
-	private final DriveCommands driveCommands = driveSubsystem.getCommands();
+	public final DriveSubsystem driveSubsystem = new DriveSubsystem();
+	public final DriveCommands driveCommands = driveSubsystem.getCommands();
 
 	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
-	private final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
+	public final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
 	public final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
-	private final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
-	private final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
+	public final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
+	public final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
 
-	private final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
-	final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
+	public final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
+	public final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
 
 	// private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 	// private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
@@ -84,9 +84,7 @@ public class RobotContainer {
 			// algaeWristCommands, algaeIntakeCommands, 
 			primaryController.getHID());
 
-	// non-final variables
-	private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1; // for scoring coral
-	private ElevatorConstants.Level algaeTarget = ElevatorConstants.Level.L3; // for grabbing algae
+	private Command coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1);
 
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -131,15 +129,11 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
-		// 1234 -> coral target controls
-		// 3344 -> algae target controls
-		// OOOO }__ not used yet
-		// OOOO }/
 		// secondary controls
-		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L1; }));
-		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L2; }));
-		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L3; }));
-		secondaryController.button(4).onTrue(Commands.runOnce(() -> { coralTarget = ElevatorConstants.Level.L4; }));
+		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1); }));
+		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L2); }));
+		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L3); }));
+		secondaryController.button(4).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L4); }));
 
 		// secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
 		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
@@ -148,16 +142,16 @@ public class RobotContainer {
 		// primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
 		// primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
-		primaryController.rightTrigger().onTrue(robotCommands.prepareToScoreCoral(coralTarget));
+		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralPrepareCommand.schedule(); }));
 		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
 
-		// primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae(algaeTarget));
+		// primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae());
 		// primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
 
 		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
-		primaryController.y().onTrue(driveCommands.alignToReef(false));
+		// primaryController.y().onTrue(driveCommands.alignToReef(false));
 	}
 
 	/**

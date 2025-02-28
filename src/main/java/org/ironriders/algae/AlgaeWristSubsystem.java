@@ -75,11 +75,11 @@ public class AlgaeWristSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        pidController.setP(SmartDashboard.getNumber("Algae P", AlgaeWristConstants.P));
-        pidController.setI(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
-        pidController.setD(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
+        // pidController.setP(SmartDashboard.getNumber("Algae P", AlgaeWristConstants.P));
+        // pidController.setI(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
+        // pidController.setD(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
 
-        System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());
+        // System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());
 
         setPointState = profile.calculate(t, setPointState, goalState);
 

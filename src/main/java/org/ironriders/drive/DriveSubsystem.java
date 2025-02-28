@@ -9,6 +9,7 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,9 +32,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public DriveSubsystem() throws RuntimeException {
 		try {
-			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
-																					// directory.
-					.createSwerveDrive(DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP);
+			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
+					.createSwerveDrive(DriveConstants.SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
 		}
@@ -66,6 +66,11 @@ public class DriveSubsystem extends SubsystemBase {
 					return false;
 				},
 				this);
+	}
+
+	private Pose2d test() {
+		System.out.println("CURRENT POSE IS " + swerveDrive.getPose());
+		return swerveDrive.getPose();
 	}
 
 	@Override

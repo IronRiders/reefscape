@@ -92,6 +92,7 @@ public class CoralWristSubsystem extends SubsystemBase {
     }
 
     public void setGoal(double position) {
+        System.out.println("Coral Wrist Set Position: " + position);
         goalState = new TrapezoidProfile.State(MathUtil.clamp(position, MIN_POSITION, MAX_POSITION), 0);
     }
 

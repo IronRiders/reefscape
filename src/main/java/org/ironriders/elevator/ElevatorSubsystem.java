@@ -54,7 +54,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final PIDController pidController;
     private TrapezoidProfile.State goalState = new TrapezoidProfile.State();
     private TrapezoidProfile.State setPointState = new TrapezoidProfile.State();
-    
 
     private Level currentTarget = Level.Down;
     private boolean isHomed = false;

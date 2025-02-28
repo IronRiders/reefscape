@@ -11,15 +11,12 @@ public class DriveConstants {
     public static final int PRIMARY_CONTROLLER_PORT = 0;
     public static final int KEYPAD_CONTROLLER_PORT = 1;
 
+
     public static final File SWERVE_JSON_DIRECTORY = new File(Filesystem.getDeployDirectory(), "swerve");
-    public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController( // PPHolonomicController
-                                                                                                      // is the built in
-                                                                                                      // path following
-                                                                                                      // controller for
-                                                                                                      // holonomic drive
-                                                                                                      // trains
-            new PIDConstants(5.0, 0.0, 0.0), // Translation PID
-            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID
+
+    public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController(
+            new PIDConstants(1.0, 0.0, 0.0), // Translation PID
+            new PIDConstants(20.0, 0.0, 0.0) // Rotation PID
     );
 
     // Mathematical Constants
@@ -28,10 +25,9 @@ public class DriveConstants {
     public static final double ROTATION_CONTROL_EXPONENT = 3.0;
     public static final double ROTATION_CONTROL_DEADBAND = 0.8;
 
+    public static final double SWERVE_DRIVE_MAX_SPEED = 1.0; // m/s
 
-    public static final double SWERVE_MAXIMUM_SPEED_TELEOP = 1; // m/s
-
-    public static final double SWERVE_MAXIMUM_SPEED_AUTO = .1; // m/s
+    public static final double SWERVE_MAXIMUM_SPEED_AUTO = .25; // m/s
     public static final double SWERVE_MAXIMUM_ACCELERATION_AUTO = SWERVE_MAXIMUM_SPEED_AUTO / 2; // m/s^2
     public static final double SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO = 10; // rad/s
     public static final double SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO = 5; // rad/s^2
