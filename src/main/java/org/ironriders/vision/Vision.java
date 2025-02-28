@@ -16,7 +16,10 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
@@ -33,10 +36,11 @@ public class Vision {
 
     private static final double AMBIGUITY_TOLERANCE = 0.4; // percentage
     private static final double DISTANCE_TOLERANCE = 7.5; // meters
-
+    private SwerveDrive swerveDrive =null;
     private List<VisionCamera> cams = new ArrayList<>();
 
-    public Vision() {
+    public Vision(SwerveDrive drive) {
+        this.swerveDrive=drive;
         // cams.add(new VisionCamera("front",
         //         createOffset(14, 0, 6.5, 0, 0),
         //         VecBuilder.fill(0.1, 0.1, 0.5)));
@@ -48,13 +52,8 @@ public class Vision {
         //         VecBuilder.fill(0.1, 0.1, 0.5)));
     }
 
-    /**
-     * Takes a swerve drive and adds pose estimate
-     * 
-     * @param swerveDrive The swerve drive.
-     */
-    public void addPoseEstimates(SwerveDrive swerveDrive) {
-
+    public void addPoseEstimates() {
+        
         for (VisionCamera v : cams) {
             Optional<EstimatedRobotPose> estimate = v.getEstimate();
             if (estimate.isPresent())
@@ -138,7 +137,7 @@ public class Vision {
                 if (r.getTimestampSeconds() > latestResult.getTimestampSeconds())
                     latestResult = r;
             }
-
+            
             Optional<EstimatedRobotPose> optional = estimator.update(latestResult);
             if (!optional.isPresent()) {
                 currentEstimate = Optional.empty();
@@ -177,7 +176,7 @@ public class Vision {
          * A TV show reference? In my code? It's more likely than you think.
          */
         private Optional<EstimatedRobotPose> refineMacrodata(EstimatedRobotPose pose) {
-
+            
             double minAmbiguity = 1;
             // find best ambiguity between all targets
             for (PhotonTrackedTarget t : pose.targetsUsed) {
@@ -200,7 +199,10 @@ public class Vision {
             // trash past 1 meter
             if (minDistance >= DISTANCE_TOLERANCE)
                 return Optional.empty();
-
+            Transform2d differenceTransform=pose.estimatedPose.toPose2d().minus(swerveDrive.getPose());
+            if (Math.abs(differenceTransform.getX())>2 || Math.abs(differenceTransform.getY())>2){
+                return Optional.empty();
+            }
             return Optional.of(pose);
         }
     }

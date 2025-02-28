@@ -1,8 +1,5 @@
 package org.ironriders.coral;
 
-import org.dyn4j.geometry.Rotation;
-
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class CoralWristConstants {
 

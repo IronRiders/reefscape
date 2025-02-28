@@ -12,16 +12,11 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static org.ironriders.algae.AlgaeWristConstants.*;
 
-import org.ironriders.algae.AlgaeWristCommands;
-import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.lib.RobotUtils;
 
 public class AlgaeWristSubsystem extends SubsystemBase {
@@ -79,12 +74,16 @@ public class AlgaeWristSubsystem extends SubsystemBase {
         // pidController.setI(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
         // pidController.setD(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
 
-        // System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());
+        System.out.println(SmartDashboard.getNumber("Algae P", AlgaeWristConstants.P));
+       // System.out.println(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
+        //System.out.println(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
+      //  System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());
 
         setPointState = profile.calculate(t, setPointState, goalState);
 
         SmartDashboard.putNumber("Coral Wrist Set Postion", setPointState.position);
         double output = pidController.calculate(getRotation(),setPointState.position);
+        output=RobotUtils.clamp(-1, 1, output);
         if(motor.getReverseLimitSwitch().isPressed()){
             handleBottomLimitSwitch();
         }
@@ -115,7 +114,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
 
     private double getRotation() {
         // System.out.println(encoder.getPosition() * 360);
-        return encoder.getPosition() * 360 * GEAR_RATIO;
+        return encoder.getPosition() * 360 * GEAR_RATIO * SPROCKET_RATIO;
     }
 
     private void handleBottomLimitSwitch() {
