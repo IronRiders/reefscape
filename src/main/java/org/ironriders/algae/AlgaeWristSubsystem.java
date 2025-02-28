@@ -74,7 +74,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
         // pidController.setI(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
         // pidController.setD(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
 
-        System.out.println(SmartDashboard.getNumber("Algae P", AlgaeWristConstants.P));
+        //System.out.println(SmartDashboard.getNumber("Algae P", AlgaeWristConstants.P));
        // System.out.println(SmartDashboard.getNumber("Algae I", AlgaeWristConstants.I));
         //System.out.println(SmartDashboard.getNumber("Algae D", AlgaeWristConstants.D));
       //  System.out.println("P: " + pidController.getP() + " I: " + pidController.getI() + " D:" + pidController.getD());

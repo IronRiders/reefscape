@@ -68,6 +68,10 @@ public class DriveSubsystem extends SubsystemBase {
 				this);
 	}
 
+	public Pose2d getPose() {
+		return this.swerveDrive.getPose();
+	}
+
 	private Pose2d test() {
 		System.out.println("CURRENT POSE IS " + swerveDrive.getPose());
 		return swerveDrive.getPose();

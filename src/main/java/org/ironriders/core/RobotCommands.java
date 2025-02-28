@@ -26,7 +26,11 @@ import org.ironriders.vision.Vision;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -96,18 +100,16 @@ public class RobotCommands {
 	 */
 	public Command driveTeleop(DoubleSupplier inputTranslationX, DoubleSupplier inputTranslationY,
 			DoubleSupplier inputRotation) {
-		if (DriverStation.isAutonomous())
-			return Commands.none();
+		return driveCommands.driveTeleop(inputTranslationX, inputTranslationY, inputRotation, true);
+	}
 
-		double invert = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 1 : -1;
-
-		return driveCommands.drive(
-				() -> new Translation2d(inputTranslationX.getAsDouble(),
-						inputTranslationY.getAsDouble())
-						.times(DriveConstants.SWERVE_DRIVE_MAX_SPEED)
-						.times(invert),
-				() -> inputRotation.getAsDouble() * DriveConstants.SWERVE_DRIVE_MAX_SPEED * invert,
-				() -> true);
+	/**
+	 * Produce command to jog the robot at specified robot-relative angle.
+	 * 
+	 * Jog distance is {@value DriveConstants#JOG_DISTANCE_INCHES}.
+	 */
+	public Command jog(double robotRelativeAngleDegrees) {
+		return driveCommands.jog(robotRelativeAngleDegrees);
 	}
 
 	// public Command scoreCoralMiniauto(ElevatorConstants.Level level) {
