@@ -5,7 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalInt;
 
-import org.ironriders.drive.DriveSubsystem;
+import java.util.Optional;
+import org.ironriders.lib.FieldUtils;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -13,120 +14,196 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import swervelib.SwerveDrive;
 
+/**
+ * Vision is not a subsystem. It has no commands because it does not need to.
+ * This class is a utility class for the DriveSubsystem and controls all of the
+ * apriltag processing and pose estimation.
+ */
 public class Vision {
 
-    private PhotonCamera camera = new PhotonCamera(VisionConstants.CAM_NAME);
+    private static final double AMBIGUITY_TOLERANCE = 0.4; // percentage
+    private static final double DISTANCE_TOLERANCE = 7.5; // meters
+    private SwerveDrive swerveDrive =null;
+    private List<VisionCamera> cams = new ArrayList<>();
 
-    private boolean canAlignCoral;
+    public Vision(SwerveDrive drive) {
+        this.swerveDrive=drive;
+        // cams.add(new VisionCamera("front",
+        //         createOffset(14, 0, 6.5, 0, 0),
+        //         VecBuilder.fill(0.1, 0.1, 0.5)));
+        cams.add(new VisionCamera("frontRight",
+                createOffset(11.5, -11.5, 6.5, 15, -45),
+                VecBuilder.fill(0.5, 0.5, 1.0)));
+        // cams.add(new VisionCamera("backLeft",
+        //         createOffset(-11.5, 11.5, 6.5, 15, -135),
+        //         VecBuilder.fill(0.1, 0.1, 0.5)));
+    }
 
-    public OptionalInt getClosestTag() {
-        PhotonPipelineResult result = camera.getLatestResult();
-        if (!result.hasTargets())
-            return OptionalInt.empty();
-
-        Iterator<PhotonTrackedTarget> iterator = result.getTargets().iterator();
-        PhotonTrackedTarget closest = iterator.next();
+    public void addPoseEstimates() {
         
-        while (iterator.hasNext()) {
-            PhotonTrackedTarget target = iterator.next();
-            if (target.getBestCameraToTarget().getX() < closest.getBestCameraToTarget().getX()) {
-                closest = target;
+        for (VisionCamera v : cams) {
+            Optional<EstimatedRobotPose> estimate = v.getEstimate();
+            if (estimate.isPresent())
+                swerveDrive.addVisionMeasurement(
+                        estimate.get().estimatedPose.toPose2d(),
+                        v.latestResult.getTimestampSeconds(),
+                        v.deviations);
+        }
+    }
+
+    /**
+     * Utility method, creates an offset transform.
+     * @param x The x offset in inches.
+     * @param y The y offset in inches.
+     * @param z The z offset in inches.
+     * @param pitch The pitch offset in degrees.
+     * @param yaw The yaw offset in degrees.
+     */
+    public Transform3d createOffset(double x, double y, double z, double pitch, double yaw) {
+        return new Transform3d(
+            new Translation3d(Units.inchesToMeters(x), Units.inchesToMeters(y), Units.inchesToMeters(z)), 
+            new Rotation3d(0, Units.degreesToRadians(pitch), Units.degreesToRadians(yaw)));
+    }
+
+    /**
+     * Gets a camera based on supplied id, set in Photon Client GUI.
+     * @throws RuntimeException If the camera name supplied does not exist.
+     */
+    public VisionCamera getCamera(String name) throws RuntimeException {
+        for (VisionCamera v : cams) {
+            if (v.photonCamera.getName().equals(name))
+                return v;
+        }
+        throw new RuntimeException("Camera with name '" + name + "' not found");
+    }
+
+    public void updateAll() {
+        for (VisionCamera v : cams) {
+            v.update();
+        }
+    }
+
+    /**
+     * Class representing a single camera and its respective pose estimator and 
+     * standard deviations. Results and estimates are gettable.
+     */
+    public class VisionCamera {
+
+        private PhotonCamera photonCamera;
+        private PhotonPoseEstimator estimator;
+        private Matrix<N3, N1> deviations;
+
+        private PhotonPipelineResult latestResult;
+        private Optional<EstimatedRobotPose> currentEstimate = Optional.empty();
+
+        private VisionCamera(String camName, Transform3d offset, Matrix<N3, N1> deviations) {
+
+            photonCamera = new PhotonCamera(camName);
+
+            estimator = new PhotonPoseEstimator(
+                    FieldUtils.FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, offset);
+            estimator.setMultiTagFallbackStrategy(PoseStrategy.AVERAGE_BEST_TARGETS);
+
+            this.deviations = deviations;
+        }
+
+        /** 
+         * Updates the camera/estimator, only run once per loop. 
+         * */
+        public void update() {
+            // check results, if none are good just return
+            List<PhotonPipelineResult> results = photonCamera.getAllUnreadResults();
+            if (results.isEmpty()) {
+                currentEstimate = Optional.empty();
+                return;
             }
-        }
 
-        return OptionalInt.of(closest.fiducialId);
-    }
-
-    public void addPoseEstimate(SwerveDrive swerveDrive) {
-        PhotonPipelineResult result = camera.getLatestResult();
-        if (!result.hasTargets()) {
-            SmartDashboard.putString("IDs", "None");
-            return;
-        }
-        List<PhotonTrackedTarget> targets = result.getTargets();
-        String ids = "IDs: ";
-        for (PhotonTrackedTarget target : targets) {
-            ids += (target.fiducialId) + " ";
-        }
-        SmartDashboard.putString("IDs", ids);
-        Field2d m_field = new Field2d();
-        SmartDashboard.putData("pose", m_field);
-        m_field.setRobotPose(swerveDrive.getPose());
-
-        if (VisionConstants.CAM_OFFSETS.length == 0) {
-            return;
-        }
-        // this has to be changed to our custom field for testing
-        AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
-        List<PhotonCamera> cams = new ArrayList<>();
-        for (String name : VisionConstants.CAM_NAMES) {
-            cams.add(new PhotonCamera(name));
-        }
-        if (cams.size() != VisionConstants.CAM_OFFSETS.length) {
-            System.out.print("VISION ARRAY MISMATCH!!!!!!!");
-            return;
-        }
-        List<PhotonPoseEstimator> poseEstimators = new ArrayList<>();
-        for (Transform3d offsett : VisionConstants.CAM_OFFSETS) {
-            poseEstimators
-                    .add(new PhotonPoseEstimator(aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, offsett));
-        }
-        int index = 0;
-        List<EstimatedRobotPose> poses = new ArrayList<>();
-        for (PhotonPoseEstimator estimate : poseEstimators) {
-            result = cams.get(index).getLatestResult();
-            poses.add(estimate.update(result).get());
-            index++;
-        }
-        // great now we have a estimate from all the cameras. I don't really know what
-        // to do with this so i'll contruct an average pose i guess;
-        double averageX = 0;
-        double averageY = 0;
-        double averageZ = 0;
-        double averageRotationX = 0;// could this be an array? yes. will it be? no
-        double averageRotationY = 0;
-        double averageRotationZ = 0;
-        double lastTimeStamp = 0;
-        for (EstimatedRobotPose estimate : poses) {
-            averageX += estimate.estimatedPose.getX();
-            averageY += estimate.estimatedPose.getY();
-            averageZ += estimate.estimatedPose.getZ();
-            averageRotationX += estimate.estimatedPose.getRotation().getX();
-            averageRotationY += estimate.estimatedPose.getRotation().getY();
-            averageRotationZ += estimate.estimatedPose.getRotation().getZ();
-            if (estimate.timestampSeconds > lastTimeStamp) {
-                lastTimeStamp = estimate.timestampSeconds;
+            // find most recent result
+            latestResult = results.get(0);
+            for (PhotonPipelineResult r : results) {
+                if (r.getTimestampSeconds() > latestResult.getTimestampSeconds())
+                    latestResult = r;
             }
+            
+            Optional<EstimatedRobotPose> optional = estimator.update(latestResult);
+            if (!optional.isPresent()) {
+                currentEstimate = Optional.empty();
+                return;
+            }
+
+            currentEstimate = refineMacrodata(optional.get());
         }
-        averageX = averageX / cams.size();
-        averageY = averageY / cams.size();
-        averageZ = averageZ / cams.size();
-        averageRotationX = averageRotationX / cams.size();
-        averageRotationY = averageRotationY / cams.size();
-        averageRotationZ = averageRotationZ / cams.size();
-        Pose3d averagePose = new Pose3d(averageX, averageY, averageZ,
-                new Rotation3d(averageRotationX, averageRotationY, averageRotationZ));// yay
-        swerveDrive.addVisionMeasurement(
-                new Pose2d(averagePose.getX(), averagePose.getY(), averagePose.getRotation().toRotation2d()),
-                lastTimeStamp);// update the swerve drives position stuff
-    }
 
-    public PhotonCamera getCamera() {
-        return this.camera;
-    }
+        /**
+         * Gets the april tag fiducial id of the closest tag currently visible.
+         * @return An optional int, empty if there are no targets visible.
+         */
+        public OptionalInt getClosestVisible() {
+            if (!latestResult.hasTargets())
+                return OptionalInt.empty();
 
-    public boolean getCanAlignCoral() {
-        return this.canAlignCoral;
+            Iterator<PhotonTrackedTarget> iterator = latestResult.getTargets().iterator();
+            PhotonTrackedTarget closest = iterator.next();
+
+            while (iterator.hasNext()) {
+                PhotonTrackedTarget target = iterator.next();
+                if (target.getBestCameraToTarget().getX() < closest.getBestCameraToTarget().getX()) {
+                    closest = target;
+                }
+            }
+
+            return OptionalInt.of(closest.fiducialId);
+        }
+
+        public Optional<EstimatedRobotPose> getEstimate() {
+            return currentEstimate;
+        }
+
+        /**
+         * A TV show reference? In my code? It's more likely than you think.
+         */
+        private Optional<EstimatedRobotPose> refineMacrodata(EstimatedRobotPose pose) {
+            
+            double minAmbiguity = 1;
+            // find best ambiguity between all targets
+            for (PhotonTrackedTarget t : pose.targetsUsed) {
+                if (t.poseAmbiguity != -1 && t.poseAmbiguity < minAmbiguity)
+                    minAmbiguity = t.poseAmbiguity;
+            }
+            // trash past 30% ambiguity
+            if (minAmbiguity >= AMBIGUITY_TOLERANCE)
+                return Optional.empty();
+
+            double minDistance = DISTANCE_TOLERANCE;
+            // find closest distance between all targets
+            for (PhotonTrackedTarget t : pose.targetsUsed) {
+                double dist = 
+                    Math.sqrt(Math.pow(t.bestCameraToTarget.getX(), 2) + Math.pow(t.bestCameraToTarget.getY(), 2));
+
+                if (dist < minDistance)
+                    minDistance = dist;
+            }
+            // trash past 1 meter
+            if (minDistance >= DISTANCE_TOLERANCE)
+                return Optional.empty();
+            Transform2d differenceTransform=pose.estimatedPose.toPose2d().minus(swerveDrive.getPose());
+            if (Math.abs(differenceTransform.getX())>2 || Math.abs(differenceTransform.getY())>2){
+                return Optional.empty();
+            }
+            return Optional.of(pose);
+        }
     }
 }

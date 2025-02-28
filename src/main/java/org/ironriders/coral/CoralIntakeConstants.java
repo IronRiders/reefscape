@@ -1,6 +1,5 @@
 package org.ironriders.coral;
 
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class CoralIntakeConstants {
 

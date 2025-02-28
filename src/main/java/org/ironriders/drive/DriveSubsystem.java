@@ -9,34 +9,37 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import org.ironriders.drive.DriveConstants.DriveSpeed;
 import org.ironriders.vision.Vision;
 
 /**
- * The SwerveSubsystem encompasses everything that the Swerve Drive needs to
- * function.
- * It keeps track of the robot's position and angle, and uses the controller
+ * The DriveSubsystem encompasses everything that the Swerve Drive needs to
+ * function. It keeps track of the robot's position and angle, and uses the controller
  * input to figure out how the individual modules need to turn and be angled.
  */
 public class DriveSubsystem extends SubsystemBase {
 
 	private DriveCommands commands;
 
+	private DriveSpeed speedState = DriveSpeed.NORMAL;
 	private SwerveDrive swerveDrive;
 	private Vision vision;
 
-	public DriveSubsystem(Vision vision) throws RuntimeException {
+	public DriveSubsystem() throws RuntimeException {
 		try {
-			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
-																					// directory.
-					.createSwerveDrive(DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP);
+			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
+					.createSwerveDrive(DriveConstants.SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
 		}
 
 		commands = new DriveCommands(this);
+		this.vision = new Vision(swerveDrive);
 
 		swerveDrive.setHeadingCorrection(false);
 		SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -65,9 +68,15 @@ public class DriveSubsystem extends SubsystemBase {
 				this);
 	}
 
+	private Pose2d test() {
+		System.out.println("CURRENT POSE IS " + swerveDrive.getPose());
+		return swerveDrive.getPose();
+	}
+
 	@Override
 	public void periodic() {
-		vision.addPoseEstimate(swerveDrive);
+		vision.updateAll();
+		vision.addPoseEstimates();
 	}
 
 	/**
@@ -81,7 +90,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 *                      its own rotation.
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
-		swerveDrive.drive(translation, rotation, fieldRelative, false);
+		swerveDrive.drive(translation.times(speedState.multiplier), rotation, fieldRelative, false);
 	}
 
 	/** Fetch the DriveCommands instance */

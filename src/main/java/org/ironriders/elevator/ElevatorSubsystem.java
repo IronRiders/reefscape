@@ -1,13 +1,18 @@
 package org.ironriders.elevator;
 
 import static org.ironriders.elevator.ElevatorConstants.BOTTOM_POS;
+import static org.ironriders.elevator.ElevatorConstants.D;
 import static org.ironriders.elevator.ElevatorConstants.ELEVATOR_MOTOR_STALL_LIMIT;
 import static org.ironriders.elevator.ElevatorConstants.FOLLOW_MOTOR_ID;
+import static org.ironriders.elevator.ElevatorConstants.I;
 import static org.ironriders.elevator.ElevatorConstants.INCHES_PER_ROTATION;
 import static org.ironriders.elevator.ElevatorConstants.MAX_POSITION;
 import static org.ironriders.elevator.ElevatorConstants.MIN_POSITION;
+import static org.ironriders.elevator.ElevatorConstants.P;
 import static org.ironriders.elevator.ElevatorConstants.PRIMARY_MOTOR_ID;
 
+import org.ironriders.algae.AlgaeIntakeConstants;
+import org.ironriders.algae.AlgaeWristConstants;
 import org.ironriders.elevator.ElevatorConstants.Level;
 
 import com.revrobotics.RelativeEncoder;
@@ -29,11 +34,14 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * This subsystem controls the big ol' elevator that moves the algae and coral
+ * manipulators vertically.
+ */
 public class ElevatorSubsystem extends SubsystemBase {
 
     private final ElevatorCommands commands;
 
-    // private final double ff = 0;
     private final SparkMax primaryMotor; // lead motor
     private final SparkMax followerMotor;
 
@@ -46,14 +54,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final PIDController pidController;
     private TrapezoidProfile.State goalState = new TrapezoidProfile.State();
     private TrapezoidProfile.State setPointState = new TrapezoidProfile.State();
-    
 
     private Level currentTarget = Level.Down;
     private boolean isHomed = false;
 
 
     public ElevatorSubsystem() {
-        goalState.position =0;
+        SmartDashboard.putNumber("Elevator P", ElevatorConstants.P);
+        SmartDashboard.putNumber("Elevator I", ElevatorConstants.I);
+        SmartDashboard.putNumber("Elevator D", ElevatorConstants.D);
+
+        goalState.position = 0;
         primaryMotor = new SparkMax(PRIMARY_MOTOR_ID, MotorType.kBrushless); 
         followerMotor = new SparkMax(FOLLOW_MOTOR_ID, MotorType.kBrushless);
 
@@ -82,7 +93,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         followerConfig.follow(ElevatorConstants.PRIMARY_MOTOR_ID, true);
         followerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
         // followerConfig.inverted(true); // probably make a constant out of this
-        
+
 
         primaryMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         followerMotor.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -108,11 +119,19 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Calculate the next state and update the current state
         setPointState = profile.calculate(ElevatorConstants.T, setPointState, goalState);
         SmartDashboard.putNumber("Elevator set postion", setPointState.position);
+
+        pidController.setP(SmartDashboard.getNumber("Elevator P", ElevatorConstants.P));
+        pidController.setI(SmartDashboard.getNumber("Elevator I", ElevatorConstants.I));
+        pidController.setD(SmartDashboard.getNumber("Elevator D", ElevatorConstants.D));
+
+
         if (bottomLimitSwitch.isPressed()&& !isHomed) {
             homeElevator();
         }
         // Only run if homed
         if (isHomed) {
+            
+
             double pidOutput = pidController.calculate(getHeightInches(), setPointState.position);
             double ff = calculateFeedForward(setPointState);
 
@@ -150,7 +169,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     private void updateTelemetry() {
         SmartDashboard.putNumber("Elevator Height", getHeightInches());
-
+        
+        pidController.setP(SmartDashboard.getNumber("Elevator P", P));
+        pidController.setI(SmartDashboard.getNumber("Elevator I", I));
+        pidController.setD(SmartDashboard.getNumber("Elevator D", D));
         SmartDashboard.putBoolean("Elevator Homed", isHomed);
         SmartDashboard.putString("Elevator State", currentTarget.toString());
         SmartDashboard.putNumber("Elevator Primary Motor Current", primaryMotor.getOutputCurrent());
@@ -177,17 +199,22 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void homeElevator() {
-        boolean HomeStarted = false;
         primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
-        System.out.println("ELEVATOR HOMED");
+        
         if (bottomLimitSwitch.isPressed()) {
-            primaryMotor.set(0.05);
-            HomeStarted = true;
+            primaryMotor.set(0.1);
+            if(!isHomed){
+                encoder.setPosition(0);
+                    System.out.println("ELEVATOR HOMED");
+                    isHomed = true;
+            }
+            // HomeStarted = true;
         }
-        if(!bottomLimitSwitch.isPressed() && HomeStarted){
-            encoder.setPosition(0);
-            isHomed = true;
-        }
+        // if(!bottomLimitSwitch.isPressed() && HomeStarted){
+        //     encoder.setPosition(0);
+        //     System.out.println("ELEVATOR HOMED");
+        //     isHomed = true;
+        // }
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {

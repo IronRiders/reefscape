@@ -1,7 +1,5 @@
 package org.ironriders.coral;
 
-import org.ironriders.core.Utils;
-import org.ironriders.elevator.ElevatorConstants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLimitSwitch;
@@ -23,6 +21,7 @@ import static org.ironriders.coral.CoralWristConstants.*;
 public class CoralWristSubsystem extends SubsystemBase {
     // Why do we extend subsystem base?
     // it publishes it to the command sceduler -tyler
+    // no flirting in the comments, please -mischa
     private final CoralWristCommands commands;
 
     // find acutal motor IDs
@@ -91,6 +90,7 @@ public class CoralWristSubsystem extends SubsystemBase {
     }
 
     public void setGoal(double position) {
+        System.out.println("Coral Wrist Set Position: " + position);
         goalState = new TrapezoidProfile.State(MathUtil.clamp(position, MIN_POSITION, MAX_POSITION), 0);
     }
 
