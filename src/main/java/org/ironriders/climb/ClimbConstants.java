@@ -3,6 +3,7 @@ package org.ironriders.climb;
 public class ClimbConstants {
     public static double liftTime = 3;
     public static boolean stopPressed = false;
+    public static final int CLIMBER_MOTOR = 17;
 
     public enum State {
         UP(0.1),

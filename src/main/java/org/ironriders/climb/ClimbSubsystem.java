@@ -14,7 +14,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public final SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
     // finds the motor for the climber
-    private final SparkMax climbMotor = new SparkMax(CLIMBER_MOTOR, SparkLowLevel.MotorType.kBrushless); // TODO: ask if it's actually brushless
+    private final SparkMax climbMotor = new SparkMax(ClimbConstants.CLIMBER_MOTOR, SparkLowLevel.MotorType.kBrushless); // TODO: ask if it's actually brushless
     private final ClimbCommands commands;
     public ClimbSubsystem() {
         climbMotorConfig // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
