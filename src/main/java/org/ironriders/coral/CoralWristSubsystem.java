@@ -84,7 +84,7 @@ public class CoralWristSubsystem extends SubsystemBase {
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", goalState.position);
-        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "fowardSwitch", motor.getForwardLimitSwitch().isPressed());
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "forwardSwitch", motor.getForwardLimitSwitch().isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", motor.getReverseLimitSwitch().isPressed());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "motor current", motor.getOutputCurrent());
     }

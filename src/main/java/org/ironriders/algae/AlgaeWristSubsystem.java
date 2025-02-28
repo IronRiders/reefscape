@@ -23,7 +23,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
     // Why do we extend subsystem base?
     private final AlgaeWristCommands commands;
 
-    // find acutal motor IDs
+    // find actual motor IDs
     private final SparkMax motor = new SparkMax(ALGAEWRISTMOTOR, MotorType.kBrushless);
     private final PIDController pidController = new PIDController(P, I, D);
     private  RelativeEncoder encoder = motor.getEncoder();
@@ -98,7 +98,7 @@ public class AlgaeWristSubsystem extends SubsystemBase {
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "encoder converted",getRotation() );
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", goalState.position);
-        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "fowardSwitch", forwardLimitSwitch.isPressed());
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "forwardSwitch", forwardLimitSwitch.isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseLimitSwitch.isPressed());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "motor current", motor.getOutputCurrent());
     }
