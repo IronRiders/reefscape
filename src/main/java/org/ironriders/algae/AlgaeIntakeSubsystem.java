@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static org.ironriders.algae.AlgaeIntakeConstants.*;
 
-import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;;
+import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 
 public class AlgaeIntakeSubsystem extends SubsystemBase {
 
     private final AlgaeIntakeCommands commands;
 
-    // find acutal motor IDs
+    // find actual motor IDs
     private final SparkMax algaeLeftMotor = new SparkMax(ALGAELEFTINTAKEMOTOR, MotorType.kBrushless);
     private final SparkMax algaeRightMotor = new SparkMax(ALGAERIGHTINTAKEMOTOR, MotorType.kBrushless);
     private final SparkMaxConfig algaeMotorConfig = new SparkMaxConfig();
