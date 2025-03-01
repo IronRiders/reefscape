@@ -6,6 +6,8 @@ import java.util.function.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
+
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -21,6 +23,7 @@ import org.opencv.core.Mat;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
+@Logged
 public class DriveCommands {
 	private final DriveSubsystem driveSubsystem;
 
@@ -67,7 +70,7 @@ public class DriveCommands {
 			System.out.println("Jogging " + robotRelativeAngleDegrees + "° (robot relative)");
 			var startPosition = driveSubsystem.getPose().getTranslation();
 
-			driveTeleop(() -> velocity.getX(), () -> velocity.getY(), () -> 0, false)
+			driveTeleop(velocity::getX, velocity::getY, () -> 0, false)
 				.repeatedly()	
 				.until(() -> driveSubsystem.getPose().getTranslation().getDistance(startPosition) > distance
 				)

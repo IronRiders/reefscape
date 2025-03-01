@@ -16,7 +16,7 @@ public class AlgaeWristCommands extends Command {
 
     public Command set(State state) {
         return algaeWrist
-                .runOnce(() -> algaeWrist.setGoal(state.getPostion()))
+                .runOnce(() -> algaeWrist.setGoal(state.getPosition()))
                 .until(algaeWrist::atPosition)
                 .handleInterrupt(algaeWrist::reset);
     }

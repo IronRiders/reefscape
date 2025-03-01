@@ -6,7 +6,7 @@ public class AlgaeWristConstants {
 
     public static final String DASHBOARD_PREFIX = "algaewrist/";
 
-    // motor IDs (-1 = unknow)
+    // motor ID
     public static final int ALGAEWRISTMOTOR = 14;
 
     // Need to tune
@@ -34,19 +34,19 @@ public class AlgaeWristConstants {
     public static final double ALGAE_WRIST_TOLERENCE = 10; // tune me please
 
     public enum State { // max seems to be 40, min ~0
-        STARTING(0),
-        STOWED(0), // tune me pls
+        STARTING(-1), // Starting position is beyond lower limit
+        STOWED(0), // Computed home position
         EXTENDED(30);
 
 
-        final double postion;
+        final double position;
 
-        State(int postion) {
-            this.postion = postion;
+        State(int position) {
+            this.position = position;
         }
 
-        public double getPostion() {
-            return postion;
+        public double getPosition() {
+            return position;
         }
     }
 

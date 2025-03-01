@@ -30,6 +30,10 @@ public class CoralWristCommands {
         return coralWrist.runOnce(coralWrist::reset);
     }
 
+    public Command home() {
+        return coralWrist.homeCmd();
+    }
+
     public CoralWristSubsystem getCoralWrist() {
         return coralWrist;
     }
