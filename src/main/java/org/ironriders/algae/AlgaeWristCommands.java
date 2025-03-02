@@ -14,11 +14,12 @@ public class AlgaeWristCommands extends Command {
         NamedCommands.registerCommand("Algae Wrist Extended", set(State.EXTENDED));
     }
 
+    public Command home() {
+        return algaeWrist.homeCmd();
+    }
+
     public Command set(State state) {
-        return algaeWrist
-                .runOnce(() -> algaeWrist.setGoal(state.getPosition()))
-                .until(algaeWrist::atPosition)
-                .handleInterrupt(algaeWrist::reset);
+        return algaeWrist.moveToCmd(state.getPosition());
     }
 
     public Command reset() {

@@ -46,29 +46,28 @@ import java.util.function.Supplier;
  * These commands are those which the driver controls call.
  */
 public class RobotCommands {
-
 	private final DriveCommands driveCommands;
 	private final ElevatorCommands elevatorCommands;
 	private final CoralWristCommands coralWristCommands;
 	private final CoralIntakeCommands coralIntakeCommands;
-	// private final AlgaeWristCommands algaeWristCommands;
-	// private final AlgaeIntakeCommands algaeIntakeCommands;
+	private final AlgaeWristCommands algaeWristCommands;
+	private final AlgaeIntakeCommands algaeIntakeCommands;
 	private final GenericHID controller;
 
 	public RobotCommands(
 			DriveCommands driveCommands,
 			ElevatorCommands elevatorCommands,
 			CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-			// AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands
-			// algaeIntakeCommands,
+			AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands
+			algaeIntakeCommands,
 			GenericHID controller) {
 
 		this.driveCommands = driveCommands;
 		this.elevatorCommands = elevatorCommands;
 		this.coralWristCommands = coralWristCommands;
 		this.coralIntakeCommands = coralIntakeCommands;
-		// this.algaeWristCommands = algaeWristCommands;
-		// this.algaeIntakeCommands = algaeIntakeCommands;
+		this.algaeWristCommands = algaeWristCommands;
+		this.algaeIntakeCommands = algaeIntakeCommands;
 		this.controller = controller;
 
 		// register named commands
@@ -89,6 +88,22 @@ public class RobotCommands {
 		// NamedCommands.registerCommand("Prepare to Grab Coral",
 		// this.prepareToGrabCoral());
 		// NamedCommands.registerCommand("Grab Coral", this.grabCoral());
+	}
+
+	/**
+	 * Initialize all subsystems when first enabled.
+	 * 
+	 * This primarily involves homing.  We home wrists in parallel and elevator after the algae manipulator which is
+	 * dangerous to move until the algae wrist is homed.
+	 * 
+	 * TODO - should maybe add additional protection for algae wrist in elevator code
+	 */
+	public Command startup() {
+		return Commands.parallel(
+			coralWristCommands.home(),
+			algaeWristCommands.home()
+				.andThen(elevatorCommands.home())
+		);
 	}
 
 	/**

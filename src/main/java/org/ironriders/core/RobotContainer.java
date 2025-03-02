@@ -69,8 +69,8 @@ public class RobotContainer {
 	public final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
 	public final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
 
-	// private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
-	// private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
+	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
+	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
 
 	private final SendableChooser<Command> autoChooser;
 
@@ -78,10 +78,10 @@ public class RobotContainer {
 	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
 	private final CommandXboxController tertiaryController = new CommandXboxController(DriveConstants.TERTIARY_CONTROLLER_PORT);
 
-	private final RobotCommands robotCommands = new RobotCommands(
+	public final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, elevatorCommands, 
 			coralWristCommands, coralIntakeCommands, 
-			// algaeWristCommands, algaeIntakeCommands, 
+			algaeWristCommands, algaeIntakeCommands, 
 			primaryController.getHID());
 
 	private Command coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1);

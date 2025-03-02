@@ -43,7 +43,7 @@ public class CoralWristConstants {
             this.postion = postion;
         }
 
-        public double getPostion() {
+        public double getPosition() {
             return postion;
         }
 

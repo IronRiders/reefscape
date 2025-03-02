@@ -30,7 +30,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -45,7 +44,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final SparkMax primaryMotor; // lead motor
     private final SparkMax followerMotor;
 
-    private final SparkLimitSwitch topLimitSwitch;
     private final SparkLimitSwitch bottomLimitSwitch;
 
     private final RelativeEncoder encoder;
@@ -58,7 +56,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     private Level currentTarget = Level.Down;
     private boolean isHomed = false;
 
-
     public ElevatorSubsystem() {
         SmartDashboard.putNumber("Elevator P", ElevatorConstants.P);
         SmartDashboard.putNumber("Elevator I", ElevatorConstants.I);
@@ -68,7 +65,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         primaryMotor = new SparkMax(PRIMARY_MOTOR_ID, MotorType.kBrushless); 
         followerMotor = new SparkMax(FOLLOW_MOTOR_ID, MotorType.kBrushless);
 
-        topLimitSwitch = primaryMotor.getForwardLimitSwitch();
         bottomLimitSwitch = primaryMotor.getReverseLimitSwitch();
 
         SparkMaxConfig primaryConfig = new SparkMaxConfig();
@@ -85,13 +81,13 @@ public class ElevatorSubsystem extends SubsystemBase {
         reverseLimitSwitchConfig.reverseLimitSwitchEnabled(true).reverseLimitSwitchType(Type.kNormallyClosed);
 
         // disabledLimitSwitchConfig.forwardLimitSwitchEnabled(false).forwardLimitSwitchType(Type.kNormallyClosed);
-        primaryConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
+        primaryConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
         primaryConfig.inverted(true); // probably make a constant out of this
         primaryConfig.apply(forwardLimitSwitchConfig);
         primaryConfig.apply(reverseLimitSwitchConfig);
 
         followerConfig.follow(ElevatorConstants.PRIMARY_MOTOR_ID, true);
-        followerConfig.idleMode(IdleMode.kCoast).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
+        followerConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT);
         // followerConfig.inverted(true); // probably make a constant out of this
 
 
@@ -124,14 +120,8 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController.setI(SmartDashboard.getNumber("Elevator I", ElevatorConstants.I));
         pidController.setD(SmartDashboard.getNumber("Elevator D", ElevatorConstants.D));
 
-
-        if (bottomLimitSwitch.isPressed()&& !isHomed) {
-            homeElevator();
-        }
         // Only run if homed
         if (isHomed) {
-            
-
             double pidOutput = pidController.calculate(getHeightInches(), setPointState.position);
             double ff = calculateFeedForward(setPointState);
 
@@ -166,7 +156,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         stopMotor();
     }
 
-
     private void updateTelemetry() {
         SmartDashboard.putNumber("Elevator Height", getHeightInches());
         
@@ -198,23 +187,18 @@ public class ElevatorSubsystem extends SubsystemBase {
         return encoder.getPosition() * INCHES_PER_ROTATION;
     }
 
-    public void homeElevator() {
-        primaryMotor.set(-0.1); // Slow downward movement until bottom limit is hit
-        
+    /**
+     * Record current position as home.  A little goofy to have this driven outside the subsystem but homing needs
+     * commands and our current command<->subsystem separation makes this necessary.
+     */
+    public void findHome() {
         if (bottomLimitSwitch.isPressed()) {
-            primaryMotor.set(0.1);
-            if(!isHomed){
-                encoder.setPosition(0);
-                    System.out.println("ELEVATOR HOMED");
-                    isHomed = true;
-            }
-            // HomeStarted = true;
+            primaryMotor.set(0);
+            encoder.setPosition(0);
+            isHomed = true;
+            System.out.println("ELEVATOR HOMED");
+            return;
         }
-        // if(!bottomLimitSwitch.isPressed() && HomeStarted){
-        //     encoder.setPosition(0);
-        //     System.out.println("ELEVATOR HOMED");
-        //     isHomed = true;
-        // }
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {

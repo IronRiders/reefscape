@@ -87,7 +87,6 @@ public abstract class WristSubsystem extends SubsystemBase {
     }
 
     public void setGoal(double position) {
-        System.out.println("Coral Wrist Set Position: " + position);
         goalState = new TrapezoidProfile.State(MathUtil.clamp(position, this.range.low, this.range.high), 0);
     }
 
@@ -96,11 +95,11 @@ public abstract class WristSubsystem extends SubsystemBase {
         pid.reset();
         
     }
+
     private void handleTopLimitSwitch() {
         encoder.setPosition(0);
         isHomed = true;
     }
-
 
     private double getRotation() {
         return encoder.getPosition() * 360 * gearRatio;
@@ -110,15 +109,32 @@ public abstract class WristSubsystem extends SubsystemBase {
         return pid.atSetpoint();
     }
 
+    public Command moveToCmd(double position) {
+        return this
+                .runOnce(() -> this.setGoal(position))
+                .until(this::atPosition)
+                .handleInterrupt(this::reset);
+    }
+
     public Command homeCmd() {
         return homeCmd(false);
     }
 
     public Command homeCmd(boolean force) {
+        // If forced homing, rehome
         if (force) {
             isHomed = false;
         }
+
+        // If homed, return to home position
+        if (isHomed) {
+            return moveToCmd(0);
+        }
+
+        // homeSpeed determines direction and thus applicable switch
         var limit = homeSpeed < 0 ? motor.getReverseLimitSwitch() : motor.getForwardLimitSwitch();
+
+        // Perform actual homing
         return this
             .run(() -> motor.set(this.homeSpeed))
             .until(() -> isHomed || limit.isPressed())

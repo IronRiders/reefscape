@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
 	public Robot() {
 		robotContainer = new RobotContainer();
 	}
+
 	@Override
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
@@ -32,45 +33,37 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
+		generalInit();
+
 		autonomousCommand = robotContainer.getAutonomousCommand();
-		robotContainer.elevatorCommands.home().schedule();
 
 		if (autonomousCommand != null) {
 			autonomousCommand.schedule();
 		}
 		robotContainer.algaeWristCommands.reset().andThen(robotContainer.algaeWristCommands.set(State.EXTENDED)).schedule();
 	}
-	@Override
-	public void autonomousPeriodic() {}
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when teleop starts running.
-		if (autonomousCommand != null) {
-			autonomousCommand.cancel();
-		}
+		generalInit();
 
-		if (!robotContainer.elevatorSubsystem.isHomed()) {
-			robotContainer.elevatorCommands.home().schedule();
-		}
-		if(robotContainer.elevatorSubsystem.isHomed()){
-			robotContainer.elevatorCommands.reset().schedule();
-		}
 		robotContainer.algaeWristCommands.reset().andThen(robotContainer.algaeWristCommands.set(State.EXTENDED)).schedule();
 	}
-
-	@Override
-	public void teleopPeriodic() {}
 
 	@Override
 	public void testInit() {
 		CommandScheduler.getInstance().cancelAll();
 	}
-	@Override
-	public void testPeriodic() {}
 
-	@Override
-	public void simulationInit() {}
-	@Override
-	public void simulationPeriodic() {}
+	/**
+	 * Initialization that applies to autonomous and teleop.
+	 */
+	private void generalInit() {
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
+			autonomousCommand = null;
+		}
+
+		robotContainer.robotCommands.startup().schedule();
+	}
 }
