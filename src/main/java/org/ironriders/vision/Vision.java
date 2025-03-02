@@ -16,8 +16,6 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -28,9 +26,11 @@ import edu.wpi.first.math.util.Units;
 import swervelib.SwerveDrive;
 
 /**
- * Vision is not a subsystem. It has no commands because it does not need to.
- * This class is a utility class for the DriveSubsystem and controls all of the
- * apriltag processing and pose estimation.
+ * Vision is not a subsystem. This class is a utility class for the
+ * DriveSubsystem
+ * and controls all of the apriltag processing and pose estimation.
+ * 
+ * (Why is it not a subsystem? Because it doesn't need to be.)
  */
 public class Vision {
 
@@ -47,12 +47,12 @@ public class Vision {
         cams.add(new VisionCamera("backLeft",
                 createOffset(11.5, -11.5, 6.5, 15, 157.5),
                 VecBuilder.fill(0.5, 0.5, 1.0)));
-        cams.add(new VisionCamera("backRight",
-                createOffset(-11.5, 11.5, 6.5, 15, -157.5),
+        // cams.add(new VisionCamera("backRight",
+        //         createOffset(-11.5, 11.5, 6.5, 15, -157.5),
+        //         VecBuilder.fill(0.5, 0.5, 1.0)));
+        cams.add(new VisionCamera("frontRight",
+                createOffset(-11.5, 11.5, 6.5, 15, -22.5),
                 VecBuilder.fill(0.5, 0.5, 1.0)));
-        // cams.add(new VisionCamera("frontRight",
-        // createOffset(-11.5, 11.5, 6.5, 15, -22.5),
-        // VecBuilder.fill(0.5, 0.5, 1.0)));
     }
 
     public void addPoseEstimates() {
@@ -207,10 +207,12 @@ public class Vision {
                 return Optional.empty();
 
             // trash if estimate is too far from the believed current pose
-            Transform2d differenceTransform = pose.estimatedPose.toPose2d().minus(swerveDrive.getPose());
-            if (Math.abs(differenceTransform.getX()) > 2 || Math.abs(differenceTransform.getY()) > 2) {
-                return Optional.empty();
-            }
+            // Transform2d differenceTransform = pose.estimatedPose.toPose2d().minus(swerveDrive.getPose());
+            // if (Math.abs(differenceTransform.getX()) > 2 || Math.abs(differenceTransform.getY()) > 2) {
+            //     return Optional.empty();
+            // }
+
+            // return actual estimate if it gets through all that ^^^
             return Optional.of(pose);
         }
     }
