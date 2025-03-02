@@ -24,11 +24,17 @@ public class ElevatorCommands {
             elevatorSubsystem.setPositionInches(level.positionInches);
         })
                 .until(() -> elevatorSubsystem.isAtPosition(level))
-                .handleInterrupt(() -> elevatorSubsystem.reset());
+                .handleInterrupt(elevatorSubsystem::reset);
     }
 
     public Command home() {
-        return elevatorSubsystem.runOnce(elevatorSubsystem::homeElevator);
+        // If elevator is already homed, move to home position
+        if (elevatorSubsystem.isHomed()) {
+            return set(Level.Down);
+        }
+
+        // Drive elevator homing
+        return elevatorSubsystem.run(elevatorSubsystem::findHome).until(elevatorSubsystem::isHomed);
     }
 
     public Command reset(){

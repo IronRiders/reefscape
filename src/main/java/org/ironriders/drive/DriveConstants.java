@@ -1,6 +1,7 @@
 package org.ironriders.drive;
 
 import java.io.File;
+
 import edu.wpi.first.wpilibj.Filesystem;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.config.PIDConstants;
@@ -32,6 +33,9 @@ public class DriveConstants {
     public static final double SWERVE_MAXIMUM_ACCELERATION_AUTO = SWERVE_MAXIMUM_SPEED_AUTO / 2; // m/s^2
     public static final double SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO = 10; // rad/s
     public static final double SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO = 5; // rad/s^2
+
+    public static final double JOG_DISTANCE_INCHES = 1;
+    public static final double JOG_SPEED = .25;
 
     public enum DriveSpeed {
         SLOW(0.5), NORMAL(1.0), FAST(1.5);

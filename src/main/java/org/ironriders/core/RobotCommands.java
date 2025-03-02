@@ -26,7 +26,11 @@ import org.ironriders.vision.Vision;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,29 +46,28 @@ import java.util.function.Supplier;
  * These commands are those which the driver controls call.
  */
 public class RobotCommands {
-
 	private final DriveCommands driveCommands;
 	private final ElevatorCommands elevatorCommands;
 	private final CoralWristCommands coralWristCommands;
 	private final CoralIntakeCommands coralIntakeCommands;
-	// private final AlgaeWristCommands algaeWristCommands;
-	// private final AlgaeIntakeCommands algaeIntakeCommands;
+	private final AlgaeWristCommands algaeWristCommands;
+	private final AlgaeIntakeCommands algaeIntakeCommands;
 	private final GenericHID controller;
 
 	public RobotCommands(
 			DriveCommands driveCommands,
 			ElevatorCommands elevatorCommands,
 			CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-			// AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands
-			// algaeIntakeCommands,
+			AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands
+			algaeIntakeCommands,
 			GenericHID controller) {
 
 		this.driveCommands = driveCommands;
 		this.elevatorCommands = elevatorCommands;
 		this.coralWristCommands = coralWristCommands;
 		this.coralIntakeCommands = coralIntakeCommands;
-		// this.algaeWristCommands = algaeWristCommands;
-		// this.algaeIntakeCommands = algaeIntakeCommands;
+		this.algaeWristCommands = algaeWristCommands;
+		this.algaeIntakeCommands = algaeIntakeCommands;
 		this.controller = controller;
 
 		// register named commands
@@ -88,6 +91,22 @@ public class RobotCommands {
 	}
 
 	/**
+	 * Initialize all subsystems when first enabled.
+	 * 
+	 * This primarily involves homing.  We home wrists in parallel and elevator after the algae manipulator which is
+	 * dangerous to move until the algae wrist is homed.
+	 * 
+	 * TODO - should maybe add additional protection for algae wrist in elevator code
+	 */
+	public Command startup() {
+		return Commands.parallel(
+			coralWristCommands.home(),
+			algaeWristCommands.home()
+				.andThen(elevatorCommands.home())
+		);
+	}
+
+	/**
 	 * Command to drive the robot given controller input.
 	 * 
 	 * @param inputTranslationX DoubleSupplier, value from 0-1.
@@ -96,18 +115,16 @@ public class RobotCommands {
 	 */
 	public Command driveTeleop(DoubleSupplier inputTranslationX, DoubleSupplier inputTranslationY,
 			DoubleSupplier inputRotation) {
-		if (DriverStation.isAutonomous())
-			return Commands.none();
+		return driveCommands.driveTeleop(inputTranslationX, inputTranslationY, inputRotation, true);
+	}
 
-		double invert = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 1 : -1;
-
-		return driveCommands.drive(
-				() -> new Translation2d(inputTranslationX.getAsDouble(),
-						inputTranslationY.getAsDouble())
-						.times(DriveConstants.SWERVE_DRIVE_MAX_SPEED)
-						.times(invert),
-				() -> inputRotation.getAsDouble() * DriveConstants.SWERVE_DRIVE_MAX_SPEED * invert,
-				() -> true);
+	/**
+	 * Produce command to jog the robot at specified robot-relative angle.
+	 * 
+	 * Jog distance is {@value DriveConstants#JOG_DISTANCE_INCHES}.
+	 */
+	public Command jog(double robotRelativeAngleDegrees) {
+		return driveCommands.jog(robotRelativeAngleDegrees);
 	}
 
 	// public Command scoreCoralMiniauto(ElevatorConstants.Level level) {

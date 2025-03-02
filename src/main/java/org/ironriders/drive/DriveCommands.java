@@ -3,9 +3,11 @@ package org.ironriders.drive;
 import java.lang.reflect.Field;
 import java.util.OptionalInt;
 import java.util.function.*;
-import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
+
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -13,13 +15,15 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import java.util.function.Supplier;
+
 import org.ironriders.lib.FieldUtils;
 import org.opencv.core.Mat;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
+@Logged
 public class DriveCommands {
 	private final DriveSubsystem driveSubsystem;
 
@@ -30,6 +34,48 @@ public class DriveCommands {
 	public Command drive(Supplier<Translation2d> translation, DoubleSupplier rotation, BooleanSupplier fieldRelative) {
 		return driveSubsystem.runOnce(() -> {
 			driveSubsystem.drive(translation.get(), rotation.getAsDouble(), fieldRelative.getAsBoolean());
+		});
+	}
+
+	public Command driveTeleop(DoubleSupplier inputTranslationX, DoubleSupplier inputTranslationY,
+			DoubleSupplier inputRotation, boolean fieldRelative) {
+		if (DriverStation.isAutonomous())
+			return Commands.none();
+
+		double invert = DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue
+			? 1 : -1;
+
+		return drive(
+				() -> new Translation2d(inputTranslationX.getAsDouble(), inputTranslationY.getAsDouble())
+						.times(DriveConstants.SWERVE_DRIVE_MAX_SPEED)
+						.times(invert),
+				() -> inputRotation.getAsDouble() * DriveConstants.SWERVE_DRIVE_MAX_SPEED * invert,
+				() -> fieldRelative);
+	}
+
+	public Command jog(double robotRelativeAngleDegrees) {
+		// Note - PathFinder does not do well with small moves so we move manually
+
+		// Compute distance to travel (TODO - distance is slightly fictional without PID control)
+		var distance = Units.inchesToMeters(DriveConstants.JOG_DISTANCE_INCHES);
+
+		// Compute velocity
+		var vector = new Translation2d(
+			distance,
+			Rotation2d.fromDegrees(robotRelativeAngleDegrees)
+		);
+		var scale = Math.max(Math.abs(vector.getX()), Math.abs(vector.getY())) / DriveConstants.JOG_SPEED;
+		var velocity = vector.div(scale);
+
+		return driveSubsystem.runOnce(() -> {
+			System.out.println("Jogging " + robotRelativeAngleDegrees + "° (robot relative)");
+			var startPosition = driveSubsystem.getPose().getTranslation();
+
+			driveTeleop(velocity::getX, velocity::getY, () -> 0, false)
+				.repeatedly()	
+				.until(() -> driveSubsystem.getPose().getTranslation().getDistance(startPosition) > distance
+				)
+				.schedule();
 		});
 	}
 
@@ -55,7 +101,7 @@ public class DriveCommands {
 			System.out.println("OFFSET POSE: " + basePose.transformBy(FieldUtils.REEFSIDE_LEFT_OFFSET));
 			System.out.println("CURRENT POSE: " + driveSubsystem.getSwerveDrive().getPose());
 
-			return this.driveToPose(robotPose);
+			return this.pathfindToPose(robotPose);
 		});
 	}
 
@@ -78,14 +124,14 @@ public class DriveCommands {
 		return driveSubsystem.defer(() -> {
 			OptionalInt closestTag = driveSubsystem.getVision().getCamera("front").getClosestVisible();
 			if (closestTag.isPresent()) {
-				return this.driveToPose(FieldUtils.getPose(closestTag.getAsInt()));
+				return this.pathfindToPose(FieldUtils.getPose(closestTag.getAsInt()));
 			} else {
 				return Commands.none();
 			}
 		});
 	}
 
-	public Command driveToPose(Pose2d targetPose) {
+	public Command pathfindToPose(Pose2d targetPose) {
 		return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(
 				DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
 				DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,

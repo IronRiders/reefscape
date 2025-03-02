@@ -17,17 +17,15 @@ public class CoralWristCommands {
     }
 
     public Command set(State state) {
-        return coralWrist
-                .runOnce(() -> coralWrist.setGoal(state.getPostion()))
-                .andThen(coralWrist.runOnce(() -> {
-                    System.out.println("Coral Wrist Set State: " + state);
-                }))
-                .until(coralWrist::atPosition)
-                .handleInterrupt(coralWrist::reset);
+        return coralWrist.moveToCmd(state.getPosition());
     }
 
     public Command reset() {
         return coralWrist.runOnce(coralWrist::reset);
+    }
+
+    public Command home() {
+        return coralWrist.homeCmd();
     }
 
     public CoralWristSubsystem getCoralWrist() {
