@@ -13,8 +13,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import org.ironriders.drive.DriveConstants.DriveSpeed;
 import org.ironriders.vision.Vision;
 
 /**
@@ -26,7 +24,6 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private DriveCommands commands;
 
-	private DriveSpeed speedState = DriveSpeed.NORMAL;
 	private SwerveDrive swerveDrive;
 	private Vision vision;
 
@@ -94,7 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 *                      its own rotation.
 	 */
 	public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
-		swerveDrive.drive(translation.times(speedState.multiplier), rotation, fieldRelative, false);
+		swerveDrive.drive(translation, rotation, fieldRelative, false);
 	}
 
 	/** Fetch the DriveCommands instance */

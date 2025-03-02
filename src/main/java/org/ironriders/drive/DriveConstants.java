@@ -36,14 +36,4 @@ public class DriveConstants {
 
     public static final double JOG_DISTANCE_INCHES = 1;
     public static final double JOG_SPEED = .25;
-
-    public enum DriveSpeed {
-        SLOW(0.5), NORMAL(1.0), FAST(1.5);
-
-        public final double multiplier;
-
-        DriveSpeed(double multiplier) {
-            this.multiplier = multiplier;
-        }
-    }
 }
