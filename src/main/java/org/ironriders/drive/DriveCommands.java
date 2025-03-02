@@ -42,7 +42,8 @@ public class DriveCommands {
 		if (DriverStation.isAutonomous())
 			return Commands.none();
 
-		double invert = DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? 1 : -1;
+		double invert = DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue
+			? 1 : -1;
 
 		return drive(
 				() -> new Translation2d(inputTranslationX.getAsDouble(), inputTranslationY.getAsDouble())
