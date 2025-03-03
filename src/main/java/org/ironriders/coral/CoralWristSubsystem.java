@@ -17,7 +17,7 @@ public class CoralWristSubsystem extends WristSubsystem {
             CORALWRISTMOTOR,
             GEAR_RATIO,
             HOME_ANGLE,
-            false,
+            true,
             new PID(CORALWRISTKP, CORALWRISTKI, CORALWRISTKD),
             new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC),
             CORAL_WRIST_CURRENT_STALL_LIMIT,

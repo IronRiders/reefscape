@@ -2,7 +2,6 @@ package org.ironriders.coral;
 
 import org.ironriders.coral.CoralWristConstants.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import com.pathplanner.lib.auto.NamedCommands;
 
 public class CoralWristCommands {
     private final CoralWristSubsystem coralWrist;
@@ -10,14 +9,15 @@ public class CoralWristCommands {
     public CoralWristCommands(CoralWristSubsystem wrist) {
         this.coralWrist = wrist;
 
-        NamedCommands.registerCommand("Wrist Coral Station", set(State.STATION));
-        NamedCommands.registerCommand("Wrist Upright", set(State.STOWED));
-        NamedCommands.registerCommand("Wrist L1-L3", set(State.L1toL3));
-        NamedCommands.registerCommand("Wrist L4", set(State.L4));
+        wrist.publish("Home", home());
+        wrist.publish("Wrist Coral Station", set(State.STATION));
+        wrist.publish("Wrist Upright", set(State.STOWED));
+        wrist.publish("Wrist L1-L3", set(State.L1toL3));
+        wrist.publish("Wrist L4", set(State.L4));
     }
 
     public Command set(State state) {
-        return coralWrist.moveToCmd(state.getPosition());
+        return coralWrist.moveToCmd(state.getAngle());
     }
 
     public Command reset() {

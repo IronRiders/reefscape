@@ -1,6 +1,5 @@
 package org.ironriders.elevator;
 
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.ironriders.elevator.ElevatorConstants.*;
 
@@ -11,12 +10,13 @@ public class ElevatorCommands {
     public ElevatorCommands(ElevatorSubsystem elevator) {
         this.elevatorSubsystem = elevator;
 
-        NamedCommands.registerCommand("Elevator rising to L1", set(Level.L1));
-        NamedCommands.registerCommand("Elevator rising to L2", set(Level.L2));
-        NamedCommands.registerCommand("Elevator rising to L3", set(Level.L3));
-        NamedCommands.registerCommand("Elevator rising to L4", set(Level.L4));
-        NamedCommands.registerCommand("Elevator going home", set(Level.Down));
-        NamedCommands.registerCommand("Elevator going to Coral Station", set(Level.CoralStation));
+        elevator.publish("Home", home());
+        elevator.publish("Elevator rising to L1", set(Level.L1));
+        elevator.publish("Elevator rising to L2", set(Level.L2));
+        elevator.publish("Elevator rising to L3", set(Level.L3));
+        elevator.publish("Elevator rising to L4", set(Level.L4));
+        elevator.publish("Elevator going home", set(Level.Down));
+        elevator.publish("Elevator going to Coral Station", set(Level.CoralStation));
     }
 
     public Command set(ElevatorConstants.Level level) {
@@ -34,7 +34,15 @@ public class ElevatorCommands {
         }
 
         // Drive elevator homing
-        return elevatorSubsystem.run(elevatorSubsystem::findHome).until(elevatorSubsystem::isHomed);
+        return elevatorSubsystem.defer(() -> new Command() {
+            public void execute() {
+                elevatorSubsystem.findHome();
+            }
+
+            public boolean isFinished() {
+                return elevatorSubsystem.isHomed();
+            }
+        });
     }
 
     public Command reset(){

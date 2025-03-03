@@ -161,17 +161,17 @@ public class ElevatorSubsystem extends IronSubsystem {
         getDiagnostic("P", P);
         getDiagnostic("I", I);
         getDiagnostic("D", D);
-        addDiagnostic("Homed", isHomed);
-        addDiagnostic("State", currentTarget.toString());
-        addDiagnostic("Primary Motor Current", primaryMotor.getOutputCurrent());
-        addDiagnostic("Velocity", setPointState.velocity);
-        addDiagnostic("Forward Limit Switch", primaryMotor.getForwardLimitSwitch().isPressed());
-        addDiagnostic("Reverse Limit Switch", primaryMotor.getReverseLimitSwitch().isPressed());
-        addDiagnostic("Follower Motor Current", followerMotor.getOutputCurrent());
-        addDiagnostic("Current Position", setPointState.position);
-        addDiagnostic("Goal Position", goalState.position);
-        addDiagnostic("Primary Encoder", primaryMotor.getEncoder().getPosition());
-        addDiagnostic("Follower Encoder", followerMotor.getEncoder().getPosition());
+        publish("Homed", isHomed);
+        publish("State", currentTarget.toString());
+        publish("Primary Motor Current", primaryMotor.getOutputCurrent());
+        publish("Velocity", setPointState.velocity);
+        publish("Forward Limit Switch", primaryMotor.getForwardLimitSwitch().isPressed());
+        publish("Reverse Limit Switch", primaryMotor.getReverseLimitSwitch().isPressed());
+        publish("Follower Motor Current", followerMotor.getOutputCurrent());
+        publish("Current Position", setPointState.position);
+        publish("Goal Position", goalState.position);
+        publish("Primary Encoder", primaryMotor.getEncoder().getPosition());
+        publish("Follower Encoder", followerMotor.getEncoder().getPosition());
     }
 
     private double calculateFeedForward(TrapezoidProfile.State state) {

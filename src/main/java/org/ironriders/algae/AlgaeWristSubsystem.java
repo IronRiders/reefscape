@@ -14,7 +14,7 @@ public class AlgaeWristSubsystem extends WristSubsystem {
             ALGAEWRISTMOTOR,
             GEAR_RATIO,
             HOME_ANGLE,
-            true,
+            false,
             new PID(AlgaeWristConstants.P, AlgaeWristConstants.I, AlgaeWristConstants.D),
             new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC),
             ALGAE_WRIST_CURRENT_STALL_LIMIT,

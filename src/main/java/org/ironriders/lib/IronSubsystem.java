@@ -1,7 +1,11 @@
 package org.ironriders.lib;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -16,16 +20,23 @@ public abstract class IronSubsystem extends SubsystemBase {
         return SmartDashboard.getNumber(name, defaultValue);
     }
     
-    public void addDiagnostic(String name, boolean value) {
+    public void publish(String name, boolean value) {
         SmartDashboard.putBoolean(dashboardPrefix + name, value);
     }
 
-    public void addDiagnostic(String name, double value) {
+    public void publish(String name, double value) {
         SmartDashboard.putNumber(dashboardPrefix + name, value);
     }
 
-    public void addDiagnostic(String name, String value) {
+    public void publish(String name, String value) {
         SmartDashboard.putString(dashboardPrefix + name, value);
+    }
+
+    public void publish(String name, Sendable value) {
+        SmartDashboard.putData(dashboardPrefix + name, value);
+        if (value instanceof Command) {
+            NamedCommands.registerCommand(name, (Command)value);
+        }
     }
 
     public void reportInfo(String message) {
