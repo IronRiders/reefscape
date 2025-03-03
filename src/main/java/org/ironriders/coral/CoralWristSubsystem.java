@@ -16,14 +16,15 @@ public class CoralWristSubsystem extends WristSubsystem {
         super(
             CORALWRISTMOTOR,
             GEAR_RATIO,
-            new Range<Double>(MIN_POSITION, MAX_POSITION),
+            HOME_ANGLE,
+            false,
             new PID(CORALWRISTKP, CORALWRISTKI, CORALWRISTKD),
             new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC),
-            CORAL_WRIST_CURRENT_STALL_LIMIT
+            CORAL_WRIST_CURRENT_STALL_LIMIT,
+            false
         );
 
         pid.setTolerance(CORAL_WRIST_TOLERANCE);
-        homeSpeed = .1;
 
         commands = new CoralWristCommands(this);
     }

@@ -16,9 +16,8 @@ public class AlgaeWristConstants {
     public static final double t = 0.02;
     public static final double SPROCKET_RATIO=(13/12);
     public static final double GEAR_RATIO = 1/64 * SPROCKET_RATIO;
-    public static final double MIN_POSITION = 0;
-    public static final double MAX_POSITION = 100;
-    public static final double MAX_ACC = 120;
+    public static final double HOME_ANGLE = 44;
+    public static final double MAX_ACC = 30;
     public static final double MAX_VEL = 60;
 
 

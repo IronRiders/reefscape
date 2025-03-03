@@ -40,14 +40,11 @@ public class Robot extends TimedRobot {
 		if (autonomousCommand != null) {
 			autonomousCommand.schedule();
 		}
-		robotContainer.algaeWristCommands.reset().andThen(robotContainer.algaeWristCommands.set(State.EXTENDED)).schedule();
 	}
 
 	@Override
 	public void teleopInit() {
 		generalInit();
-
-		robotContainer.algaeWristCommands.reset().andThen(robotContainer.algaeWristCommands.set(State.EXTENDED)).schedule();
 	}
 
 	@Override

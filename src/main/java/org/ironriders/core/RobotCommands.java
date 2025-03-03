@@ -93,17 +93,14 @@ public class RobotCommands {
 	/**
 	 * Initialize all subsystems when first enabled.
 	 * 
-	 * This primarily involves homing.  We home wrists in parallel and elevator after the algae manipulator which is
-	 * dangerous to move until the algae wrist is homed.
-	 * 
-	 * TODO - should maybe add additional protection for algae wrist in elevator code
+	 * This primarily involves homing.  We need to home sequentially coral -> algae -> elevator due to physical
+	 * limitations.
 	 */
 	public Command startup() {
-		return Commands.parallel(
-			coralWristCommands.home(),
-			algaeWristCommands.home()
-				.andThen(elevatorCommands.home())
-		);
+		return
+			coralWristCommands.home()
+			.andThen(algaeWristCommands.home())
+			.andThen(elevatorCommands.home());
 	}
 
 	/**

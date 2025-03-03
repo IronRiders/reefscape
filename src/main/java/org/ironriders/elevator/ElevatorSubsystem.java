@@ -14,6 +14,7 @@ import static org.ironriders.elevator.ElevatorConstants.PRIMARY_MOTOR_ID;
 import org.ironriders.algae.AlgaeIntakeConstants;
 import org.ironriders.algae.AlgaeWristConstants;
 import org.ironriders.elevator.ElevatorConstants.Level;
+import org.ironriders.lib.IronSubsystem;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -31,14 +32,12 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * This subsystem controls the big ol' elevator that moves the algae and coral
  * manipulators vertically.
  */
-public class ElevatorSubsystem extends SubsystemBase {
-
+public class ElevatorSubsystem extends IronSubsystem {
     private final ElevatorCommands commands;
 
     private final SparkMax primaryMotor; // lead motor
@@ -159,21 +158,20 @@ public class ElevatorSubsystem extends SubsystemBase {
     private void updateTelemetry() {
         SmartDashboard.putNumber("Elevator Height", getHeightInches());
         
-        pidController.setP(SmartDashboard.getNumber("Elevator P", P));
-        pidController.setI(SmartDashboard.getNumber("Elevator I", I));
-        pidController.setD(SmartDashboard.getNumber("Elevator D", D));
-        SmartDashboard.putBoolean("Elevator Homed", isHomed);
-        SmartDashboard.putString("Elevator State", currentTarget.toString());
-        SmartDashboard.putNumber("Elevator Primary Motor Current", primaryMotor.getOutputCurrent());
-        SmartDashboard.putNumber("Elevator Velocity", setPointState.velocity);
-        SmartDashboard.putBoolean("Elevator Forward Limit Switch", primaryMotor.getForwardLimitSwitch().isPressed());
-        SmartDashboard.putBoolean("Elevator Reverse Limit Switch", primaryMotor.getReverseLimitSwitch().isPressed());
-        SmartDashboard.putNumber("Elevator Follower Motor Current", followerMotor.getOutputCurrent());
-        SmartDashboard.putNumber("Elevator Current Position", setPointState.position);
-        SmartDashboard.putNumber("Elevator goal Position", goalState.position);
-        SmartDashboard.putNumber("Eleavtor Primary Encoder", primaryMotor.getEncoder().getPosition());
-        SmartDashboard.putNumber("Eleavtor Follower Encoder", followerMotor.getEncoder().getPosition());
-
+        getDiagnostic("P", P);
+        getDiagnostic("I", I);
+        getDiagnostic("D", D);
+        addDiagnostic("Homed", isHomed);
+        addDiagnostic("State", currentTarget.toString());
+        addDiagnostic("Primary Motor Current", primaryMotor.getOutputCurrent());
+        addDiagnostic("Velocity", setPointState.velocity);
+        addDiagnostic("Forward Limit Switch", primaryMotor.getForwardLimitSwitch().isPressed());
+        addDiagnostic("Reverse Limit Switch", primaryMotor.getReverseLimitSwitch().isPressed());
+        addDiagnostic("Follower Motor Current", followerMotor.getOutputCurrent());
+        addDiagnostic("Current Position", setPointState.position);
+        addDiagnostic("Goal Position", goalState.position);
+        addDiagnostic("Primary Encoder", primaryMotor.getEncoder().getPosition());
+        addDiagnostic("Follower Encoder", followerMotor.getEncoder().getPosition());
     }
 
     private double calculateFeedForward(TrapezoidProfile.State state) {
