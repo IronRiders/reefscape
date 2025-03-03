@@ -65,15 +65,6 @@ public class DriveSubsystem extends SubsystemBase {
 				this);
 	}
 
-	public Pose2d getPose() {
-		return this.swerveDrive.getPose();
-	}
-
-	private Pose2d test() {
-		System.out.println("CURRENT POSE IS " + swerveDrive.getPose());
-		return swerveDrive.getPose();
-	}
-
 	@Override
 	public void periodic() {
 		vision.updateAll();
@@ -106,6 +97,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public Vision getVision() {
 		return vision;
+	}
+
+	public Pose2d getPose() {
+		return this.swerveDrive.getPose();
 	}
 
 	/** Resets the Odemetry to the current position */

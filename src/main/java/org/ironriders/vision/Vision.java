@@ -42,7 +42,7 @@ public class Vision {
     public Vision(SwerveDrive drive) {
         this.swerveDrive = drive;
         cams.add(new VisionCamera("frontLeft",
-                createOffset(14, 0, 6.5, 15, 22.5),
+                createOffset(11.5, 11.5, 6.5, 15, 22.5),
                 VecBuilder.fill(0.5, 0.5, 1.0)));
         cams.add(new VisionCamera("backLeft",
                 createOffset(11.5, -11.5, 6.5, 15, 157.5),
@@ -51,7 +51,7 @@ public class Vision {
         //         createOffset(-11.5, 11.5, 6.5, 15, -157.5),
         //         VecBuilder.fill(0.5, 0.5, 1.0)));
         cams.add(new VisionCamera("frontRight",
-                createOffset(-11.5, 11.5, 6.5, 15, -22.5),
+                createOffset(11.5, -11.5, 6.5, 15, -22.5),
                 VecBuilder.fill(0.5, 0.5, 1.0)));
     }
 
@@ -202,7 +202,7 @@ public class Vision {
                 if (dist < minDistance)
                     minDistance = dist;
             }
-            // trash past 1 meter
+            // trash past tolerance
             if (minDistance >= DISTANCE_TOLERANCE)
                 return Optional.empty();
 

@@ -90,11 +90,12 @@ public class DriveCommands {
 			// if (!FieldUtils.isValidReefTag(id))
 			// return Commands.none();
 
-			Pose2d basePose = FieldUtils.getPose(14);
+			Pose2d basePose = FieldUtils.getPose(13);
 			Pose2d robotPose = new Pose2d(
-				basePose.getTranslation(), 
-				basePose.getRotation().unaryMinus())
-				.transformBy(new Transform2d(new Translation2d(1.5, 0), new Rotation2d()));
+				//basePose.getTranslation(), 
+				driveSubsystem.getPose().getTranslation(),
+				driveSubsystem.getPose().getRotation())
+				.transformBy(new Transform2d(new Translation2d(1.0, 0), new Rotation2d(Math.PI / 2)));
 
 			System.out.println("BASE POSE: " + basePose);
 			System.out.println("ROBOT POSE: " + robotPose);
