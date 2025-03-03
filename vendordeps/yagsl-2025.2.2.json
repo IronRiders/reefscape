@@ -1,13 +1,7 @@
 {
-<<<<<<<< HEAD:vendordeps/yagsl-2025.2.2.json
     "fileName": "yagsl-2025.2.2.json",
     "name": "YAGSL",
     "version": "2025.2.2",
-========
-    "fileName": "yagsl-2025.3.1-beta2.json",
-    "name": "YAGSL",
-    "version": "2025.3.1-beta2",
->>>>>>>> main:vendordeps/yagsl-2025.3.1-beta2.json
     "frcYear": "2025",
     "uuid": "1ccce5a4-acd2-4d18-bca3-4b8047188400",
     "mavenUrls": [
@@ -18,11 +12,7 @@
         {
             "groupId": "swervelib",
             "artifactId": "YAGSL-java",
-<<<<<<<< HEAD:vendordeps/yagsl-2025.2.2.json
             "version": "2025.2.2"
-========
-            "version": "2025.3.1-beta2"
->>>>>>>> main:vendordeps/yagsl-2025.3.1-beta2.json
         }
     ],
     "requires": [
