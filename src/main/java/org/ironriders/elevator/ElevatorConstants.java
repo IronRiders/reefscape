@@ -23,8 +23,8 @@ public class ElevatorConstants {
     // public static final double P = 0.55; // Mostly good
     // public static final double I = 0.15;
 
-    public static final double P = 0.55;
-    public static final double I = 0.15;
+    public static final double P = 0.3;
+    public static final double I = 0.05;
     public static final double D = 0;
 
     public static final double MAX_VEL = 40;
