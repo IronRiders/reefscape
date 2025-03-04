@@ -11,6 +11,8 @@ import static org.ironriders.elevator.ElevatorConstants.MIN_POSITION;
 import static org.ironriders.elevator.ElevatorConstants.P;
 import static org.ironriders.elevator.ElevatorConstants.PRIMARY_MOTOR_ID;
 
+import java.util.Optional;
+
 import org.ironriders.algae.AlgaeIntakeConstants;
 import org.ironriders.algae.AlgaeWristConstants;
 import org.ironriders.elevator.ElevatorConstants.Level;
@@ -59,6 +61,7 @@ public class ElevatorSubsystem extends IronSubsystem {
         SmartDashboard.putNumber("Elevator P", ElevatorConstants.P);
         SmartDashboard.putNumber("Elevator I", ElevatorConstants.I);
         SmartDashboard.putNumber("Elevator D", ElevatorConstants.D);
+        SmartDashboard.putNumber("Elevator Constant Voltage", 0);
 
         goalState.position = 0;
         primaryMotor = new SparkMax(PRIMARY_MOTOR_ID, MotorType.kBrushless); 
@@ -111,6 +114,23 @@ public class ElevatorSubsystem extends IronSubsystem {
 
     @Override
     public void periodic() {
+        var constantVoltage = SmartDashboard.getNumber("Elevator Constant Voltage", 0);
+        if (constantVoltage > 0 && constantVoltage < .5) {
+            // This is a rather dangerous value for tuning purposes.  Try to
+            // prevent damage by limiting to something that won't shoot top
+            // stage through roof, and ignore downward values entirely
+            primaryMotor.set(constantVoltage);
+
+            this.reportWarning("Applied const elevator voltage" + constantVoltage);
+        } else {
+            move();
+        }
+
+        // update SmartDashboard
+        updateTelemetry();
+    }
+
+    public void move() {
         // Calculate the next state and update the current state
         setPointState = profile.calculate(ElevatorConstants.T, setPointState, goalState);
         SmartDashboard.putNumber("Elevator set postion", setPointState.position);
@@ -122,7 +142,12 @@ public class ElevatorSubsystem extends IronSubsystem {
         // Only run if homed
         if (isHomed) {
             double pidOutput = pidController.calculate(getHeightInches(), setPointState.position);
-            double ff = calculateFeedForward(setPointState);
+            if (pidOutput == 0) {
+                primaryMotor.stopMotor();
+                return;
+            }
+
+            double ff = feedforward.calculate(setPointState.position, setPointState.velocity);
 
             double outputPower = MathUtil.clamp(pidOutput + ff, -ElevatorConstants.MAX_OUTPUT,
                     ElevatorConstants.MAX_OUTPUT);
@@ -130,9 +155,6 @@ public class ElevatorSubsystem extends IronSubsystem {
             primaryMotor.set(outputPower);
             SmartDashboard.putNumber("Elevator PID output", pidOutput);
         }
-
-        // update SmartDashboard
-        updateTelemetry();
     }
 
     public void setPositionInches(double inches) {
@@ -172,13 +194,6 @@ public class ElevatorSubsystem extends IronSubsystem {
         publish("Goal Position", goalState.position);
         publish("Primary Encoder", primaryMotor.getEncoder().getPosition());
         publish("Follower Encoder", followerMotor.getEncoder().getPosition());
-    }
-
-    private double calculateFeedForward(TrapezoidProfile.State state) {
-        // kS (static friction), kG (gravity), kV (velocity)
-        return ElevatorConstants.K_S * Math.signum(state.velocity) +
-                ElevatorConstants.K_G +
-                ElevatorConstants.K_V * state.velocity;
     }
 
     public double getHeightInches() {
