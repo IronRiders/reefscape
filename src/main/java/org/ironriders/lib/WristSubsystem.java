@@ -176,7 +176,6 @@ public abstract class WristSubsystem extends IronSubsystem {
             return Commands.runOnce(() -> {
                 reset();
             });
-            //return moveToCmd(homeAngle);
         }
 
         SparkLimitSwitch limit;
@@ -229,7 +228,6 @@ public abstract class WristSubsystem extends IronSubsystem {
 
             // Update setpoint to match current position
             this.setPointState.position = this.getCurrentAngle().in(Units.Degrees);
-
             isHomed = true;
             this.reportInfo("Homed");
         });
