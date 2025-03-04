@@ -27,6 +27,7 @@ import edu.wpi.first.units.measure.Angle;
  * as the motor moves forward.
  */
 public abstract class WristSubsystem extends IronSubsystem {
+    
     private final double HOMING_SETPOINT = .1;
     private final double HOMING_BACKOFF_SETPOINT = HOMING_SETPOINT / 2;
     private final double PERIOD = .02;
@@ -34,12 +35,15 @@ public abstract class WristSubsystem extends IronSubsystem {
     private final SparkMax motor;
     protected final PIDController pid;
     private double gearRatio;
-    private  RelativeEncoder encoder;
+
+    private final RelativeEncoder encoder;
     private final SparkMaxConfig motorConfig = new SparkMaxConfig();
+
     private Optional<TrapezoidProfile.State> goalState = Optional.empty();
     private TrapezoidProfile.State setPointState = new TrapezoidProfile.State();
     private final TrapezoidProfile operationalProfile;
     private TrapezoidProfile movementProfile;
+
     private boolean isHomed = false;
     private final Angle homeAngle;
     private final boolean homeForward;
