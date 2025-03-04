@@ -18,7 +18,7 @@ public class DriveConstants {
 
     public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController(
             new PIDConstants(1.0, 0.0, 0.0), // Translation PID
-            new PIDConstants(20.0, 0.0, 0.0) // Rotation PID
+            new PIDConstants(9.0, 0.05, 0.0) // Rotation PID
     );
 
     // Mathematical Constants
@@ -36,14 +36,4 @@ public class DriveConstants {
 
     public static final double JOG_DISTANCE_INCHES = 1;
     public static final double JOG_SPEED = .25;
-
-    public enum DriveSpeed {
-        SLOW(0.5), NORMAL(1.0), FAST(1.5);
-
-        public final double multiplier;
-
-        DriveSpeed(double multiplier) {
-            this.multiplier = multiplier;
-        }
-    }
 }
