@@ -16,6 +16,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 
@@ -172,7 +173,10 @@ public abstract class WristSubsystem extends IronSubsystem {
 
         // If homed, return to home position
         if (isHomed) {
-            return moveToCmd(homeAngle);
+            return Commands.runOnce(() -> {
+                reset();
+            });
+            //return moveToCmd(homeAngle);
         }
 
         SparkLimitSwitch limit;
