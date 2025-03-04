@@ -27,7 +27,7 @@ import edu.wpi.first.units.measure.Angle;
  * as the motor moves forward.
  */
 public abstract class WristSubsystem extends IronSubsystem {
-    
+
     private final double HOMING_SETPOINT = .1;
     private final double HOMING_BACKOFF_SETPOINT = HOMING_SETPOINT / 2;
     private final double PERIOD = .02;
@@ -233,6 +233,7 @@ public abstract class WristSubsystem extends IronSubsystem {
 
             // Update setpoint to match current position
             this.setPointState.position = this.getCurrentAngle().in(Units.Degrees);
+            this.goalState = Optional.empty();
 
             isHomed = true;
             this.reportInfo("Homed");
