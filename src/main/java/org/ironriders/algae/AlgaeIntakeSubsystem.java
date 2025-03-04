@@ -7,13 +7,13 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static org.ironriders.algae.AlgaeIntakeConstants.*;
 
 import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
+import org.ironriders.lib.IronSubsystem;
 
-public class AlgaeIntakeSubsystem extends SubsystemBase {
+public class AlgaeIntakeSubsystem extends IronSubsystem {
 
     private final AlgaeIntakeCommands commands;
 
@@ -41,9 +41,9 @@ public class AlgaeIntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX_ALGAE + "velocity", getSpeed());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX_ALGAE+ "forward left motor current", algaeLeftMotor.getOutputCurrent());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX_ALGAE+ "forward right motor current", algaeRightMotor.getOutputCurrent());
+        publish("Velocity", getSpeed());
+        publish("Forward Left Motor Current", algaeLeftMotor.getOutputCurrent());
+        publish("Forward Right Motor Current", algaeRightMotor.getOutputCurrent());
     }
 
     public void setHasAlgae(boolean hasAlgae) {

@@ -1,6 +1,8 @@
 package org.ironriders.algae;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 
 public class AlgaeWristConstants {
 
@@ -15,11 +17,10 @@ public class AlgaeWristConstants {
     public static final double D = 0.0;
     public static final double t = 0.02;
     public static final double SPROCKET_RATIO=(13/12);
-    public static final double GEAR_RATIO = 1/64 * SPROCKET_RATIO;
-    public static final double MIN_POSITION = 0;
-    public static final double MAX_POSITION = 100;
-    public static final double MAX_ACC = 120;
-    public static final double MAX_VEL = 60;
+    public static final double GEAR_RATIO = 1.0 / 64.0 * SPROCKET_RATIO;
+    public static final Angle HOME_ANGLE = Units.Degrees.of(-53);
+    public static final double MAX_ACC = 90;
+    public static final double MAX_VEL = 180;
 
 
     // public static final double ALGAEWRISTKS = 0.0; //The static gain in volts. //
@@ -35,18 +36,17 @@ public class AlgaeWristConstants {
 
     public enum State { // max seems to be 40, min ~0
         STARTING(-1), // Starting position is beyond lower limit
-        STOWED(0), // Computed home position
-        EXTENDED(30);
+        STOWED(-90), // Computed home position (will hit limit)
+        EXTENDED(0);
 
+        final Angle angle;
 
-        final double position;
-
-        State(int position) {
-            this.position = position;
+        State(double degrees) {
+            this.angle = Units.Degrees.of(degrees);
         }
 
-        public double getPosition() {
-            return position;
+        public Angle getAngle() {
+            return angle;
         }
     }
 

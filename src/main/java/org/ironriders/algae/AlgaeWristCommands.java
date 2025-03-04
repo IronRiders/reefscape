@@ -2,7 +2,6 @@ package org.ironriders.algae;
 
 import org.ironriders.algae.AlgaeWristConstants.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import com.pathplanner.lib.auto.NamedCommands;
 
 public class AlgaeWristCommands extends Command {
     private final AlgaeWristSubsystem algaeWrist;
@@ -10,8 +9,9 @@ public class AlgaeWristCommands extends Command {
     public AlgaeWristCommands(AlgaeWristSubsystem wrist) {
         this.algaeWrist = wrist;
 
-        NamedCommands.registerCommand("Algae Wrist Stowed", set(State.STOWED));
-        NamedCommands.registerCommand("Algae Wrist Extended", set(State.EXTENDED));
+        wrist.publish("Home", home());
+        wrist.publish("Algae Wrist Stowed", set(State.STOWED));
+        wrist.publish("Algae Wrist Extended", set(State.EXTENDED));
     }
 
     public Command home() {
@@ -19,7 +19,7 @@ public class AlgaeWristCommands extends Command {
     }
 
     public Command set(State state) {
-        return algaeWrist.moveToCmd(state.getPosition());
+        return algaeWrist.moveToCmd(state.getAngle());
     }
 
     public Command reset() {

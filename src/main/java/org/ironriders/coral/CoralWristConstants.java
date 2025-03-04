@@ -1,5 +1,7 @@
 package org.ironriders.coral;
 
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 
 public class CoralWristConstants {
 
@@ -9,7 +11,7 @@ public class CoralWristConstants {
     public static final int CORALWRISTMOTOR = 13;
 
     // Need to tune
-    public static final double CORALWRISTKP = 0.025;
+    public static final double CORALWRISTKP = .05;
     public static final double CORALWRISTKI = 0;
     public static final double CORALWRISTKD = 0.0;
     // public static final double CORALWRISTKS = 0.0; //The static gain in volts. //
@@ -23,32 +25,29 @@ public class CoralWristConstants {
     // public static final double CORAL_WRIST_ENCODER_OFFSET = 0; // please test
     public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
 
-    public static final double MAX_POSITION = 0;
-    public static final double MIN_POSITION = -100;
+    public static final Angle HOME_ANGLE = Units.Degrees.of(48);
 
     public static final double GEAR_RATIO = 0.01;
 
     public static final double t = 0.02;
 
+    public static final double MAX_ACC = 90; //90;
+    public static final double MAX_VEL = 180; //180;
 
     public enum State {
-        STATION(-27.5),
-        STOWED(0),
-        L1toL3(-60),
-        L4(-90);
+        STATION(32.5),
+        STOWED(90), // Will stop at limit
+        L1toL3(30),
+        L4(0);
 
-        final double postion;
+        final Angle angle;
 
-        State(double postion) {
-            this.postion = postion;
+        State(double degrees) {
+            this.angle = Units.Degrees.of(degrees);
         }
 
-        public double getPosition() {
-            return postion;
+        public Angle getAngle() {
+            return angle;
         }
-
     }
-
-    public static final double MAX_ACC = 90;
-    public static final double MAX_VEL = 180;
 }

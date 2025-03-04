@@ -22,6 +22,7 @@ import org.ironriders.coral.CoralIntakeSubsystem;
 import org.ironriders.coral.CoralWristCommands;
 import org.ironriders.coral.CoralWristConstants;
 import org.ironriders.coral.CoralWristSubsystem;
+import org.ironriders.dashboard.DashboardSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.lib.RobotUtils;
@@ -72,6 +73,8 @@ public class RobotContainer {
 	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
 
+	private final DashboardSubsystem dashboardSubsystem = new DashboardSubsystem();
+
 	private final SendableChooser<Command> autoChooser;
 
 	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
@@ -112,7 +115,6 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-
 		// drive controls based on cubic function-ified joystick values
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(

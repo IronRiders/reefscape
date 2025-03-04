@@ -9,19 +9,18 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static org.ironriders.coral.CoralIntakeConstants.*;
 
 import org.ironriders.coral.CoralIntakeConstants.State;
+import org.ironriders.lib.IronSubsystem;
 
-public class CoralIntakeSubsystem extends SubsystemBase {
+public class CoralIntakeSubsystem extends IronSubsystem {
 
     private final CoralIntakeCommands commands;
 
     private final SparkMax coralMotor = new SparkMax(CORAL_INTAKE_MOTOR, MotorType.kBrushless);
     private final SparkMaxConfig coralMotorConfig = new SparkMaxConfig();
-
 
     private final SparkLimitSwitch beamBreak = coralMotor.getForwardLimitSwitch();
 
@@ -40,14 +39,13 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         hasCoral = coralMotor.getForwardLimitSwitch().isPressed();
-        SmartDashboard.putNumber(DASHBOARD_PREFIX_CORAL + "velocity", getSpeed());
-        SmartDashboard.putBoolean(DASHBOARD_PREFIX_CORAL + "has Coral", hasCoral);
-        
 
+        publish("Velocity", getSpeed());
+        publish("Has Coral", hasCoral);
     }
 
-    public void setHasAlgae(boolean hasAlgae) {
-        this.hasCoral = hasAlgae;
+    public void setHasCoral(boolean hasCoral) {
+        this.hasCoral = hasCoral;
     }
 
     public void set(State state) {

@@ -1,7 +1,6 @@
 package org.ironriders.coral;
 
 import org.ironriders.coral.CoralIntakeConstants.State;
-import com.pathplanner.lib.auto.NamedCommands;
 
 import static org.ironriders.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
 import static org.ironriders.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
@@ -15,9 +14,10 @@ public class CoralIntakeCommands {
 
     public CoralIntakeCommands(CoralIntakeSubsystem intake) {
         this.intake = intake;
-        NamedCommands.registerCommand("Coral Intake Grab", set(State.GRAB));
-        NamedCommands.registerCommand("Coral Intake Eject", set(State.EJECT));
-        NamedCommands.registerCommand("Coral Intake Stop", set(State.STOP));
+
+        intake.publish("Coral Intake Grab", set(State.GRAB));
+        intake.publish("Coral Intake Eject", set(State.EJECT));
+        intake.publish("Coral Intake Stop", set(State.STOP));
     }
 
     public Command set(CoralIntakeConstants.State state) {
