@@ -1,41 +1,21 @@
 package org.ironriders.core;
 
-import java.lang.System.Logger.Level;
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
-import org.ironriders.algae.AlgaeIntakeConstants;
-import org.ironriders.algae.AlgaeWristConstants;
 import org.ironriders.coral.CoralIntakeConstants;
 import org.ironriders.coral.CoralWristConstants;
 import org.ironriders.algae.AlgaeIntakeCommands;
-import org.ironriders.algae.AlgaeIntakeSubsystem;
 import org.ironriders.algae.AlgaeWristCommands;
-import org.ironriders.algae.AlgaeWristSubsystem;
-import org.ironriders.algae.AlgaeWristConstants.*;
-import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.coral.CoralIntakeCommands;
-import org.ironriders.coral.CoralIntakeSubsystem;
 import org.ironriders.coral.CoralWristCommands;
-import org.ironriders.coral.CoralWristSubsystem;
 import org.ironriders.drive.DriveCommands;
-import org.ironriders.drive.DriveSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.drive.DriveConstants;
-import org.ironriders.vision.Vision;
-
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import java.util.function.Supplier;
 
 /**
  * These commands require more complex logic and are not directly tied to a
@@ -99,7 +79,7 @@ public class RobotCommands {
 	public Command startup() {
 		return
 			coralWristCommands.home()
-			.andThen(algaeWristCommands.home())
+		//	.andThen(algaeWristCommands.home())
 			.andThen(elevatorCommands.home());
 	}
 

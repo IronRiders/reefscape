@@ -4,7 +4,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import static org.ironriders.coral.CoralWristConstants.*;
 
 import org.ironriders.lib.PID;
-import org.ironriders.lib.Range;
 import org.ironriders.lib.WristSubsystem;
 
 public class CoralWristSubsystem extends WristSubsystem {

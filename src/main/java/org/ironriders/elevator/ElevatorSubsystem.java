@@ -1,6 +1,5 @@
 package org.ironriders.elevator;
 
-import static org.ironriders.elevator.ElevatorConstants.BOTTOM_POS;
 import static org.ironriders.elevator.ElevatorConstants.D;
 import static org.ironriders.elevator.ElevatorConstants.ELEVATOR_MOTOR_STALL_LIMIT;
 import static org.ironriders.elevator.ElevatorConstants.FOLLOW_MOTOR_ID;
@@ -11,10 +10,6 @@ import static org.ironriders.elevator.ElevatorConstants.MIN_POSITION;
 import static org.ironriders.elevator.ElevatorConstants.P;
 import static org.ironriders.elevator.ElevatorConstants.PRIMARY_MOTOR_ID;
 
-import java.util.Optional;
-
-import org.ironriders.algae.AlgaeIntakeConstants;
-import org.ironriders.algae.AlgaeWristConstants;
 import org.ironriders.elevator.ElevatorConstants.Level;
 import org.ironriders.lib.IronSubsystem;
 

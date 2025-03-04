@@ -4,7 +4,6 @@
 
 package org.ironriders.core;
 
-import org.ironriders.algae.AlgaeWristConstants.State;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
