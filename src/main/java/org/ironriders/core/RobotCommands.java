@@ -79,7 +79,7 @@ public class RobotCommands {
 	public Command startup() {
 		return
 			coralWristCommands.home()
-		//	.andThen(algaeWristCommands.home())
+			.andThen(algaeWristCommands.home())
 			.andThen(elevatorCommands.home());
 	}
 

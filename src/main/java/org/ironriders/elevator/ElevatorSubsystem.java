@@ -46,8 +46,16 @@ public class ElevatorSubsystem extends IronSubsystem {
     private final TrapezoidProfile profile;
     private final ElevatorFeedforward feedforward;
     private final PIDController pidController;
-    private TrapezoidProfile.State goalState = new TrapezoidProfile.State();
-    private TrapezoidProfile.State setPointState = new TrapezoidProfile.State();
+
+    /**
+     * The target setpoint when elevator is at desired height.
+     */
+    private TrapezoidProfile.State goalSetpoint = new TrapezoidProfile.State();
+    
+    /**
+     * Setpoint determined by trapezoid profile in each periodic cycle to move toward goal.
+     */
+    private TrapezoidProfile.State periodicSetpoint = new TrapezoidProfile.State();
 
     private Level currentTarget = Level.Down;
     private boolean isHomed = false;
@@ -58,7 +66,7 @@ public class ElevatorSubsystem extends IronSubsystem {
         SmartDashboard.putNumber("Elevator D", ElevatorConstants.D);
         SmartDashboard.putNumber("Elevator Constant Voltage", 0);
 
-        goalState.position = 0;
+        goalSetpoint.position = 0;
         primaryMotor = new SparkMax(PRIMARY_MOTOR_ID, MotorType.kBrushless); 
         followerMotor = new SparkMax(FOLLOW_MOTOR_ID, MotorType.kBrushless);
 
@@ -92,7 +100,7 @@ public class ElevatorSubsystem extends IronSubsystem {
         followerMotor.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ElevatorConstants.MAX_VEL, ElevatorConstants.MAX_ACC);
         profile = new TrapezoidProfile(constraints);
-        goalState = new TrapezoidProfile.State();
+        goalSetpoint = new TrapezoidProfile.State();
         pidController = new PIDController(
                 ElevatorConstants.P,
                 ElevatorConstants.I,
@@ -104,7 +112,7 @@ public class ElevatorSubsystem extends IronSubsystem {
     }
 
     public void setGoal(Level goal) {
-        this.goalState = new TrapezoidProfile.State(goal.positionInches, 0d);
+        this.goalSetpoint = new TrapezoidProfile.State(goal.positionInches, 0d);
     }
 
     @Override
@@ -127,8 +135,8 @@ public class ElevatorSubsystem extends IronSubsystem {
 
     public void move() {
         // Calculate the next state and update the current state
-        setPointState = profile.calculate(ElevatorConstants.T, setPointState, goalState);
-        SmartDashboard.putNumber("Elevator set postion", setPointState.position);
+        periodicSetpoint = profile.calculate(ElevatorConstants.T, periodicSetpoint, goalSetpoint);
+        SmartDashboard.putNumber("Elevator set postion", periodicSetpoint.position);
 
         pidController.setP(SmartDashboard.getNumber("Elevator P", ElevatorConstants.P));
         pidController.setI(SmartDashboard.getNumber("Elevator I", ElevatorConstants.I));
@@ -136,13 +144,13 @@ public class ElevatorSubsystem extends IronSubsystem {
 
         // Only run if homed
         if (isHomed) {
-            double pidOutput = pidController.calculate(getHeightInches(), setPointState.position);
+            double pidOutput = pidController.calculate(getHeightInches(), periodicSetpoint.position);
             if (pidOutput == 0) {
                 primaryMotor.stopMotor();
                 return;
             }
 
-            double ff = feedforward.calculate(setPointState.position, setPointState.velocity);
+            double ff = feedforward.calculate(periodicSetpoint.position, periodicSetpoint.velocity);
 
             double outputPower = MathUtil.clamp(pidOutput + ff, -ElevatorConstants.MAX_OUTPUT,
                     ElevatorConstants.MAX_OUTPUT);
@@ -159,7 +167,7 @@ public class ElevatorSubsystem extends IronSubsystem {
         }
 
         // Update goal state for motion profile
-        goalState = new TrapezoidProfile.State(MathUtil.clamp(inches, MIN_POSITION, MAX_POSITION), 0);
+        goalSetpoint = new TrapezoidProfile.State(MathUtil.clamp(inches, MIN_POSITION, MAX_POSITION), 0);
     }
 
     public void stopMotor() {
@@ -181,12 +189,12 @@ public class ElevatorSubsystem extends IronSubsystem {
         publish("Homed", isHomed);
         publish("State", currentTarget.toString());
         publish("Primary Motor Current", primaryMotor.getOutputCurrent());
-        publish("Velocity", setPointState.velocity);
+        publish("Velocity", periodicSetpoint.velocity);
         publish("Forward Limit Switch", primaryMotor.getForwardLimitSwitch().isPressed());
         publish("Reverse Limit Switch", primaryMotor.getReverseLimitSwitch().isPressed());
         publish("Follower Motor Current", followerMotor.getOutputCurrent());
-        publish("Current Position", setPointState.position);
-        publish("Goal Position", goalState.position);
+        publish("Current Position", periodicSetpoint.position);
+        publish("Goal Position", goalSetpoint.position);
         publish("Primary Encoder", primaryMotor.getEncoder().getPosition());
         publish("Follower Encoder", followerMotor.getEncoder().getPosition());
     }
