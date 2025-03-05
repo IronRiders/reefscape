@@ -18,9 +18,9 @@ public class TargetingSubsystem extends IronSubsystem {
 	private Optional<FieldPose> poseAtTargetElement = Optional.empty();
 	private boolean targetNearestElement = true;
 	private Optional<ElementType> targetElementType = Optional.empty();
-    private int targetSlot = FieldPose.STATION_SLOT_COUNT / 2;
-    private Side targetPole = Side.Left;
-    private Level targetLevel = Level.L1;
+	private int targetSlot = FieldPose.STATION_SLOT_COUNT / 2;
+	private Side targetPole = Side.Left;
+	private Level targetLevel = Level.L1;
 	private TargetingCommands commands;
 
 	public TargetingSubsystem() {
@@ -32,29 +32,29 @@ public class TargetingSubsystem extends IronSubsystem {
 		return commands;
 	}
 
-    public void setTargetSlot(int slot) {
-        targetSlot = slot;
-    }
+	public void setTargetSlot(int slot) {
+		targetSlot = slot;
+	}
 
-    public int getTargetSlot() {
-        return targetSlot;
-    }
+	public int getTargetSlot() {
+		return targetSlot;
+	}
 
-    public void setTargetPole(Side side) {
-        targetPole = side;
-    }
+	public void setTargetPole(Side side) {
+		targetPole = side;
+	}
 
-    public Side getTargetPole() {
-        return targetPole;
-    }
+	public Side getTargetPole() {
+		return targetPole;
+	}
 
-    public void setTargetLevel(Level level) {
-        targetLevel = level;
-    }
+	public void setTargetLevel(Level level) {
+		targetLevel = level;
+	}
 
-    public Level getActivelevel() {
-        return targetLevel;
-    }
+	public Level getActivelevel() {
+		return targetLevel;
+	}
 
 	public void targetNearest() {
 		targetNearestElement = true;
@@ -130,5 +130,5 @@ public class TargetingSubsystem extends IronSubsystem {
 		} else {
 			targetElement = FieldElement.nearestTo(robotPose.get());
 		}
-}
+	}
 }

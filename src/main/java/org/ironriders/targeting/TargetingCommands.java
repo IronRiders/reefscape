@@ -14,7 +14,6 @@ public class TargetingCommands {
         this.targetingSubsystem.publish("Nearest", targetNearest());
 
         this.targetingSubsystem.publish("Coral Station", targetNearest(ElementType.STATION));
-        // TODO - individual slots
 
         this.targetingSubsystem.publish("Reef", targetNearest(ElementType.REEF));
         this.targetingSubsystem.publish("Reef Left Pole", targetReefPole(Side.Left));
@@ -24,7 +23,7 @@ public class TargetingCommands {
         this.targetingSubsystem.publish("Processor", targetNearest(ElementType.PROCESSOR));
     }
 
-    Command targetStationSlot(int number) {
+    public Command targetStationSlot(int number) {
         return targetingSubsystem
             .runOnce(() -> {
                 targetingSubsystem.setTargetSlot(number);
@@ -33,7 +32,7 @@ public class TargetingCommands {
             .ignoringDisable(true);
     }
 
-    Command targetReefPole(Side side) {
+    public Command targetReefPole(Side side) {
         return targetingSubsystem
             .runOnce(() -> {
                 targetingSubsystem.setTargetPole(side);
@@ -42,13 +41,13 @@ public class TargetingCommands {
             .ignoringDisable(true);
     }
 
-    Command targetNearest() {
+    public Command targetNearest() {
         return targetingSubsystem
             .runOnce(targetingSubsystem::targetNearest)
             .ignoringDisable(true);
     }
 
-    Command targetNearest(ElementType type) {
+    public Command targetNearest(ElementType type) {
         return targetingSubsystem
             .runOnce(() -> targetingSubsystem.targetNearest(type))
             .ignoringDisable(true);

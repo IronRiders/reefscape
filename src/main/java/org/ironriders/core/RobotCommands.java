@@ -12,8 +12,8 @@ import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.drive.DriveConstants;
+import org.ironriders.lib.FieldElement.ElementType;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -113,7 +113,9 @@ public class RobotCommands {
 
 	public Command scoreCoralMiniauto(Command prepare) {
 		return Commands.sequence(
-			driveCommands.alignToReef(false).alongWith(prepare),
+			targetingCommands.targetNearest(ElementType.REEF),
+			driveCommands.pathfindToTarget(),
+			prepare,
 			this.scoreCoral()
 		);
 	}
