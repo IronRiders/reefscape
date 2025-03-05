@@ -10,7 +10,7 @@ public class ElevatorConstants {
     public static final double BOTTOM_POS = 0; //Homed postion
 
     public static final double DOWN_POS = 0; // Elevator at min postion
-    public static final double CORAL_STATION_POS = 8.4;
+    public static final double CORAL_STATION_POS = 8.0;
     public static final double L1_HEIGHT = 4;
     public static final double L2_HEIGHT = 6;
     public static final double L3_HEIGHT = 20;
