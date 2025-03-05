@@ -38,8 +38,7 @@ public class RobotCommands {
 			DriveCommands driveCommands,
 			ElevatorCommands elevatorCommands,
 			CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-			AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands
-			algaeIntakeCommands,
+			AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
 			GenericHID controller) {
 
 		this.driveCommands = driveCommands;
@@ -55,10 +54,14 @@ public class RobotCommands {
 		// this.prepareToScoreAlgae());
 		// NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
 
-		NamedCommands.registerCommand("Prepare to Score Coral L1", this.prepareToScoreCoral(ElevatorConstants.Level.L1));
-		NamedCommands.registerCommand("Prepare to Score Coral L2", this.prepareToScoreCoral(ElevatorConstants.Level.L2));
-		NamedCommands.registerCommand("Prepare to Score Coral L3", this.prepareToScoreCoral(ElevatorConstants.Level.L3));
-		NamedCommands.registerCommand("Prepare to Score Coral L4", this.prepareToScoreCoral(ElevatorConstants.Level.L4));
+		NamedCommands.registerCommand("Prepare to Score Coral L1",
+				this.prepareToScoreCoral(ElevatorConstants.Level.L1));
+		NamedCommands.registerCommand("Prepare to Score Coral L2",
+				this.prepareToScoreCoral(ElevatorConstants.Level.L2));
+		NamedCommands.registerCommand("Prepare to Score Coral L3",
+				this.prepareToScoreCoral(ElevatorConstants.Level.L3));
+		NamedCommands.registerCommand("Prepare to Score Coral L4",
+				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
 		NamedCommands.registerCommand("Score Coral", this.scoreCoral());
 
 		// NamedCommands.registerCommand("Prepare to Grab Algae",
@@ -73,14 +76,14 @@ public class RobotCommands {
 	/**
 	 * Initialize all subsystems when first enabled.
 	 * 
-	 * This primarily involves homing.  We need to home sequentially coral -> algae -> elevator due to physical
+	 * This primarily involves homing. We need to home sequentially coral -> algae
+	 * -> elevator due to physical
 	 * limitations.
 	 */
 	public Command startup() {
-		return
-			coralWristCommands.home()
-			.andThen(algaeWristCommands.home())
-			.andThen(elevatorCommands.home());
+		return coralWristCommands.home()
+				.andThen(algaeWristCommands.home())
+				.andThen(elevatorCommands.home());
 	}
 
 	/**
@@ -104,14 +107,12 @@ public class RobotCommands {
 		return driveCommands.jog(robotRelativeAngleDegrees);
 	}
 
-	// public Command scoreCoralMiniauto(ElevatorConstants.Level level) {
-	// return Commands.sequence(
-	// Commands.parallel(
-	// driveCommands.driveToPose()
-	// this.prepareToScoreCoral(level)),
-	// this.scoreCoral());
-
-	// }
+	public Command scoreCoralMiniauto(Command prepare) {
+		return Commands.sequence(
+			driveCommands.alignToReef(false).alongWith(prepare),
+			this.scoreCoral()
+		);
+	}
 
 	public Command rumble() {
 		return Commands.sequence(

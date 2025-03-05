@@ -34,7 +34,7 @@ import swervelib.SwerveDrive;
 public class Vision {
 
     private static final double AMBIGUITY_TOLERANCE = 0.4; // percentage
-    private static final double DISTANCE_TOLERANCE = 7.5; // meters
+    private static final double DISTANCE_TOLERANCE = 2.5; // meters
     private SwerveDrive swerveDrive = null;
     private List<VisionCamera> cams = new ArrayList<>();
 

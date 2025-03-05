@@ -24,8 +24,8 @@ public class AlgaeIntakeCommands {
             case GRAB:
                 return command
                         .andThen(Commands.race(
-                                Commands.runOnce(() -> {
-                                    intake.getLimitSwitchTriggered();
+                                Commands.waitUntil(() -> {
+                                    return intake.getLimitSwitchTriggered();
                                 }),
                                 Commands.waitSeconds(INTAKE_IMPATIENCE)))
                         .finallyDo(() -> intake.set(AlgaeIntakeState.STOP));
