@@ -56,7 +56,7 @@ public class FieldPose {
         }
     }
     
-    static final Distance ROBOT_LENGTH = Units.Inches.of(39);
+    static final Distance ROBOT_LENGTH = Units.Inches.of(37);
     static final Distance CORAL_INTAKE_OFFSET = Units.Inches.of(7);
     static final Distance STATION_SLOT_SPACING = Units.Inches.of(8);
     static public final int STATION_SLOT_COUNT = 9;

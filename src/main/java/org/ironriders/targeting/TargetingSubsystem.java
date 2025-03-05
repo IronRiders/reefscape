@@ -115,7 +115,7 @@ public class TargetingSubsystem extends IronSubsystem {
 			return;
 		}
 
-		GameState.getField().getObject("Nearest").setPose(pose.get().toPose2d());
+		GameState.getField().getObject("Target").setPose(pose.get().toPose2d());
 		poseAtTargetElement = pose;
 	}
 
