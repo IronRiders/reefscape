@@ -9,15 +9,12 @@ import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 
-import org.ironriders.lib.FieldElement;
-import org.ironriders.lib.FieldPose;
+import org.ironriders.lib.GameState;
 import org.ironriders.lib.IronSubsystem;
 import org.ironriders.vision.Vision;
 
@@ -32,9 +29,6 @@ public class DriveSubsystem extends IronSubsystem {
 
 	private SwerveDrive swerveDrive;
 	private Vision vision;
-	private Optional<FieldElement> targetElement = Optional.empty();
-	private Pose2d poseAtTargetElement = new Pose2d();
-	private boolean targetNearestElement = true;
 
 	public DriveSubsystem() throws RuntimeException {
 		try {
@@ -72,40 +66,15 @@ public class DriveSubsystem extends IronSubsystem {
 					return false;
 				},
 				this);
+
+		GameState.setField(swerveDrive.field);
+		GameState.setRobotPose(() -> Optional.of(swerveDrive.getPose()));
 	}
 
 	@Override
 	public void periodic() {
 		vision.updateAll();
 		vision.addPoseEstimates();
-		updateTargeting();
-	}
-
-	public void setTargetElement(FieldElement element) {
-		targetElement = Optional.of(element);
-		targetNearestElement = false;
-	}
-
-	public void setTargetNearest(boolean value) {
-		targetNearestElement = value;
-	}
-
-	private void updateTargeting() {
-		if (targetNearestElement) {
-			targetElement = FieldElement.nearestTo(swerveDrive.getPose());
-		}
-
-		if (targetElement.isEmpty()) {
-			return;
-		}
-
-		var pose = new FieldPose(targetElement.get()).toPose2d();
-		if (pose.equals(poseAtTargetElement)) {
-			return;
-		}
-
-		swerveDrive.field.getObject("Nearest").setPose(pose);
-		poseAtTargetElement = pose;
 	}
 
 	/**

@@ -508,6 +508,84 @@
                 }
               }
             ]
+          },
+          {
+            "title": "Targeting",
+            "x": 800.0,
+            "y": 0.0,
+            "width": 224.0,
+            "height": 448.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "HIDDEN"
+            },
+            "children": [
+              {
+                "title": "Target Coral Station",
+                "x": 672.0,
+                "y": 64.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Subsystems/Targeting/Target Coral Station",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              },
+              {
+                "title": "Target Reef Left",
+                "x": 672.0,
+                "y": 96.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Subsystems/Targeting/Target Reef Left",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              },
+              {
+                "title": "Target Reef Right",
+                "x": 672.0,
+                "y": 192.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Subsystems/Targeting/Target Reef Right",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              },
+              {
+                "title": "Target Nearest",
+                "x": 672.0,
+                "y": 352.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Subsystems/Targeting/Target Nearest",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              },
+              {
+                "title": "Target Processor",
+                "x": 672.0,
+                "y": 448.0,
+                "width": 256.0,
+                "height": 128.0,
+                "type": "Command",
+                "properties": {
+                  "topic": "/SmartDashboard/Subsystems/Targeting/Target Processor",
+                  "period": 0.06,
+                  "show_type": false
+                }
+              }
+            ]
           }
         ],
         "containers": [
