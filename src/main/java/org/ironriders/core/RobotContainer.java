@@ -26,6 +26,8 @@ import org.ironriders.dashboard.DashboardSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.lib.RobotUtils;
+import org.ironriders.targeting.TargetingCommands;
+import org.ironriders.targeting.TargetingSubsystem;
 import org.ironriders.elevator.ElevatorConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -58,6 +60,9 @@ public class RobotContainer {
 	public final DriveSubsystem driveSubsystem = new DriveSubsystem();
 	public final DriveCommands driveCommands = driveSubsystem.getCommands();
 
+	public final TargetingSubsystem targetingSubsystem = new TargetingSubsystem();
+	public final TargetingCommands targetingCommands = targetingSubsystem.getCommands();
+
 	public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 	public final ElevatorCommands elevatorCommands = elevatorSubsystem.getCommands();
 
@@ -82,7 +87,7 @@ public class RobotContainer {
 	private final CommandXboxController tertiaryController = new CommandXboxController(DriveConstants.TERTIARY_CONTROLLER_PORT);
 
 	public final RobotCommands robotCommands = new RobotCommands(
-			driveCommands, elevatorCommands, 
+			driveCommands, targetingCommands, elevatorCommands, 
 			coralWristCommands, coralIntakeCommands, 
 			algaeWristCommands, algaeIntakeCommands, 
 			primaryController.getHID());

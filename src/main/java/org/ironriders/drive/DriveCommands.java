@@ -15,6 +15,8 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import org.ironriders.lib.FieldUtils;
+import org.ironriders.lib.GameState;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -24,6 +26,8 @@ public class DriveCommands {
 
 	public DriveCommands(DriveSubsystem driveSubsystem) {
 		this.driveSubsystem = driveSubsystem;
+
+		this.driveSubsystem.publish("Drive to target", pathfindToTarget());
 	}
 
 	public Command drive(Supplier<Translation2d> translation, DoubleSupplier rotation, BooleanSupplier fieldRelative) {
@@ -132,5 +136,16 @@ public class DriveCommands {
 				DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
 				DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
 				DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
+	}
+
+	public Command pathfindToTarget() {
+		return driveSubsystem.runOnce(() -> {
+			var pose = GameState.getTargetRobotPose();
+			if (pose.isEmpty()) {
+				return;
+			}
+
+			pathfindToPose(pose.get().toPose2d()).schedule();
+		});
 	}
 }

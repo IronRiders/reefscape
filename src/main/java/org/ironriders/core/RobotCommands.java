@@ -10,6 +10,7 @@ import org.ironriders.coral.CoralWristCommands;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
+import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.drive.DriveConstants;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -27,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
  */
 public class RobotCommands {
 	private final DriveCommands driveCommands;
+	private final TargetingCommands targetingCommands;
 	private final ElevatorCommands elevatorCommands;
 	private final CoralWristCommands coralWristCommands;
 	private final CoralIntakeCommands coralIntakeCommands;
@@ -36,12 +38,14 @@ public class RobotCommands {
 
 	public RobotCommands(
 			DriveCommands driveCommands,
+			TargetingCommands targetingCommands,
 			ElevatorCommands elevatorCommands,
 			CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
 			AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
 			GenericHID controller) {
 
 		this.driveCommands = driveCommands;
+		this.targetingCommands = targetingCommands;
 		this.elevatorCommands = elevatorCommands;
 		this.coralWristCommands = coralWristCommands;
 		this.coralIntakeCommands = coralIntakeCommands;

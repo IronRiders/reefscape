@@ -33,11 +33,11 @@ public class FieldElement {
         LEFT_STATION(0, ElementType.STATION),
         RIGHT_STATION(1, ElementType.STATION),
         REEF_FRONT(2, ElementType.REEF),
-        REEF_LEFT_FRONT(3, ElementType.REEF),
-        REEF_LEFT_BACK(4, ElementType.REEF),
+        REEF_FRONT_LEFT(3, ElementType.REEF),
+        REEF_BACK_LEFT(4, ElementType.REEF),
         REEF_BACK(5, ElementType.REEF),
-        REEF_RIGHT_BACK(6, ElementType.REEF),
-        REEF_RIGHT_FRONT(7, ElementType.REEF),
+        REEF_BACK_RIGHT(6, ElementType.REEF),
+        REEF_FRONT_RIGHT(7, ElementType.REEF),
         PROCESSOR(8, ElementType.PROCESSOR),
         BARGE(9, ElementType.BARGE);
 
@@ -156,7 +156,7 @@ public class FieldElement {
             }
 
             double thisDistance = pose.getTranslation().getDistance(element.pose.toPose2d().getTranslation());
-            if (found.isEmpty() || distance < thisDistance) {
+            if (found.isEmpty() || distance > thisDistance) {
                 distance = thisDistance;
                 found = Optional.of(element);
             }
