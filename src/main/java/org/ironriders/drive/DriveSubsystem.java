@@ -1,17 +1,24 @@
 package org.ironriders.drive;
 
 import java.io.IOException;
+import java.util.Optional;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import org.ironriders.lib.FieldElement;
+import org.ironriders.lib.FieldPose;
+import org.ironriders.lib.IronSubsystem;
 import org.ironriders.vision.Vision;
 
 /**
@@ -19,12 +26,15 @@ import org.ironriders.vision.Vision;
  * function. It keeps track of the robot's position and angle, and uses the controller
  * input to figure out how the individual modules need to turn and be angled.
  */
-public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends IronSubsystem {
 
 	private DriveCommands commands;
 
 	private SwerveDrive swerveDrive;
 	private Vision vision;
+	private Optional<FieldElement> targetElement = Optional.empty();
+	private Pose2d poseAtTargetElement = new Pose2d();
+	private boolean targetNearestElement = true;
 
 	public DriveSubsystem() throws RuntimeException {
 		try {
@@ -68,6 +78,34 @@ public class DriveSubsystem extends SubsystemBase {
 	public void periodic() {
 		vision.updateAll();
 		vision.addPoseEstimates();
+		updateTargeting();
+	}
+
+	public void setTargetElement(FieldElement element) {
+		targetElement = Optional.of(element);
+		targetNearestElement = false;
+	}
+
+	public void setTargetNearest(boolean value) {
+		targetNearestElement = value;
+	}
+
+	private void updateTargeting() {
+		if (targetNearestElement) {
+			targetElement = FieldElement.nearestTo(swerveDrive.getPose());
+		}
+
+		if (targetElement.isEmpty()) {
+			return;
+		}
+
+		var pose = new FieldPose(targetElement.get()).toPose2d();
+		if (pose.equals(poseAtTargetElement)) {
+			return;
+		}
+
+		swerveDrive.field.getObject("Nearest").setPose(pose);
+		poseAtTargetElement = pose;
 	}
 
 	/**

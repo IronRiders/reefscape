@@ -7,6 +7,8 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.config.PIDConstants;
 
 public class DriveConstants {
+    public static final double ROBOT_WIDTH = 37; // Front-back
+    public static final double ROBOT_LENGTH = 37; // Side-side
 
     // Ports, IDs, Configs, etc.
     public static final int PRIMARY_CONTROLLER_PORT = 0;
