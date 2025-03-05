@@ -39,10 +39,9 @@ public abstract class WristSubsystem extends IronSubsystem {
     private final RelativeEncoder encoder;
     private final SparkMaxConfig motorConfig = new SparkMaxConfig();
 
-    private Optional<TrapezoidProfile.State> goalState = Optional.empty();
-    private TrapezoidProfile.State setPointState = new TrapezoidProfile.State();
-    private final TrapezoidProfile operationalProfile;
-    private TrapezoidProfile movementProfile;
+    private TrapezoidProfile.State goalSetpoint = new TrapezoidProfile.State();
+    private TrapezoidProfile.State periodicSetpoint = new TrapezoidProfile.State();
+    private final TrapezoidProfile movementProfile;
 
     private boolean isHomed = false;
     private final Angle homeAngle;
@@ -64,7 +63,7 @@ public abstract class WristSubsystem extends IronSubsystem {
         motor = new SparkMax(motorId, MotorType.kBrushless);
         this.gearRatio = gearRatio;
         this.pid = new PIDController(pid.p, pid.i, pid.d);
-        movementProfile = operationalProfile = new TrapezoidProfile(constraints);
+        movementProfile = new TrapezoidProfile(constraints);
         this.homeAngle = homeAngle;
         this.homeForward = homeForward;
         encoder = motor.getEncoder();
@@ -95,30 +94,37 @@ public abstract class WristSubsystem extends IronSubsystem {
 
     @Override
     public void periodic() {
-        double output = 0;
-        double goal = Double.NaN;
-
-        var currentDegrees = getCurrentAngle().in(Units.Degrees);
-
-        if (this.goalState.isEmpty()) {
-            motor.stopMotor();
-        } else if (this.goalLimit.isPresent() && this.goalLimit.get().isPressed()) {
-            this.reset();
-        } else {
-            setPointState = movementProfile.calculate(PERIOD, setPointState, goalState.get());
-            output = pid.calculate(currentDegrees, setPointState.position);
-            motor.set(output);
-            goal = goalState.get().position;
+        if (isHomed) {
+            setMotorLevel();
         }
         
         publish("Homed", isHomed);
-        publish("Rotation", currentDegrees);
-        publish("Output", output);
-        publish("Setpoint", motor.get());
-        publish("Goal", goal);
+        publish("Rotation", getCurrentAngle().in(Units.Degrees));
+        publish("Output", motor.get());
+        publish("Goal", goalSetpoint.position);
         publish("ForwardLimit", forwardLimit.isPressed());
         publish("ReverseLimit", reverseLimit.isPressed());
         publish("Current", motor.getOutputCurrent());
+    }
+
+    /**
+     * Update the periodic setpoint and set the motor level.
+     */
+    private void setMotorLevel() {
+        double output = 0;
+
+        var currentDegrees = getCurrentAngle().in(Units.Degrees);
+
+        // When moving toward goal, if we hit limit we can move no further.  Correct the goal
+        if (this.goalLimit.isPresent() && this.goalLimit.get().isPressed()) {
+            this.reset();
+            this.goalLimit = Optional.empty();
+        }
+
+        // Apply profile and PID to determine output level
+        periodicSetpoint = movementProfile.calculate(PERIOD, periodicSetpoint, goalSetpoint);
+        output = pid.calculate(currentDegrees, periodicSetpoint.position);
+        motor.set(output);
     }
 
     public void setGoal(Angle angle) {
@@ -129,8 +135,7 @@ public abstract class WristSubsystem extends IronSubsystem {
             return;
         }
 
-        movementProfile = operationalProfile;
-        goalState = Optional.of(new TrapezoidProfile.State(degrees, 0));
+        goalSetpoint = new TrapezoidProfile.State(degrees, 0);
 
         var currentAngle = getCurrentAngle();
         if (currentAngle.equals(angle)) {
@@ -146,15 +151,26 @@ public abstract class WristSubsystem extends IronSubsystem {
     }
 
     public void reset() {
-        goalState = Optional.empty();
+        var currentAngle = getCurrentAngle();
+
+        goalSetpoint = createSetpoint(currentAngle);
+        periodicSetpoint = createSetpoint(currentAngle);
+        
         goalLimit = Optional.empty();
-        setPointState.position = getCurrentAngle().in(Units.Degrees);
-        setPointState.velocity = 0;
+        
         pid.reset();
     }
 
     private Angle getCurrentAngle() {
         return Units.Degrees.of(encoder.getPosition() * 360 * gearRatio);
+    }
+
+    private TrapezoidProfile.State createSetpoint(Angle angle) {
+        return createSetpoint(angle, 0);
+    }
+
+    private TrapezoidProfile.State createSetpoint(Angle angle, double velocity) {
+        return new TrapezoidProfile.State(angle.in(Units.Degrees), velocity);
     }
 
     public boolean atPosition() {
@@ -175,11 +191,9 @@ public abstract class WristSubsystem extends IronSubsystem {
             isHomed = false;
         }
 
-        // If homed, return to home position
+        // If homed, leave wrist as is but update internal state
         if (isHomed) {
-            return Commands.runOnce(() -> {
-                reset();
-            });
+            return Commands.runOnce(this::reset);
         }
 
         SparkLimitSwitch limit;
@@ -231,8 +245,7 @@ public abstract class WristSubsystem extends IronSubsystem {
             encoder.setPosition(homeAngle.in(Units.Degrees) / 360 / gearRatio);
 
             // Update setpoint to match current position
-            this.setPointState.position = this.getCurrentAngle().in(Units.Degrees);
-            this.goalState = Optional.empty();
+            reset();
 
             isHomed = true;
             this.reportInfo("Homed");

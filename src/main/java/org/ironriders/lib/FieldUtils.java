@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class FieldUtils {
 
     public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
-    ;
 
     public static final int[] REEF_TAG_IDS_RED = { 17, 18, 19, 20, 21, 22 };
     public static final int[] REEF_TAG_IDS_BLUE = { 6, 7, 8, 9, 10, 11 };
