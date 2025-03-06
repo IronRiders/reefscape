@@ -158,7 +158,7 @@ public class RobotContainer {
 
 		// 5/6 - Target Station, 7/8 - Target Processor
 		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.STATION));
-		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.PROCESSOR));
+		secondaryController.button(7).onTrue(targetingCommands.targetNearest(ElementType.PROCESSOR));
 
 		// 11/12 - Climb Up, 13/14 - Climb Reset
 		secondaryController.button(11).onTrue(climbCommands.set(ClimbConstants.State.UP))

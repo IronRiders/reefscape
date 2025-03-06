@@ -29,7 +29,7 @@ public class TargetingCommands {
         return targetingSubsystem
             .runOnce(() -> {
                 targetingSubsystem.setTargetSlot(number);
-                targetingSubsystem.targetNearest(ElementType.REEF);
+                targetingSubsystem.targetNearest(ElementType.STATION);
             })
             .ignoringDisable(true);
     }
