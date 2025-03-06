@@ -87,13 +87,13 @@ public class DriveCommands {
 	}
 
 	public Command pathfindToTarget() {
-		return driveSubsystem.runOnce(() -> {
+		return driveSubsystem.defer(() -> {
 			var pose = GameState.getTargetRobotPose();
 			if (pose.isEmpty()) {
-				return;
+				return Commands.none();
 			}
 
-			pathfindToPose(pose.get().toPose2d()).schedule();
+			return pathfindToPose(pose.get().toPose2d());
 		});
 	}
 
