@@ -156,11 +156,10 @@ public class RobotContainer {
 		secondaryController.button(1).onTrue(coralWristCommands.home());
 		// 3 & 4 - elevator home
 		secondaryController.button(3).onTrue(elevatorCommands.home());
-
 		// 5 & 6 - intake
-		secondaryController.button(5).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB));
+		secondaryController.button(5).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB).andThen(algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB))).onFalse(coralIntakeCommands.set(CoralIntakeConstants.State.STOP).andThen(algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP)));
 		// 7 & 8 - processor
-		secondaryController.button(7).onTrue(targetingCommands.targetNearestAndDrive(org.ironriders.lib.field.FieldElement.ElementType.PROCESSOR));
+		secondaryController.button(7).onTrue(targetingCommands.targetNearest(org.ironriders.lib.field.FieldElement.ElementType.PROCESSOR).andThen(driveCommands.pathfindToTarget()));
 		// 9 & 10 - L4
 		secondaryController.button(9).onTrue(robotCommands.scoreCoral(Level.L4));
 		// 11 & 12 - Climb up

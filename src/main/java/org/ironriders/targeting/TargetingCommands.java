@@ -1,7 +1,6 @@
 package org.ironriders.targeting;
 
 import org.ironriders.drive.DriveCommands;
-import org.ironriders.drive.DriveSubsystem;
 import org.ironriders.lib.field.FieldElement.ElementType;
 import org.ironriders.lib.field.FieldPose.Side;
 
@@ -13,7 +12,6 @@ public class TargetingCommands {
 
     public TargetingCommands(TargetingSubsystem targetingSubsystem) {
         this.targetingSubsystem = targetingSubsystem;
-        this.driveCommands = driveCommands;
 
         this.targetingSubsystem.publish("Nearest", targetNearest());
 
@@ -58,12 +56,5 @@ public class TargetingCommands {
         return targetingSubsystem
             .runOnce(() -> targetingSubsystem.targetNearest(type))
             .ignoringDisable(true);
-    }
-
-    // TODO: I have no idea if this actualy works
-    public Command targetNearestAndDrive(ElementType type) {
-        return targetingSubsystem
-            .runOnce(() -> targetingSubsystem.targetNearest(type))
-            .andThen(() -> driveCommands.pathfindToTarget());
     }
 }
