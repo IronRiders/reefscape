@@ -8,9 +8,9 @@ public class ClimbConstants {
     public static final int CURRENT_LIMIT = 40;
     
     public enum State {
-        UP(-0.1),
+        UP(-0.3),
         STOP(0),
-        DOWN(0.1);
+        DOWN(0.3);
 
         public final double speed;
 

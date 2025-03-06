@@ -102,7 +102,7 @@ public class RobotContainer {
 			climbCommands,
 			primaryController.getHID());
 
-	private Command coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1);
+	private Command coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L4);
 
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -145,8 +145,7 @@ public class RobotContainer {
 								-primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
-		
-		// 1 & 2
+
 		primaryController.axisMagnitudeGreaterThan(
 			0, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
 		primaryController.axisMagnitudeGreaterThan(
@@ -255,8 +254,7 @@ public class RobotContainer {
 		//primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
 		//primaryController.b().onTrue(climbCommands.set(ClimbConstants.State.DOWN)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralPrepareCommand.schedule(); }));
-		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
+		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralCmd.schedule(); }));
 
 		//primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae());
 		//primaryController.leftBumper().onFalse(robotCommands.grabAlgae());

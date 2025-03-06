@@ -39,6 +39,8 @@ public class Vision {
     private SwerveDrive swerveDrive = null;
     private List<VisionCamera> cams = new ArrayList<>();
 
+    public boolean hasPose=false;
+    
     public Vision(SwerveDrive drive) {
         this.swerveDrive = drive;
         cams.add(new VisionCamera("frontLeft",
@@ -213,6 +215,7 @@ public class Vision {
             // }
 
             // return actual estimate if it gets through all that ^^^
+            hasPose=true;
             return Optional.of(pose);
         }
     }

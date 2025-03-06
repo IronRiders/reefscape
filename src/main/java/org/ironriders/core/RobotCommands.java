@@ -65,15 +65,14 @@ public class RobotCommands {
 		// this.prepareToScoreAlgae());
 		// NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
 
-		NamedCommands.registerCommand("Prepare to Score Coral L1",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L1));
-		NamedCommands.registerCommand("Prepare to Score Coral L2",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L2));
-		NamedCommands.registerCommand("Prepare to Score Coral L3",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L3));
-		NamedCommands.registerCommand("Prepare to Score Coral L4",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
-		NamedCommands.registerCommand("Score Coral", this.scoreCoral());
+		NamedCommands.registerCommand("Score Coral L1",
+				this.scoreCoral(ElevatorConstants.Level.L1));
+		NamedCommands.registerCommand("Score Coral L2",
+				this.scoreCoral(ElevatorConstants.Level.L2));
+		NamedCommands.registerCommand("Score Coral L3",
+				this.scoreCoral(ElevatorConstants.Level.L3));
+		NamedCommands.registerCommand("Score Coral L4",
+				this.scoreCoral(ElevatorConstants.Level.L4));
 
 		NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
 		NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
@@ -123,11 +122,8 @@ public class RobotCommands {
 		return driveCommands.jog(robotRelativeAngleDegrees);
 	}
 
-	public Command scoreCoralMiniauto(Command prepare) {
-		return Commands.sequence(
-				driveCommands.pathfindToTarget(),
-				prepare,
-				this.scoreCoral());
+	public Command scoreCoralMiniauto(Command scoreCmd) {
+		return driveCommands.pathfindToTarget().andThen(scoreCmd);
 	}
 
 	public Command rumble() {
@@ -157,21 +153,16 @@ public class RobotCommands {
 				algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
 	}
 
-	public Command prepareToScoreCoral(ElevatorConstants.Level level) {
-		return Commands.parallel(
-				elevatorCommands.set(level),
-				coralWristCommands.set(switch (level) {
-					case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
-					case L4 -> CoralWristConstants.State.L4;
-					default -> {
-						throw new IllegalArgumentException(
-								"Cannot score coral to level: " + level);
-					}
-				}));
-	}
-
-	public Command scoreCoral() {
+	public Command scoreCoral(ElevatorConstants.Level level) {
 		return Commands.sequence(
+			coralWristCommands.set(switch (level) {
+				case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
+				case L4 -> CoralWristConstants.State.L4;
+				default -> {
+					throw new IllegalArgumentException(
+							"Cannot score coral to level: " + level);
+				}
+			}),
 				coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
 				Commands.parallel(
 						coralWristCommands.set(CoralWristConstants.State.STOWED),
