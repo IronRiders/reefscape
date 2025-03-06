@@ -12,10 +12,11 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 public class ClimbSubsystem extends SubsystemBase {
 
-    public final SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
-    // finds the motor for the climber
-    private final SparkMax climbMotor = new SparkMax(ClimbConstants.CLIMBER_MOTOR, SparkLowLevel.MotorType.kBrushless); // TODO: ask if it's actually brushless
+    private final SparkMax climbMotor = new SparkMax(ClimbConstants.CLIMBER_MOTOR_CAN_ID, SparkLowLevel.MotorType.kBrushless);
+    private final SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
+
     private final ClimbCommands commands;
+
     public ClimbSubsystem() {
         climbMotorConfig // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
                 .smartCurrentLimit(12)
@@ -28,12 +29,10 @@ public class ClimbSubsystem extends SubsystemBase {
     }
 
     public void set(ClimbConstants.State state) {
-        climbMotor.set(state.getSpeed());
+        climbMotor.set(state.speed);
     }
 
-    //gets signaled to pull
-    //pulls
-
-    //zeros, then set a soft limit
-
+    public ClimbCommands getCommands() {
+        return commands;
+    }
 }

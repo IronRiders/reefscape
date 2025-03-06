@@ -1,4 +1,4 @@
-package org.ironriders.dashboard;
+package org.ironriders.dash;
 
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
