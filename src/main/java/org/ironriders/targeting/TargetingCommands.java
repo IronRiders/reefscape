@@ -1,7 +1,7 @@
 package org.ironriders.targeting;
 
-import org.ironriders.lib.FieldElement.ElementType;
-import org.ironriders.lib.FieldPose.Side;
+import org.ironriders.lib.field.FieldElement.ElementType;
+import org.ironriders.lib.field.FieldPose.Side;
 
 import edu.wpi.first.wpilibj2.command.Command;
 

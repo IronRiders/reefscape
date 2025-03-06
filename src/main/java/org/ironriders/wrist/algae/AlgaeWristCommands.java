@@ -1,6 +1,7 @@
-package org.ironriders.algae;
+package org.ironriders.wrist.algae;
 
-import org.ironriders.algae.AlgaeWristConstants.*;
+import org.ironriders.wrist.algae.AlgaeWristConstants.*;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AlgaeWristCommands extends Command {

@@ -1,4 +1,4 @@
-package org.ironriders.algae;
+package org.ironriders.wrist.algae;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.Units;

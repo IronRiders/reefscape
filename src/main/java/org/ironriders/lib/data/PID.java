@@ -1,4 +1,4 @@
-package org.ironriders.lib;
+package org.ironriders.lib.data;
 
 public class PID {
     public PID(double p) {

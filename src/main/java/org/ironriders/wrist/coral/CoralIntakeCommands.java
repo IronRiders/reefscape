@@ -1,10 +1,9 @@
-package org.ironriders.coral;
+package org.ironriders.wrist.coral;
 
-import org.ironriders.coral.CoralIntakeConstants.State;
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
+import static org.ironriders.wrist.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
 
-import static org.ironriders.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
-import static org.ironriders.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
-
+import org.ironriders.wrist.coral.CoralIntakeConstants.State;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;

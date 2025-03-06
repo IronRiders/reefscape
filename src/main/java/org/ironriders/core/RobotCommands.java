@@ -1,18 +1,20 @@
 package org.ironriders.core;
 
 import java.util.function.DoubleSupplier;
-import org.ironriders.coral.CoralIntakeConstants;
-import org.ironriders.coral.CoralWristConstants;
-import org.ironriders.algae.AlgaeIntakeCommands;
-import org.ironriders.algae.AlgaeWristCommands;
-import org.ironriders.coral.CoralIntakeCommands;
-import org.ironriders.coral.CoralWristCommands;
+
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
+import org.ironriders.lib.field.FieldElement.ElementType;
 import org.ironriders.targeting.TargetingCommands;
+import org.ironriders.wrist.algae.AlgaeIntakeCommands;
+import org.ironriders.wrist.algae.AlgaeWristCommands;
+import org.ironriders.wrist.coral.CoralIntakeCommands;
+import org.ironriders.wrist.coral.CoralIntakeConstants;
+import org.ironriders.wrist.coral.CoralWristCommands;
+import org.ironriders.wrist.coral.CoralWristConstants;
 import org.ironriders.drive.DriveConstants;
-import org.ironriders.lib.FieldElement.ElementType;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;

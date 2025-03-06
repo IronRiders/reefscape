@@ -3,6 +3,8 @@ package org.ironriders.lib;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.ironriders.lib.field.FieldPose;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 

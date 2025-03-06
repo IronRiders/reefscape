@@ -1,6 +1,7 @@
-package org.ironriders.coral;
+package org.ironriders.wrist.coral;
 
-import org.ironriders.coral.CoralWristConstants.*;
+import org.ironriders.wrist.coral.CoralWristConstants.*;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class CoralWristCommands {

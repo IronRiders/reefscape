@@ -10,18 +10,6 @@ import org.ironriders.drive.DriveSubsystem;
 
 import java.lang.ModuleLayer.Controller;
 
-import org.ironriders.algae.AlgaeIntakeCommands;
-import org.ironriders.algae.AlgaeIntakeSubsystem;
-import org.ironriders.algae.AlgaeWristCommands;
-import org.ironriders.algae.AlgaeWristConstants;
-import org.ironriders.algae.AlgaeWristSubsystem;
-import org.ironriders.algae.AlgaeWristConstants.State;
-import org.ironriders.coral.CoralIntakeCommands;
-import org.ironriders.coral.CoralIntakeConstants;
-import org.ironriders.coral.CoralIntakeSubsystem;
-import org.ironriders.coral.CoralWristCommands;
-import org.ironriders.coral.CoralWristConstants;
-import org.ironriders.coral.CoralWristSubsystem;
 import org.ironriders.dashboard.DashboardSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
@@ -36,6 +24,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 import org.ironriders.vision.Vision;
+import org.ironriders.wrist.algae.AlgaeIntakeCommands;
+import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
+import org.ironriders.wrist.algae.AlgaeWristCommands;
+import org.ironriders.wrist.algae.AlgaeWristConstants;
+import org.ironriders.wrist.algae.AlgaeWristSubsystem;
+import org.ironriders.wrist.algae.AlgaeWristConstants.State;
+import org.ironriders.wrist.coral.CoralIntakeCommands;
+import org.ironriders.wrist.coral.CoralIntakeConstants;
+import org.ironriders.wrist.coral.CoralIntakeSubsystem;
+import org.ironriders.wrist.coral.CoralWristCommands;
+import org.ironriders.wrist.coral.CoralWristConstants;
+import org.ironriders.wrist.coral.CoralWristSubsystem;
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;

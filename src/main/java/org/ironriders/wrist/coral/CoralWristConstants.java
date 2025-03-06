@@ -1,4 +1,4 @@
-package org.ironriders.coral;
+package org.ironriders.wrist.coral;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;

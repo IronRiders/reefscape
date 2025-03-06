@@ -1,4 +1,4 @@
-package org.ironriders.coral;
+package org.ironriders.wrist.coral;
 
 import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
@@ -10,10 +10,10 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import static org.ironriders.coral.CoralIntakeConstants.*;
+import static org.ironriders.wrist.coral.CoralIntakeConstants.*;
 
-import org.ironriders.coral.CoralIntakeConstants.State;
 import org.ironriders.lib.IronSubsystem;
+import org.ironriders.wrist.coral.CoralIntakeConstants.State;
 
 public class CoralIntakeSubsystem extends IronSubsystem {
 

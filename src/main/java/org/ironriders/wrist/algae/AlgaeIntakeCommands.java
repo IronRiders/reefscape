@@ -1,8 +1,9 @@
-package org.ironriders.algae;
+package org.ironriders.wrist.algae;
 
-import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
-import static org.ironriders.algae.AlgaeIntakeConstants.DISCHARGE_TIMEOUT;
-import static org.ironriders.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.DISCHARGE_TIMEOUT;
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
+
+import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;

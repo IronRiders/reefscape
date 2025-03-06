@@ -2,13 +2,13 @@ package org.ironriders.targeting;
 
 import java.util.Optional;
 
-import org.ironriders.lib.FieldElement;
-import org.ironriders.lib.FieldPose;
-import org.ironriders.lib.FieldPose.Level;
-import org.ironriders.lib.FieldPose.Side;
+import org.ironriders.lib.field.FieldElement;
+import org.ironriders.lib.field.FieldPose;
+import org.ironriders.lib.field.FieldElement.ElementType;
+import org.ironriders.lib.field.FieldPose.Level;
+import org.ironriders.lib.field.FieldPose.Side;
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.IronSubsystem;
-import org.ironriders.lib.FieldElement.ElementType;
 
 /**
  * Handles targeting of field elements for autonomous movement.

@@ -1,4 +1,4 @@
-package org.ironriders.algae;
+package org.ironriders.wrist.algae;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -8,10 +8,10 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import static org.ironriders.algae.AlgaeIntakeConstants.*;
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.*;
 
-import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.lib.IronSubsystem;
+import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 
 public class AlgaeIntakeSubsystem extends IronSubsystem {
 
