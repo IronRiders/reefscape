@@ -19,6 +19,7 @@ public class GameState {
     static private Supplier<Optional<FieldPose>> targetRobotPose = () -> Optional.empty();
 
     static private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1;
+    static private ElevatorConstants.Level algaeTarget = ElevatorConstants.Level.L2;
 
     private GameState() {}
 
@@ -52,5 +53,13 @@ public class GameState {
 
     public static void setCoralTarget(ElevatorConstants.Level coralTarget) {
         GameState.coralTarget = coralTarget;
+    }
+
+    public static ElevatorConstants.Level getAlgaeTarget() {
+        return algaeTarget;
+    }
+
+    public static void setAlgaeTarget(ElevatorConstants.Level algaeTarget) {
+        GameState.algaeTarget = algaeTarget;
     }
 }

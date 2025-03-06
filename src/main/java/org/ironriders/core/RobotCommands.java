@@ -122,10 +122,6 @@ public class RobotCommands {
 		return driveCommands.jog(robotRelativeAngleDegrees);
 	}
 
-	public Command scoreCoralMiniauto(ElevatorConstants.Level level) {
-		return driveCommands.pathfindToTarget().andThen(this.scoreCoral(level));
-	}
-
 	public Command rumble() {
 		return Commands.sequence(
 				Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 1)),
@@ -137,20 +133,6 @@ public class RobotCommands {
 	public Command toggleClimber() {
 		return Commands.none();
 		// TODO
-	}
-
-	public Command prepareToScoreAlgae() {
-		return Commands.parallel(
-				elevatorCommands.set(ElevatorConstants.Level.Down),
-				algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED));
-	}
-
-	public Command scoreAlgae() {
-		// TODO: option to grab coral in parallel
-		return Commands.sequence(
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP),
-				algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
 	}
 
 	public Command scoreCoral(ElevatorConstants.Level level) {
@@ -170,20 +152,6 @@ public class RobotCommands {
 						elevatorCommands.set(ElevatorConstants.Level.Down)));
 	}
 
-	public Command prepareToGrabAlgae(ElevatorConstants.Level level) {
-		return Commands.parallel(
-				elevatorCommands.set(level),
-				algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB));
-	}
-
-	public Command grabAlgae() {
-		return Commands.sequence(
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB),
-				algaeWristCommands.set(AlgaeWristConstants.State.STOWED),
-				this.rumble());
-	}
-
 	public Command prepareToGrabCoral() {
 		return Commands.sequence(
 				coralWristCommands.set(CoralWristConstants.State.STATION),
@@ -199,5 +167,27 @@ public class RobotCommands {
 				coralWristCommands.set(CoralWristConstants.State.STOWED),
 				this.rumble(),
 				elevatorCommands.set(ElevatorConstants.Level.Down));
+	}
+
+	public Command scoreAlgae() {
+		// TODO: option to grab coral in parallel
+		return Commands.sequence(
+				Commands.parallel(
+						elevatorCommands.set(ElevatorConstants.Level.Down),
+						algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED)),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP),
+				algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
+	}
+
+	public Command grabAlgae(ElevatorConstants.Level level) {
+		return Commands.sequence(
+				Commands.parallel(
+						elevatorCommands.set(level),
+						algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED),
+						algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB)),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB),
+				algaeWristCommands.set(AlgaeWristConstants.State.STOWED),
+				this.rumble());
 	}
 }
