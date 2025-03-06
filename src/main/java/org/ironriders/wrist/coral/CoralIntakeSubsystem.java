@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static org.ironriders.wrist.coral.CoralIntakeConstants.*;
 
+import org.ironriders.core.RobotCommands;
 import org.ironriders.lib.IronSubsystem;
 import org.ironriders.wrist.coral.CoralIntakeConstants.State;
 
@@ -47,6 +48,7 @@ public class CoralIntakeSubsystem extends IronSubsystem {
     public void setHasCoral(boolean hasCoral) {
         this.hasCoral = hasCoral;
     }
+
 
     public void set(State state) {
         coralMotor.set(state.getSpeed());

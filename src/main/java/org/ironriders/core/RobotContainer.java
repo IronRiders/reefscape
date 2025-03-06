@@ -69,6 +69,7 @@ public class RobotContainer {
 	public final CoralWristSubsystem coralWristSubsystem = new CoralWristSubsystem();
 	public final CoralWristCommands coralWristCommands = coralWristSubsystem.getCommands();
 
+	
 	public final CoralIntakeSubsystem coralIntakeSubsystem = new CoralIntakeSubsystem();
 	public final CoralIntakeCommands coralIntakeCommands = coralIntakeSubsystem.getCommands();
 
@@ -85,7 +86,6 @@ public class RobotContainer {
 	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
 	private final CommandXboxController tertiaryController = new CommandXboxController(DriveConstants.TERTIARY_CONTROLLER_PORT);
-
 	public final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, targetingCommands, elevatorCommands, 
 			coralWristCommands, coralIntakeCommands, 
