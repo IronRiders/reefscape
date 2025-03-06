@@ -163,6 +163,8 @@ public class RobotContainer {
 		// TESTING ELEVATOR COMMANDS
 		// primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
 		// primaryController.y().onTrue(climbCommands.set(ClimbConstants.State.DOWN));
+		primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
+		primaryController.b().onTrue(climbCommands.set(ClimbConstants.State.DOWN)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
 		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralCmd.schedule(); }));
 
