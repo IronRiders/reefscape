@@ -65,15 +65,14 @@ public class RobotCommands {
 		// this.prepareToScoreAlgae());
 		// NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
 
-		NamedCommands.registerCommand("Prepare to Score Coral L1",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L1));
-		NamedCommands.registerCommand("Prepare to Score Coral L2",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L2));
-		NamedCommands.registerCommand("Prepare to Score Coral L3",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L3));
-		NamedCommands.registerCommand("Prepare to Score Coral L4",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
-		NamedCommands.registerCommand("Score Coral", this.scoreCoral());
+		NamedCommands.registerCommand("Score Coral L1",
+				this.scoreCoral(ElevatorConstants.Level.L1));
+		NamedCommands.registerCommand("Score Coral L2",
+				this.scoreCoral(ElevatorConstants.Level.L2));
+		NamedCommands.registerCommand("Score Coral L3",
+				this.scoreCoral(ElevatorConstants.Level.L3));
+		NamedCommands.registerCommand("Score Coral L4",
+				this.scoreCoral(ElevatorConstants.Level.L4));
 
 		NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
 		NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
