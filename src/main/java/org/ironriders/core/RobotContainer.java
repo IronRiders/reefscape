@@ -155,7 +155,10 @@ public class RobotContainer {
 		// primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
 		// primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
+
+		// TESTING ELEVATOR COMMANDS
 		primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
+		primaryController.y().onTrue(climbCommands.set(ClimbConstants.State.DOWN));
 
 		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralPrepareCommand.schedule(); }));
 		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
