@@ -98,7 +98,7 @@ public class RobotContainer {
 			climbCommands,
 			primaryController.getHID());
 
-	private Command coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1);
+	private Command coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L4);
 
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
@@ -141,22 +141,18 @@ public class RobotContainer {
 								-primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
-		
-		// 1 & 2
+
 		primaryController.axisMagnitudeGreaterThan(
 			0, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
 		primaryController.axisMagnitudeGreaterThan(
 			1, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
 
-		primaryController.button(3).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToGrabCoral(); }));
+		// secondary controls
+		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L1); }));
+		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L2); }));
+		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L3); }));
+		secondaryController.button(4).onTrue(Commands.runOnce(() -> { coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L4); }));
 
-		primaryController.button(4).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.scoreCoral(); }));
-
-		// secondary controlss
-		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1); }));
-		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L2); }));
-		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L3); }));
-		secondaryController.button(4).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L4); }));
 		// secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
 		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
 
@@ -165,11 +161,12 @@ public class RobotContainer {
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
 		// TESTING ELEVATOR COMMANDS
+		// primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
+		// primaryController.y().onTrue(climbCommands.set(ClimbConstants.State.DOWN));
 		primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
 		primaryController.b().onTrue(climbCommands.set(ClimbConstants.State.DOWN)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralPrepareCommand.schedule(); }));
-		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
+		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralCmd.schedule(); }));
 
 		// primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae());
 		// primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
@@ -183,7 +180,7 @@ public class RobotContainer {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
 		}
 
-		primaryController.y().onTrue(Commands.runOnce(() -> robotCommands.scoreCoralMiniauto(coralPrepareCommand).schedule()));
+		primaryController.y().onTrue(Commands.runOnce(() -> { robotCommands.scoreCoralMiniauto(coralCmd).schedule(); }));
 	}
 
 	/**

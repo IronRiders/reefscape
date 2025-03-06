@@ -1,6 +1,7 @@
 package org.ironriders.wrist.algae;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.AngleUnit;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 
@@ -35,7 +36,7 @@ public class AlgaeWristConstants {
 
     public enum State { // max seems to be 40, min ~0
         STARTING(-1), // Starting position is beyond lower limit
-        STOWED(-90), // Computed home position (will hit limit)
+        STOWED(HOME_ANGLE.in(Units.Degrees) + 5), // Computed home position (will hit limit)
         EXTENDED(0);
 
         final Angle angle;

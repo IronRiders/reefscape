@@ -52,7 +52,7 @@ public class FieldPose {
 
         @Override
         protected Distance getYOffset() {
-            return REEF_POLE_SPACING.div(pole == Side.Left ? 2 : -2);
+            return this.pole == Side.Left ? Units.Inches.of(0) : REEF_POLE_SPACING;
         }
     }
     
