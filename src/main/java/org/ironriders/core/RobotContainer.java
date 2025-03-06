@@ -150,109 +150,47 @@ public class RobotContainer {
 		primaryController.axisMagnitudeGreaterThan(
 			1, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
 
-		// secondary controlss
+		// secondary controls
 
-		// 1 & 2
-		// coral home
-		//System.out.println("Homing coral");
-		//secondaryController.button(1).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.STOP));
+		// 1 & 2 - coral home
 		secondaryController.button(1).onTrue(coralWristCommands.home());
-		
-		// 3 & 4
-		// elevator home
-		//System.out.println("Homing elevator");
+		// 3 & 4 - elevator home
 		secondaryController.button(3).onTrue(elevatorCommands.home());
-
-		// 5 & 6
-		// intake
-		//System.out.println("Intaking coral");
+		// 5 & 6 - intake
 		secondaryController.button(5).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB));
-
-		// 7 & 8
-		// procesor
-		//System.out.println("Pathing to processor");
+		// 7 & 8 - processor
 		secondaryController.button(7).onTrue(targetingCommands.targetNearestAndDrive(org.ironriders.lib.field.FieldElement.ElementType.PROCESSOR));
-
-		// 9 & 10
-		// L4
-		//System.out.println("Elevator to L4");
+		// 9 & 10 - L4
 		secondaryController.button(9).onTrue(robotCommands.scoreCoral(Level.L4));
-
-		// 11 & 12
-		// Climb up
-		//System.out.println("Climbing up");
+		// 11 & 12 - Climb up
 		secondaryController.button(11).onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
-
-		// 13
-		// L3
-		//System.out.println("Elevator to L3");
+		// 13 - L3
 		secondaryController.button(13).onTrue(robotCommands.scoreCoral(Level.L3));
-
-		//14
-		// algae 2
-		// not shure if this is what drive wants this button to do
+		// 14 - algae 2
 		secondaryController.button(14).onTrue(robotCommands.prepareToGrabAlgae(Level.L4)).onFalse(robotCommands.grabAlgae());
-
-		// 15 & 16
-		// climber rst
-		//System.out.println("Reseting climber");
+		// 15 & 16 - climber rst
 		secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.DOWN)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
-
-		// 17
-		// coral L2
-		//System.out.println("Elevator to L2");
+		// 17 - coral L2
 		secondaryController.button(17).onTrue(robotCommands.scoreCoral(Level.L2));
-
-		// 18
-		// algae 1
+		// 18 - algae 1
 		secondaryController.button(18).onTrue(robotCommands.prepareToGrabAlgae(Level.L3)).onFalse(robotCommands.grabAlgae());
-
-		// 19
-		// eject coral
-		//System.out.println("Ejecting coral");
+		// 19 - eject coral
 		secondaryController.button(19).onTrue(coralIntakeCommands.set(org.ironriders.wrist.coral.CoralIntakeConstants.State.EJECT));
-
-		//20
-		// eject algae
-		//System.out.println("Ejecting algae");
+		// 20 - eject algae
 		secondaryController.button(20).onTrue(algaeIntakeCommands.set(State.EJECT));
-
-		// 21 & 22
-		// L1
-		//System.out.println("Elevator to L1");
+		// 21 & 22 - L1
 		secondaryController.button(21).onTrue(robotCommands.scoreCoral(Level.L1));
-
-		// 23
-		// l coral
-		//System.out.println("Targeting left coral pole");
+		// 23 - l coral
 		secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
-
-		//24
-		//r coral
-		//System.out.println("Targeting right coral pole");
+		// 24 - r coral
 		secondaryController.button(24).onTrue(targetingCommands.targetReefPole(Side.Right));
-
-
-
-
-		//secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1); }));
-		//secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L2); }));
-		//secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L3); }));
-		//secondaryController.button(4).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L4); }));
-		// secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
-		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
 
 		// various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
 		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
-		// TESTING ELEVATOR COMMANDS
-		// primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
-		// primaryController.y().onTrue(climbCommands.set(ClimbConstants.State.DOWN));
-		primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
-		primaryController.b().onTrue(climbCommands.set(ClimbConstants.State.DOWN)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
-
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { Commands.deferredProxy(() -> { return robotCommands.scoreCoral(GameState.getCoralTarget()); }); }));
+		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { 
+			Commands.deferredProxy(() -> { return robotCommands.scoreCoral(GameState.getCoralTarget()); }); }));
 
 		//primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae());
 		//primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
