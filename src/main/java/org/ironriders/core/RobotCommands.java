@@ -3,6 +3,7 @@ package org.ironriders.core;
 import java.util.function.DoubleSupplier;
 
 import org.ironriders.climb.ClimbCommands;
+import org.ironriders.climb.ClimbConstants;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
@@ -73,6 +74,9 @@ public class RobotCommands {
 		NamedCommands.registerCommand("Prepare to Score Coral L4",
 				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
 		NamedCommands.registerCommand("Score Coral", this.scoreCoral());
+
+        NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
+        NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
 
 		// NamedCommands.registerCommand("Prepare to Grab Algae",
 		// this.prepareToGrabAlgae());
