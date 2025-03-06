@@ -170,9 +170,18 @@ public class ElevatorSubsystem extends IronSubsystem {
         goalSetpoint = new TrapezoidProfile.State(MathUtil.clamp(inches, MIN_POSITION, MAX_POSITION), 0);
     }
 
+    public void setMotor(double set) {
+        primaryMotor.set(set);
+        pidController.reset();
+    }
+
     public void stopMotor() {
         primaryMotor.set(0);
         pidController.reset();
+    }
+
+    public SparkLimitSwitch getBottomLimitSwitch() {
+        return bottomLimitSwitch;
     }
 
     public void reset(){
@@ -203,33 +212,13 @@ public class ElevatorSubsystem extends IronSubsystem {
         return encoder.getPosition() * INCHES_PER_ROTATION;
     }
 
-    /**
-     * Record current position as home.  A little goofy to have this driven outside the subsystem but homing needs
-     * commands and our current command<->subsystem separation makes this necessary.
-     */
-    public void findHome() {
-        if (bottomLimitSwitch.isPressed()) {
-            primaryMotor.set(0);
-            encoder.setPosition(0);
-            isHomed = true;
-            System.out.println("ELEVATOR HOMED");
-            return;
-        }
-        else{
-            while(!bottomLimitSwitch.isPressed()){
-                primaryMotor.set(-1);
-            }
-            primaryMotor.set(0);
-            encoder.setPosition(0);
-            isHomed = true;
-            System.out.println("ELEVATOR HOMED");
-            return;
-        }
-    }
-
     public boolean isAtPosition(ElevatorConstants.Level level) {
         return pidController.atSetpoint() &&
                 Math.abs(getHeightInches() - level.positionInches) < 0.5;
+    }
+
+    public void reportHomed() {
+        isHomed = true;
     }
 
     public boolean isHomed() {

@@ -122,8 +122,8 @@ public class RobotCommands {
 		return driveCommands.jog(robotRelativeAngleDegrees);
 	}
 
-	public Command scoreCoralMiniauto(Command scoreCmd) {
-		return driveCommands.pathfindToTarget().andThen(scoreCmd);
+	public Command scoreCoralMiniauto(ElevatorConstants.Level level) {
+		return driveCommands.pathfindToTarget().andThen(this.scoreCoral(level));
 	}
 
 	public Command rumble() {
@@ -155,14 +155,15 @@ public class RobotCommands {
 
 	public Command scoreCoral(ElevatorConstants.Level level) {
 		return Commands.sequence(
-			coralWristCommands.set(switch (level) {
-				case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
-				case L4 -> CoralWristConstants.State.L4;
-				default -> {
-					throw new IllegalArgumentException(
-							"Cannot score coral to level: " + level);
-				}
-			}),
+				elevatorCommands.set(level),
+				coralWristCommands.set(switch (level) {
+					case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
+					case L4 -> CoralWristConstants.State.L4;
+					default -> {
+						throw new IllegalArgumentException(
+								"Cannot score coral to level: " + level);
+					}
+				}),
 				coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
 				Commands.parallel(
 						coralWristCommands.set(CoralWristConstants.State.STOWED),
@@ -191,8 +192,12 @@ public class RobotCommands {
 
 	public Command grabCoral() {
 		return Commands.sequence(
+				Commands.runOnce(() -> {
+					System.out.println("fpiojIOGDUY(*SDU)GGG_DSFG*DFHG)S(D*GDSG&*(G_SG&SD*(&G_SDUIYG)))");
+				}),
 				coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
 				coralWristCommands.set(CoralWristConstants.State.STOWED),
-				rumble());
+				this.rumble(),
+				elevatorCommands.set(ElevatorConstants.Level.Down));
 	}
 }

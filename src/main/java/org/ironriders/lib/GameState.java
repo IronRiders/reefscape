@@ -3,6 +3,7 @@ package org.ironriders.lib;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.lib.field.FieldPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,9 +13,12 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
  * Current robot state required by multiple subsystems.
  */
 public class GameState {
+
     static private Field2d field = new Field2d();
     static private Supplier<Optional<Pose2d>> robotPose = () -> Optional.empty();
     static private Supplier<Optional<FieldPose>> targetRobotPose = () -> Optional.empty();
+
+    static private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1;
 
     private GameState() {}
 
@@ -42,5 +46,11 @@ public class GameState {
         GameState.targetRobotPose = robotPose;
     }
 
-    
+    public static ElevatorConstants.Level getCoralTarget() {
+        return coralTarget;
+    }
+
+    public static void setCoralTarget(ElevatorConstants.Level coralTarget) {
+        GameState.coralTarget = coralTarget;
+    }
 }

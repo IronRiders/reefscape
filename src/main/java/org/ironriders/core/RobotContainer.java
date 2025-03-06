@@ -28,6 +28,7 @@ import org.ironriders.wrist.coral.CoralWristSubsystem;
 import org.ironriders.dash.DashboardSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
+import org.ironriders.lib.GameState;
 import org.ironriders.lib.RobotUtils;
 import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.targeting.TargetingSubsystem;
@@ -98,8 +99,6 @@ public class RobotContainer {
 			climbCommands,
 			primaryController.getHID());
 
-	private Command coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L4);
-
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
 	 */
@@ -148,10 +147,10 @@ public class RobotContainer {
 			1, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
 
 		// secondary controls
-		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L1); }));
-		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L2); }));
-		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L3); }));
-		secondaryController.button(4).onTrue(Commands.runOnce(() -> { coralCmd = robotCommands.scoreCoral(ElevatorConstants.Level.L4); }));
+		secondaryController.button(1).onTrue(Commands.runOnce(() -> { GameState.setCoralTarget(ElevatorConstants.Level.L1); }));
+		secondaryController.button(2).onTrue(Commands.runOnce(() -> { GameState.setCoralTarget(ElevatorConstants.Level.L2); }));
+		secondaryController.button(3).onTrue(Commands.runOnce(() -> { GameState.setCoralTarget(ElevatorConstants.Level.L3); }));
+		secondaryController.button(4).onTrue(Commands.runOnce(() -> { GameState.setCoralTarget(ElevatorConstants.Level.L4); }));
 
 		// secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
 		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
@@ -160,13 +159,10 @@ public class RobotContainer {
 		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
-		// TESTING ELEVATOR COMMANDS
 		// primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
-		// primaryController.y().onTrue(climbCommands.set(ClimbConstants.State.DOWN));
-		primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
-		primaryController.b().onTrue(climbCommands.set(ClimbConstants.State.DOWN)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
+		// primaryController.b().onTrue(climbCommands.set(ClimbConstants.State.DOWN)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralCmd.schedule(); }));
+		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { Commands.deferredProxy(() -> { return robotCommands.scoreCoral(GameState.getCoralTarget()); }); }));
 
 		// primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae());
 		// primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
@@ -180,7 +176,7 @@ public class RobotContainer {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
 		}
 
-		primaryController.y().onTrue(Commands.runOnce(() -> { robotCommands.scoreCoralMiniauto(coralCmd).schedule(); }));
+		primaryController.y().onTrue(Commands.deferredProxy(() -> { return robotCommands.scoreCoralMiniauto(GameState.getCoralTarget()); }));
 	}
 
 	/**
