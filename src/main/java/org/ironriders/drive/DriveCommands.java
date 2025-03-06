@@ -41,8 +41,10 @@ public class DriveCommands {
 		if (DriverStation.isAutonomous())
 			return Commands.none();
 
-		double invert = DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Blue
-			? 1 : -1;
+		double invert = DriverStation.getAlliance().isEmpty()
+				|| DriverStation.getAlliance().get() == DriverStation.Alliance.Blue
+						? 1
+						: -1;
 
 		return drive(
 				() -> new Translation2d(inputTranslationX.getAsDouble(), inputTranslationY.getAsDouble())
@@ -55,14 +57,14 @@ public class DriveCommands {
 	public Command jog(double robotRelativeAngleDegrees) {
 		// Note - PathFinder does not do well with small moves so we move manually
 
-		// Compute distance to travel (TODO - distance is slightly fictional without PID control)
+		// Compute distance to travel (TODO - distance is slightly fictional without PID
+		// control)
 		var distance = Units.inchesToMeters(DriveConstants.JOG_DISTANCE_INCHES);
 
 		// Compute velocity
 		var vector = new Translation2d(
-			distance,
-			Rotation2d.fromDegrees(robotRelativeAngleDegrees)
-		);
+				distance,
+				Rotation2d.fromDegrees(robotRelativeAngleDegrees));
 		var scale = Math.max(Math.abs(vector.getX()), Math.abs(vector.getY())) / DriveConstants.JOG_SPEED;
 		var velocity = vector.div(scale);
 
@@ -71,19 +73,21 @@ public class DriveCommands {
 			var startPosition = driveSubsystem.getPose().getTranslation();
 
 			driveTeleop(velocity::getX, velocity::getY, () -> 0, false)
-				.repeatedly()	
-				.until(() -> driveSubsystem.getPose().getTranslation().getDistance(startPosition) > distance
-				)
-				.schedule();
+					.repeatedly()
+					.until(() -> driveSubsystem.getPose().getTranslation().getDistance(startPosition) > distance)
+					.schedule();
 		});
 	}
 
 	public Command pathfindToPose(Pose2d targetPose) {
-		return AutoBuilder.pathfindToPose(targetPose, new PathConstraints(
-				DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-				DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
-				DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
-				DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
+		return driveSubsystem.defer(() -> {
+			driveSubsystem.pathfindCommand = AutoBuilder.pathfindToPose(targetPose, new PathConstraints(
+					DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+					DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
+					DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
+					DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
+			return driveSubsystem.pathfindCommand;
+		});
 	}
 
 	public Command pathfindToTarget() {
@@ -94,6 +98,14 @@ public class DriveCommands {
 			}
 
 			pathfindToPose(pose.get().toPose2d()).schedule();
+		});
+	}
+
+	public Command cancelPathfind() {
+		return driveSubsystem.runOnce(() -> {
+			if (driveSubsystem.pathfindCommand != null) {
+				driveSubsystem.pathfindCommand.cancel();
+			}
 		});
 	}
 }

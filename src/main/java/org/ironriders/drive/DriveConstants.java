@@ -15,6 +15,7 @@ public class DriveConstants {
     public static final int KEYPAD_CONTROLLER_PORT = 1;
     public static final int TERTIARY_CONTROLLER_PORT = 2;
 
+    public static final double PATHFIND_CANCEL_THRESHOLD = 0.3; // 0-1, controller input
 
     public static final File SWERVE_JSON_DIRECTORY = new File(Filesystem.getDeployDirectory(), "swerve");
 
