@@ -31,9 +31,10 @@ import edu.wpi.first.units.measure.Angle;
  */
 public abstract class WristSubsystem extends IronSubsystem {
 
-    private final double HOMING_SETPOINT = .1;
-    private final double HOMING_BACKOFF_SETPOINT = HOMING_SETPOINT / 2;
+    private final double HOMING_SPEED = .1;
+    private final double HOMING_BACKOFF_SETPOINT = HOMING_SPEED / 2;
     private final double PERIOD = .02;
+    private final Angle CRASH_BACKOFF = Units.Degrees.of(1);
 
     private final SparkMax motor;
     protected final PIDController pid;
@@ -51,7 +52,6 @@ public abstract class WristSubsystem extends IronSubsystem {
     private final boolean homeForward;
     private final SparkLimitSwitch reverseLimit;
     private final SparkLimitSwitch forwardLimit;
-    private Optional<SparkLimitSwitch> goalLimit = Optional.empty();
 
     public WristSubsystem(
         int motorId,
@@ -118,10 +118,21 @@ public abstract class WristSubsystem extends IronSubsystem {
 
         var currentDegrees = getCurrentAngle().in(Units.Degrees);
 
-        // When moving toward goal, if we hit limit we can move no further.  Correct the goal
-        if (this.goalLimit.isPresent() && this.goalLimit.get().isPressed()) {
-            this.reset();
-            this.goalLimit = Optional.empty();
+        // If we hit a limit, move off a bit so we can try to keep motor
+        // engaged without continually bouncing.  This will be iterative so
+        // the more we bounce, the more we back off.  Only back off if the
+        // backoff is past the goal because large bounces may push us further
+        // out of bounds 
+        if (this.forwardLimit.isPressed()) {
+            var backoffTo = getCurrentAngle().minus(CRASH_BACKOFF);
+            if (backoffTo.lt(Units.Degrees.of(goalSetpoint.position))) {
+                this.setGoal(backoffTo);
+            }
+        } else if (this.reverseLimit.isPressed()) {
+            var backoffTo = getCurrentAngle().plus(CRASH_BACKOFF);
+            if (backoffTo.gt(Units.Degrees.of(goalSetpoint.position))) {
+                this.setGoal(backoffTo);
+            }
         }
 
         // Apply profile and PID to determine output level
@@ -131,6 +142,8 @@ public abstract class WristSubsystem extends IronSubsystem {
     }
 
     public void setGoal(Angle angle) {
+        this.reportInfo("Goal set to " + angle.in(Units.Degrees) + " degrees");
+
         var degrees = angle.in(Units.Degrees);
 
         if (!isHomed) {
@@ -144,13 +157,6 @@ public abstract class WristSubsystem extends IronSubsystem {
         if (currentAngle.equals(angle)) {
             return;
         }
-        goalLimit = angle.equals(currentAngle)
-            ? Optional.empty()
-            : Optional.of(
-                angle.gt(currentAngle)
-                    ? forwardLimit
-                    : reverseLimit
-            );
     }
 
     public void reset() {
@@ -158,8 +164,6 @@ public abstract class WristSubsystem extends IronSubsystem {
 
         goalSetpoint = createSetpoint(currentAngle);
         periodicSetpoint = createSetpoint(currentAngle);
-        
-        goalLimit = Optional.empty();
         
         pid.reset();
     }
@@ -214,7 +218,7 @@ public abstract class WristSubsystem extends IronSubsystem {
         Command findHome = this.defer(
             () -> new Command() {
                 public void execute() {
-                    motor.set(HOMING_SETPOINT * direction);
+                    motor.set(HOMING_SPEED * direction);
                 }
 
                 public boolean isFinished() {
