@@ -89,6 +89,7 @@ public class RobotCommands {
 	 * limitations.
 	 */
 	public Command startup() {
+		coralIntakeCommands.setOnSuccess(()->rumble());
 		return coralWristCommands.home()
 				.andThen(algaeWristCommands.home())
 				.andThen(elevatorCommands.home());
