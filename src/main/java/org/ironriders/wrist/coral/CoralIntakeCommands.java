@@ -9,9 +9,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class CoralIntakeCommands {
+
     private final CoralIntakeSubsystem intake;
-    private Runnable onSucess;
-    
+    private Runnable onSuccess;
+
     public CoralIntakeCommands(CoralIntakeSubsystem intake) {
         this.intake = intake;
         intake.publish("Coral Intake Grab", set(State.GRAB));
@@ -26,8 +27,8 @@ public class CoralIntakeCommands {
                 return command
                         .andThen(Commands.race(
                                 Commands.waitUntil(() -> {
-                                    if(intake.getLimitSwitchTriggered()&&onSucess != null){
-                                        onSucess.run();
+                                    if (intake.getLimitSwitchTriggered() && onSuccess != null) {
+                                        onSuccess.run();
                                     }
                                     return intake.getLimitSwitchTriggered();
                                 }),
@@ -47,7 +48,8 @@ public class CoralIntakeCommands {
     public CoralIntakeSubsystem getCoralIntake() {
         return intake;
     }
-    public void setOnSuccess(Runnable onSucess){
-        this.onSucess=onSucess;
+
+    public void setOnSuccess(Runnable onSucess) {
+        this.onSuccess = onSucess;
     }
 }

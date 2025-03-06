@@ -4,13 +4,15 @@ import static org.ironriders.wrist.algae.AlgaeIntakeConstants.DISCHARGE_TIMEOUT;
 import static org.ironriders.wrist.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
 
 import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
+import org.ironriders.wrist.coral.CoralIntakeConstants.State;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AlgaeIntakeCommands {
+
     private final AlgaeIntakeSubsystem intake;
-    private Runnable onSucess;
+    private Runnable onSuccess;
 
     public AlgaeIntakeCommands(AlgaeIntakeSubsystem intake) {
         this.intake = intake;
@@ -27,8 +29,8 @@ public class AlgaeIntakeCommands {
                 return command
                         .andThen(Commands.race(
                                 Commands.waitUntil(() -> {
-                                    if(intake.getLimitSwitchTriggered() && onSucess !=null){
-                                        onSucess.run();
+                                    if (intake.getLimitSwitchTriggered() && onSuccess != null) {
+                                        onSuccess.run();
                                     }
                                     return intake.getLimitSwitchTriggered();
                                 }), 
@@ -49,7 +51,7 @@ public class AlgaeIntakeCommands {
         return intake;
     }
 
-    public void setOnSuccess(Runnable onSucess){
-        this.onSucess=onSucess;
+    public void setOnSuccess(Runnable onSucess) {
+        this.onSuccess = onSucess;
     }
 }

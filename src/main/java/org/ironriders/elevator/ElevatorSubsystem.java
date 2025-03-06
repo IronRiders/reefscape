@@ -215,6 +215,16 @@ public class ElevatorSubsystem extends IronSubsystem {
             System.out.println("ELEVATOR HOMED");
             return;
         }
+        else{
+            while(!bottomLimitSwitch.isPressed()){
+                primaryMotor.set(-1);
+            }
+            primaryMotor.set(0);
+            encoder.setPosition(0);
+            isHomed = true;
+            System.out.println("ELEVATOR HOMED");
+            return;
+        }
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {

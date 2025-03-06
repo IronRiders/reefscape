@@ -18,10 +18,9 @@ public class AlgaeWristConstants {
     public static final double t = 0.02;
     public static final double SPROCKET_RATIO=(13/12);
     public static final double GEAR_RATIO = 1.0 / 64.0 * SPROCKET_RATIO;
-    public static final Angle HOME_ANGLE = Units.Degrees.of(-53);
+    public static final Angle HOME_ANGLE = Units.Degrees.of(43.7 - 90.0);
     public static final double MAX_ACC = 90;
     public static final double MAX_VEL = 180;
-
 
     // public static final double ALGAEWRISTKS = 0.0; //The static gain in volts. //
     // Need to test

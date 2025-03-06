@@ -162,9 +162,8 @@ public class RobotContainer {
 		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
 
 		// various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
-		// primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
-		// primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
-
+		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
+		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
 		// TESTING ELEVATOR COMMANDS
 		primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
@@ -185,7 +184,7 @@ public class RobotContainer {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
 		}
 
-		primaryController.y().onTrue(Commands.runOnce(() -> { robotCommands.scoreCoralMiniauto(coralPrepareCommand).schedule(); }));
+		primaryController.y().onTrue(Commands.runOnce(() -> robotCommands.scoreCoralMiniauto(coralPrepareCommand).schedule()));
 	}
 
 	/**
