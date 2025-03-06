@@ -195,8 +195,8 @@ public class RobotContainer {
 		//primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae());
 		//primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
 
-		//primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
-		//primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
+		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
+		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
 		// Configure dpad as jog control.  wpilib exposes dpad as goofy "pov" values which are an angle; we create a
 		// trigger for each discrete 45-degree angle
