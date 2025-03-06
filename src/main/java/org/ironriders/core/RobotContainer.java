@@ -177,7 +177,7 @@ public class RobotContainer {
 		// 9 & 10
 		// L4
 		//System.out.println("Elevator to L4");
-		secondaryController.button(9).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L4); }));
+		secondaryController.button(9).onTrue(robotCommands.scoreCoral(Level.L4));
 
 		// 11 & 12
 		// Climb up
@@ -187,7 +187,7 @@ public class RobotContainer {
 		// 13
 		// L3
 		//System.out.println("Elevator to L3");
-		secondaryController.button(13).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L3); }));
+		secondaryController.button(13).onTrue(robotCommands.scoreCoral(Level.L3));
 
 		//14
 		// algae 2
@@ -202,7 +202,7 @@ public class RobotContainer {
 		// 17
 		// coral L2
 		//System.out.println("Elevator to L2");
-		secondaryController.button(17).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L2); }));
+		secondaryController.button(17).onTrue(robotCommands.scoreCoral(Level.L2));
 
 		// 18
 		// algae 1
@@ -221,7 +221,7 @@ public class RobotContainer {
 		// 21 & 22
 		// L1
 		//System.out.println("Elevator to L1");
-		secondaryController.button(21).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1); }));
+		secondaryController.button(21).onTrue(robotCommands.scoreCoral(Level.L1));
 
 		// 23
 		// l coral
@@ -246,9 +246,6 @@ public class RobotContainer {
 		// various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
 		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
-
-		// Run prepared command
-		primaryController.y().onTrue(Commands.runOnce(() -> robotCommands.scoreCoralMiniauto(coralPrepareCommand).schedule()));
 
 		// TESTING CLIMBER COMMANDS
 		//primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.STOP));
