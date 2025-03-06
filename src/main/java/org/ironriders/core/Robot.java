@@ -4,7 +4,10 @@
 
 package org.ironriders.core;
 
+import org.ironriders.dash.DashboardSubsystem;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -28,6 +31,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
+		SmartDashboard.putBoolean("All Homed", SmartDashboard.getBoolean("Subsystems/Elevator/Homed",false)&&SmartDashboard.getBoolean("Subsystems/AlgaeWrist/Homed",false)&&SmartDashboard.getBoolean("Subsystems/CoralWrist/Homed",false));
 	}
 
 	@Override
