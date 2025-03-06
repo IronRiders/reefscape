@@ -16,11 +16,10 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public ClimbSubsystem() {
         climbMotorConfig // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
-                .smartCurrentLimit(12)
-                // .voltageCompensation(ALGAE_INTAKE_COMPENSATED_VOLTAGE)
+                .smartCurrentLimit(ClimbConstants.CURRENT_LIMIT)
+                //.voltageCompensation(ClimbContstants.COMPENSATION)
                 .idleMode(IdleMode.kBrake);
         climbMotor.configure(climbMotorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-        // neo 1.1 for the motor
 
         commands = new ClimbCommands(this);
     }
