@@ -1,20 +1,20 @@
-package org.ironriders.coral;
+package org.ironriders.wrist.coral;
 
-import org.ironriders.coral.CoralIntakeConstants.State;
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
+import static org.ironriders.wrist.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
 
-import static org.ironriders.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
-import static org.ironriders.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
-
+import org.ironriders.wrist.coral.CoralIntakeConstants.State;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class CoralIntakeCommands {
+
     private final CoralIntakeSubsystem intake;
+    private Runnable onSuccess;
 
     public CoralIntakeCommands(CoralIntakeSubsystem intake) {
         this.intake = intake;
-
         intake.publish("Coral Intake Grab", set(State.GRAB));
         intake.publish("Coral Intake Eject", set(State.EJECT));
         intake.publish("Coral Intake Stop", set(State.STOP));
@@ -27,6 +27,9 @@ public class CoralIntakeCommands {
                 return command
                         .andThen(Commands.race(
                                 Commands.waitUntil(() -> {
+                                    if (intake.getLimitSwitchTriggered() && onSuccess != null) {
+                                        onSuccess.run();
+                                    }
                                     return intake.getLimitSwitchTriggered();
                                 }),
                                 Commands.waitSeconds(INTAKE_IMPATIENCE)))
@@ -44,5 +47,9 @@ public class CoralIntakeCommands {
 
     public CoralIntakeSubsystem getCoralIntake() {
         return intake;
+    }
+
+    public void setOnSuccess(Runnable onSucess) {
+        this.onSuccess = onSucess;
     }
 }

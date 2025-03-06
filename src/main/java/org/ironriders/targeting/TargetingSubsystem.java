@@ -2,25 +2,30 @@ package org.ironriders.targeting;
 
 import java.util.Optional;
 
-import org.ironriders.lib.FieldElement;
-import org.ironriders.lib.FieldPose;
-import org.ironriders.lib.FieldPose.Level;
-import org.ironriders.lib.FieldPose.Side;
+import org.ironriders.lib.field.FieldElement;
+import org.ironriders.lib.field.FieldPose;
+import org.ironriders.lib.field.FieldElement.ElementType;
+import org.ironriders.lib.field.FieldPose.Level;
+import org.ironriders.lib.field.FieldPose.Side;
+import org.ironriders.drive.DriveCommands;
+import org.ironriders.drive.DriveSubsystem;
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.IronSubsystem;
-import org.ironriders.lib.FieldElement.ElementType;
 
 /**
  * Handles targeting of field elements for autonomous movement.
  */
 public class TargetingSubsystem extends IronSubsystem {
+
 	private Optional<FieldElement> targetElement = Optional.empty();
 	private Optional<FieldPose> poseAtTargetElement = Optional.empty();
-	private boolean targetNearestElement = true;
 	private Optional<ElementType> targetElementType = Optional.empty();
-    private int targetSlot = FieldPose.STATION_SLOT_COUNT / 2;
-    private Side targetPole = Side.Left;
-    private Level targetLevel = Level.L1;
+
+	private boolean targetNearestElement = true;
+	private int targetSlot = FieldPose.STATION_SLOT_COUNT / 2;
+	
+	private Side targetPole = Side.Left;
+	private Level targetLevel = Level.L1;
 	private TargetingCommands commands;
 
 	public TargetingSubsystem() {
@@ -32,29 +37,29 @@ public class TargetingSubsystem extends IronSubsystem {
 		return commands;
 	}
 
-    public void setTargetSlot(int slot) {
-        targetSlot = slot;
-    }
+	public void setTargetSlot(int slot) {
+		targetSlot = slot;
+	}
 
-    public int getTargetSlot() {
-        return targetSlot;
-    }
+	public int getTargetSlot() {
+		return targetSlot;
+	}
 
-    public void setTargetPole(Side side) {
-        targetPole = side;
-    }
+	public void setTargetPole(Side side) {
+		targetPole = side;
+	}
 
-    public Side getTargetPole() {
-        return targetPole;
-    }
+	public Side getTargetPole() {
+		return targetPole;
+	}
 
-    public void setTargetLevel(Level level) {
-        targetLevel = level;
-    }
+	public void setTargetLevel(Level level) {
+		targetLevel = level;
+	}
 
-    public Level getActivelevel() {
-        return targetLevel;
-    }
+	public Level getActivelevel() {
+		return targetLevel;
+	}
 
 	public void targetNearest() {
 		targetNearestElement = true;
@@ -130,5 +135,5 @@ public class TargetingSubsystem extends IronSubsystem {
 		} else {
 			targetElement = FieldElement.nearestTo(robotPose.get());
 		}
-}
+	}
 }

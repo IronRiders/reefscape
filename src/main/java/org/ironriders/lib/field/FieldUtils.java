@@ -1,4 +1,4 @@
-package org.ironriders.lib;
+package org.ironriders.lib.field;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;

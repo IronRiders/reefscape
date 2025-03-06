@@ -1,10 +1,11 @@
-package org.ironriders.algae;
+package org.ironriders.wrist.algae;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import static org.ironriders.algae.AlgaeWristConstants.*;
 
-import org.ironriders.lib.PID;
-import org.ironriders.lib.WristSubsystem;
+import static org.ironriders.wrist.algae.AlgaeWristConstants.*;
+
+import org.ironriders.lib.data.PID;
+import org.ironriders.wrist.WristSubsystem;
 
 public class AlgaeWristSubsystem extends WristSubsystem {
     private final AlgaeWristCommands commands;

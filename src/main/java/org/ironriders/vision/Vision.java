@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.OptionalInt;
 
 import java.util.Optional;
-import org.ironriders.lib.FieldUtils;
+
+import org.ironriders.lib.field.FieldUtils;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -38,6 +39,8 @@ public class Vision {
     private SwerveDrive swerveDrive = null;
     private List<VisionCamera> cams = new ArrayList<>();
 
+    public boolean hasPose=false;
+    
     public Vision(SwerveDrive drive) {
         this.swerveDrive = drive;
         cams.add(new VisionCamera("frontLeft",
@@ -212,6 +215,7 @@ public class Vision {
             // }
 
             // return actual estimate if it gets through all that ^^^
+            hasPose=true;
             return Optional.of(pose);
         }
     }

@@ -1,10 +1,11 @@
-package org.ironriders.coral;
+package org.ironriders.wrist.coral;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import static org.ironriders.coral.CoralWristConstants.*;
 
-import org.ironriders.lib.PID;
-import org.ironriders.lib.WristSubsystem;
+import static org.ironriders.wrist.coral.CoralWristConstants.*;
+
+import org.ironriders.lib.data.PID;
+import org.ironriders.wrist.WristSubsystem;
 
 public class CoralWristSubsystem extends WristSubsystem {
     private final CoralWristCommands commands;
