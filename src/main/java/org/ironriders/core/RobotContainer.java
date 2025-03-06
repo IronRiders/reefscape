@@ -4,13 +4,28 @@
 
 package org.ironriders.core;
 
-import org.ironriders.dash.DashboardSubsystem;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
 
 import java.lang.ModuleLayer.Controller;
 
+import org.ironriders.wrist.algae.AlgaeIntakeCommands;
+import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
+import org.ironriders.wrist.algae.AlgaeWristCommands;
+import org.ironriders.wrist.algae.AlgaeWristConstants;
+import org.ironriders.wrist.algae.AlgaeWristSubsystem;
+import org.ironriders.wrist.algae.AlgaeWristConstants.State;
+import org.ironriders.climb.ClimbCommands;
+import org.ironriders.climb.ClimbSubsystem;
+import org.ironriders.climb.ClimbConstants;
+import org.ironriders.wrist.coral.CoralIntakeCommands;
+import org.ironriders.wrist.coral.CoralIntakeConstants;
+import org.ironriders.wrist.coral.CoralIntakeSubsystem;
+import org.ironriders.wrist.coral.CoralWristCommands;
+import org.ironriders.wrist.coral.CoralWristConstants;
+import org.ironriders.wrist.coral.CoralWristSubsystem;
+import org.ironriders.dash.DashboardSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.lib.RobotUtils;
@@ -22,24 +37,14 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+
 import org.ironriders.vision.Vision;
-import org.ironriders.wrist.algae.AlgaeIntakeCommands;
-import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
-import org.ironriders.wrist.algae.AlgaeWristCommands;
-import org.ironriders.wrist.algae.AlgaeWristConstants;
-import org.ironriders.wrist.algae.AlgaeWristSubsystem;
-import org.ironriders.wrist.algae.AlgaeWristConstants.State;
-import org.ironriders.wrist.coral.CoralIntakeCommands;
-import org.ironriders.wrist.coral.CoralIntakeConstants;
-import org.ironriders.wrist.coral.CoralIntakeSubsystem;
-import org.ironriders.wrist.coral.CoralWristCommands;
-import org.ironriders.wrist.coral.CoralWristConstants;
-import org.ironriders.wrist.coral.CoralWristSubsystem;
-import org.ironriders.climb.*;
 import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+//import edu.wpi.*;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -73,26 +78,24 @@ public class RobotContainer {
 	public final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
 	public final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
 
-	public final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
-	public final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
+	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
+	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
 
-	public final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
-	public final ClimbCommands climbCommands = climbSubsystem.getCommands();
+	private final DashboardSubsystem dashboardSubsystem = new DashboardSubsystem();
+	
+	private final ClimbCommands climbCommands = new ClimbSubsystem().getCommands();
 
-	public final DashboardSubsystem dashboardSubsystem = new DashboardSubsystem();
+	private final SendableChooser<Command> autoChooser;
 
-	public final SendableChooser<Command> autoChooser;
-
-	private final CommandXboxController primaryController = new CommandXboxController(
-			DriveConstants.PRIMARY_CONTROLLER_PORT);
+	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
-	private final CommandXboxController tertiaryController = new CommandXboxController(
-			DriveConstants.TERTIARY_CONTROLLER_PORT);
+	private final CommandXboxController tertiaryController = new CommandXboxController(DriveConstants.TERTIARY_CONTROLLER_PORT);
 
 	public final RobotCommands robotCommands = new RobotCommands(
-			driveCommands, targetingCommands, elevatorCommands,
-			coralWristCommands, coralIntakeCommands,
+			driveCommands, targetingCommands, elevatorCommands, 
+			coralWristCommands, coralIntakeCommands, 
 			algaeWristCommands, algaeIntakeCommands,
+			climbCommands,
 			primaryController.getHID());
 
 	private Command coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1);
@@ -140,32 +143,21 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
 		// secondary controls
-		secondaryController.button(1).onTrue(Commands.runOnce(() -> {
-			coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1);
-		}));
-		secondaryController.button(2).onTrue(Commands.runOnce(() -> {
-			coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L2);
-		}));
-		secondaryController.button(3).onTrue(Commands.runOnce(() -> {
-			coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L3);
-		}));
-		secondaryController.button(4).onTrue(Commands.runOnce(() -> {
-			coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L4);
-		}));
+		secondaryController.button(1).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L1); }));
+		secondaryController.button(2).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L2); }));
+		secondaryController.button(3).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L3); }));
+		secondaryController.button(4).onTrue(Commands.runOnce(() -> { coralPrepareCommand = robotCommands.prepareToScoreCoral(ElevatorConstants.Level.L4); }));
 
-		// secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget =
-		// ElevatorConstants.Level.L3; }));
-		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget =
-		// ElevatorConstants.Level.L4; }));
+		// secondaryController.button(4).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L3; }));
+		// secondaryController.button(6).onTrue(Commands.runOnce(() -> { algaeTarget = ElevatorConstants.Level.L4; }));
 
-		// various scoring controls and such (bumper for coral, trigger for algae,
-		// rightside for score, lefside for grab)
+		// various scoring controls and such (bumper for coral, trigger for algae, rightside for score, lefside for grab)
 		// primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
 		// primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
-			coralPrepareCommand.schedule();
-		}));
+		primaryController.x().onTrue(climbCommands.set(ClimbConstants.State.UP)).onFalse(climbCommands.set(ClimbConstants.State.DOWN));
+
+		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> { coralPrepareCommand.schedule(); }));
 		primaryController.rightTrigger().onFalse(robotCommands.scoreCoral());
 
 		// primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae());
@@ -174,16 +166,13 @@ public class RobotContainer {
 		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
-		// Configure dpad as jog control. wpilib exposes dpad as goofy "pov" values
-		// which are an angle; we create a
+		// Configure dpad as jog control.  wpilib exposes dpad as goofy "pov" values which are an angle; we create a
 		// trigger for each discrete 45-degree angle
-		for (var angle = 0; angle < 360; angle += 45) {
+		for (var angle = 0; angle < 360; angle+= 45) {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
 		}
 
-		primaryController.y().onTrue(Commands.runOnce(() -> {
-			robotCommands.scoreCoralMiniauto(coralPrepareCommand).schedule();
-		}));
+		primaryController.y().onTrue(Commands.runOnce(() -> { robotCommands.scoreCoralMiniauto(coralPrepareCommand).schedule(); }));
 	}
 
 	/**
