@@ -18,14 +18,14 @@ public class AlgaeIntakeConstants {
     public static final int INTAKE_IMPATIENCE = 1; // how much time to wait for the limit switch before
                                                    // stopping the motor anyway
 
-    public enum AlgaeIntakeState {
+    public enum State {
         GRAB(1),
         EJECT(-1),
         STOP(0);
 
         private final double speed;
 
-        AlgaeIntakeState(double speed) {
+        State(double speed) {
             this.speed = speed;
         }
 
