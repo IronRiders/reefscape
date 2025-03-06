@@ -1,6 +1,5 @@
 package org.ironriders.drive;
 
-import java.util.OptionalInt;
 import java.util.function.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -9,14 +8,11 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import org.ironriders.lib.GameState;
-import org.ironriders.lib.field.FieldUtils;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 

@@ -7,6 +7,7 @@ public class ClimbConstants {
     
     public enum State {
         UP(0.1),
+        STOP(0),
         DOWN(-0.1);
 
         public final double speed;

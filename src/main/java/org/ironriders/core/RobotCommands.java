@@ -2,6 +2,8 @@ package org.ironriders.core;
 
 import java.util.function.DoubleSupplier;
 
+import org.ironriders.climb.ClimbCommands;
+import org.ironriders.climb.ClimbConstants;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
@@ -36,6 +38,7 @@ public class RobotCommands {
 	private final CoralIntakeCommands coralIntakeCommands;
 	private final AlgaeWristCommands algaeWristCommands;
 	private final AlgaeIntakeCommands algaeIntakeCommands;
+	private final ClimbCommands climbCommands;
 	private final GenericHID controller;
 
 	public RobotCommands(
@@ -44,6 +47,7 @@ public class RobotCommands {
 			ElevatorCommands elevatorCommands,
 			CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
 			AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
+			ClimbCommands climbCommands, 
 			GenericHID controller) {
 
 		this.driveCommands = driveCommands;
@@ -53,6 +57,7 @@ public class RobotCommands {
 		this.coralIntakeCommands = coralIntakeCommands;
 		this.algaeWristCommands = algaeWristCommands;
 		this.algaeIntakeCommands = algaeIntakeCommands;
+		this.climbCommands = climbCommands;
 		this.controller = controller;
 
 		// register named commands
@@ -69,6 +74,9 @@ public class RobotCommands {
 		NamedCommands.registerCommand("Prepare to Score Coral L4",
 				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
 		NamedCommands.registerCommand("Score Coral", this.scoreCoral());
+
+        NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
+        NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
 
 		// NamedCommands.registerCommand("Prepare to Grab Algae",
 		// this.prepareToGrabAlgae());
@@ -87,6 +95,7 @@ public class RobotCommands {
 	 * limitations.
 	 */
 	public Command startup() {
+		coralIntakeCommands.setOnSuccess(()->rumble());
 		return coralWristCommands.home()
 				.andThen(algaeWristCommands.home())
 				.andThen(elevatorCommands.home());
