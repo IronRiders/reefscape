@@ -37,6 +37,7 @@ public class RobotCommands {
 	private final CoralIntakeCommands coralIntakeCommands;
 	private final AlgaeWristCommands algaeWristCommands;
 	private final AlgaeIntakeCommands algaeIntakeCommands;
+	private final ClimbCommands climbCommands;
 	private final GenericHID controller;
 
 	public RobotCommands(
@@ -55,6 +56,7 @@ public class RobotCommands {
 		this.coralIntakeCommands = coralIntakeCommands;
 		this.algaeWristCommands = algaeWristCommands;
 		this.algaeIntakeCommands = algaeIntakeCommands;
+		this.climbCommands = climbCommands;
 		this.controller = controller;
 
 		// register named commands
