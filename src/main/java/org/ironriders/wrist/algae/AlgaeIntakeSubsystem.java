@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import static org.ironriders.wrist.algae.AlgaeIntakeConstants.*;
 
 import org.ironriders.lib.IronSubsystem;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
+import org.ironriders.wrist.algae.AlgaeIntakeConstants.State;
 
 public class AlgaeIntakeSubsystem extends IronSubsystem {
 
@@ -50,7 +50,7 @@ public class AlgaeIntakeSubsystem extends IronSubsystem {
         this.hasAlgae = hasAlgae;
     }
 
-    public void set(AlgaeIntakeState state) {
+    public void set(State state) {
         algaeLeftMotor.set(state.getSpeed());
         algaeRightMotor.set(-state.getSpeed());
 
@@ -67,7 +67,7 @@ public class AlgaeIntakeSubsystem extends IronSubsystem {
     }
 
     public void reset() {
-        set(AlgaeIntakeState.STOP);
+        set(State.STOP);
     }
 
     public AlgaeIntakeCommands getCommands() {

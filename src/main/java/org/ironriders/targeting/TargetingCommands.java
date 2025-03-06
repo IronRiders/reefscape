@@ -1,5 +1,7 @@
 package org.ironriders.targeting;
 
+import org.ironriders.drive.DriveCommands;
+import org.ironriders.drive.DriveSubsystem;
 import org.ironriders.lib.field.FieldElement.ElementType;
 import org.ironriders.lib.field.FieldPose.Side;
 
@@ -7,9 +9,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class TargetingCommands {
     private TargetingSubsystem targetingSubsystem;
+    private DriveCommands driveCommands;
 
     public TargetingCommands(TargetingSubsystem targetingSubsystem) {
         this.targetingSubsystem = targetingSubsystem;
+        this.driveCommands = driveCommands;
 
         this.targetingSubsystem.publish("Nearest", targetNearest());
 
@@ -33,6 +37,10 @@ public class TargetingCommands {
     }
 
     public Command targetReefPole(Side side) {
+
+        //System.out.println("Targeting" + side + "side");
+        System.out.println("gufgfjfhf");
+
         return targetingSubsystem
             .runOnce(() -> {
                 targetingSubsystem.setTargetPole(side);
@@ -51,5 +59,12 @@ public class TargetingCommands {
         return targetingSubsystem
             .runOnce(() -> targetingSubsystem.targetNearest(type))
             .ignoringDisable(true);
+    }
+
+    // TODO: I have no idea if this actualy works
+    public Command targetNearestAndDrive(ElementType type) {
+        return targetingSubsystem
+            .runOnce(() -> targetingSubsystem.targetNearest(type))
+            .andThen(() -> driveCommands.pathfindToTarget());
     }
 }

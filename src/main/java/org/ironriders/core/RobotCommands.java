@@ -152,8 +152,8 @@ public class RobotCommands {
 	public Command scoreAlgae() {
 		// TODO: option to grab coral in parallel
 		return Commands.sequence(
-				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.EJECT),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP),
 				algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
 	}
 
@@ -182,12 +182,12 @@ public class RobotCommands {
 		return Commands.parallel(
 				elevatorCommands.set(level),
 				algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB));
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB));
 	}
 
 	public Command grabAlgae() {
 		return Commands.sequence(
-				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB),
 				algaeWristCommands.set(AlgaeWristConstants.State.STOWED),
 				this.rumble());
 	}
