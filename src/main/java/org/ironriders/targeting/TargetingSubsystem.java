@@ -16,11 +16,14 @@ import org.ironriders.lib.IronSubsystem;
  * Handles targeting of field elements for autonomous movement.
  */
 public class TargetingSubsystem extends IronSubsystem {
+
 	private Optional<FieldElement> targetElement = Optional.empty();
 	private Optional<FieldPose> poseAtTargetElement = Optional.empty();
-	private boolean targetNearestElement = true;
 	private Optional<ElementType> targetElementType = Optional.empty();
+
+	private boolean targetNearestElement = true;
 	private int targetSlot = FieldPose.STATION_SLOT_COUNT / 2;
+	
 	private Side targetPole = Side.Left;
 	private Level targetLevel = Level.L1;
 	private TargetingCommands commands;

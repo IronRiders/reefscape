@@ -156,6 +156,7 @@ public class RobotContainer {
 		secondaryController.button(1).onTrue(coralWristCommands.home());
 		// 3 & 4 - elevator home
 		secondaryController.button(3).onTrue(elevatorCommands.home());
+
 		// 5 & 6 - intake
 		secondaryController.button(5).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB));
 		// 7 & 8 - processor
