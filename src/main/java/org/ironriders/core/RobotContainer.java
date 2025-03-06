@@ -7,10 +7,6 @@ package org.ironriders.core;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
-
-import java.lang.ModuleLayer.Controller;
-import java.lang.annotation.ElementType;
-
 import org.ironriders.wrist.algae.AlgaeIntakeCommands;
 import org.ironriders.wrist.algae.AlgaeIntakeConstants;
 import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
@@ -33,6 +29,7 @@ import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.elevator.ElevatorConstants.Level;
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.RobotUtils;
+import org.ironriders.lib.field.FieldElement.ElementType;
 import org.ironriders.lib.field.FieldPose.Side;
 import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.targeting.TargetingSubsystem;
@@ -131,7 +128,8 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		// drive controls based on cubic function-ified joystick values
+
+		// DRIVE CONTROLS
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> RobotUtils.controlCurve(
@@ -152,79 +150,82 @@ public class RobotContainer {
 		primaryController.axisMagnitudeGreaterThan(
 				1, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
 
-		// secondary controls
+		// SECONDARY CONTROLS
 
-		// 1 & 2 - coral home
+		// 1/2 - Coral Home, 3/4 - Elevator Home
 		secondaryController.button(1).onTrue(coralWristCommands.home());
-		// 3 & 4 - elevator home
 		secondaryController.button(3).onTrue(elevatorCommands.home());
-		// 5 & 6 - intake
-		secondaryController.button(5)
-				.onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.GRAB)
-						.andThen(algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB)))
-				.onFalse(coralIntakeCommands.set(CoralIntakeConstants.State.STOP)
-						.andThen(algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP)));
-		// 7 & 8 - processor
-		secondaryController.button(7)
-				.onTrue(targetingCommands.targetNearest(org.ironriders.lib.field.FieldElement.ElementType.PROCESSOR)
-						.andThen(driveCommands.pathfindToTarget()));
-		// 9 & 10 - L4
-		secondaryController.button(9).onTrue(robotCommands.scoreCoral(Level.L4));
-		// 11 & 12 - Climb up
+
+		// 5/6 - Target Station, 7/8 - Target Processor
+		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.STATION));
+		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.PROCESSOR));
+
+		// 11/12 - Climb Up, 13/14 - Climb Reset
 		secondaryController.button(11).onTrue(climbCommands.set(ClimbConstants.State.UP))
 				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
-		// 13 - L3
-		secondaryController.button(13).onTrue(robotCommands.scoreCoral(Level.L3));
-		// 14 - algae 2
-		secondaryController.button(14).onTrue(robotCommands.prepareToGrabAlgae(Level.L4))
-				.onFalse(robotCommands.grabAlgae());
-		// 15 & 16 - climber rst
 		secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.DOWN))
 				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
-		// 17 - coral L2
-		secondaryController.button(17).onTrue(robotCommands.scoreCoral(Level.L2));
-		// 18 - algae 1
-		secondaryController.button(18).onTrue(robotCommands.prepareToGrabAlgae(Level.L3))
-				.onFalse(robotCommands.grabAlgae());
-		// 19 - eject coral
-		secondaryController.button(19)
-				.onTrue(coralIntakeCommands.set(org.ironriders.wrist.coral.CoralIntakeConstants.State.EJECT));
-		// 20 - eject algae
-		secondaryController.button(20).onTrue(algaeIntakeCommands.set(State.EJECT));
-		// 21 & 22 - L1
-		secondaryController.button(21).onTrue(robotCommands.scoreCoral(Level.L1));
-		// 23 - l coral
+
+		// 9/10 - L4, 13 - L3, 17 - L2, 21/22 - L1
+		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
+			Commands.runOnce(() -> {
+				GameState.setCoralTarget(ElevatorConstants.Level.L4);
+			}); }));
+		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
+			Commands.runOnce(() -> {
+				GameState.setCoralTarget(ElevatorConstants.Level.L3);
+			}); }));
+		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
+			Commands.runOnce(() -> {
+				GameState.setCoralTarget(ElevatorConstants.Level.L2);
+			}); }));
+		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
+			Commands.runOnce(() -> {
+				GameState.setCoralTarget(ElevatorConstants.Level.L1);
+			}); }));
+
+		// 14 - Algae High, 18 - Algae Low
+		secondaryController.button(14).onTrue(Commands.runOnce(() -> {
+			Commands.runOnce(() -> {
+				GameState.setAlgaeTarget(ElevatorConstants.Level.L3);
+			}); }));
+		secondaryController.button(14).onTrue(Commands.runOnce(() -> {
+			Commands.runOnce(() -> {
+				GameState.setAlgaeTarget(ElevatorConstants.Level.L2);
+			}); }));
+
+		// 23 - Coral Left, 24 - Coral Right
 		secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
-		// 24 - r coral
 		secondaryController.button(24).onTrue(targetingCommands.targetReefPole(Side.Right));
 
-		// various scoring controls and such (bumper for coral, trigger for algae,
-		// rightside for score, lefside for grab)
-		primaryController.rightBumper().onTrue(robotCommands.prepareToScoreAlgae());
+		// 19 - Eject Coral, 20 - Eject Algae
+		secondaryController.button(19).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
+		secondaryController.button(20).onTrue(algaeIntakeCommands.set(State.EJECT));
+
+		// PRIMARY CONTROLS
+		
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
 		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
+			Commands.deferredProxy(() -> {
+				return robotCommands.grabAlgae(GameState.getAlgaeTarget());
+			});
+		}));
+
+		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
+		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
+
+		primaryController.leftBumper().onTrue(Commands.runOnce(() -> {
 			Commands.deferredProxy(() -> {
 				return robotCommands.scoreCoral(GameState.getCoralTarget());
 			});
 		}));
 
-		// primaryController.leftBumper().onTrue(robotCommands.prepareToGrabAlgae());
-		// primaryController.leftBumper().onFalse(robotCommands.grabAlgae());
-
-		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
-		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
-
 		// Configure dpad as jog control. wpilib exposes dpad as goofy "pov" values
-		// which are an angle; we create a
-		// trigger for each discrete 45-degree angle
+		// which are an angle; we create a trigger for each discrete 45-degree angle
 		for (var angle = 0; angle < 360; angle += 45) {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
 		}
-
-		primaryController.y().onTrue(Commands.deferredProxy(() -> {
-			return robotCommands.scoreCoralMiniauto(GameState.getCoralTarget());
-		}));
 	}
 
 	/**
