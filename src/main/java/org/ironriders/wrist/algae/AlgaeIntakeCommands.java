@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AlgaeIntakeCommands {
     private final AlgaeIntakeSubsystem intake;
+    private Runnable onSucess;
 
     public AlgaeIntakeCommands(AlgaeIntakeSubsystem intake) {
         this.intake = intake;
@@ -26,8 +27,11 @@ public class AlgaeIntakeCommands {
                 return command
                         .andThen(Commands.race(
                                 Commands.waitUntil(() -> {
+                                    if(intake.getLimitSwitchTriggered() && onSucess !=null){
+                                        onSucess.run();
+                                    }
                                     return intake.getLimitSwitchTriggered();
-                                }),
+                                }), 
                                 Commands.waitSeconds(INTAKE_IMPATIENCE)))
                         .finallyDo(() -> intake.set(AlgaeIntakeState.STOP));
             case EJECT:
@@ -43,5 +47,9 @@ public class AlgaeIntakeCommands {
 
     public AlgaeIntakeSubsystem getAlgaeIntake() {
         return intake;
+    }
+
+    public void setOnSuccess(Runnable onSucess){
+        this.onSucess=onSucess;
     }
 }
