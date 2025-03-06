@@ -1,5 +1,7 @@
 package org.ironriders.climb;
 
+import org.ironriders.climb.ClimbConstants.State;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -16,7 +18,6 @@ public class ClimbCommands {
     
     public Command set(ClimbConstants.State state) {
         return climb
-                .runOnce(() -> climb.set(state))
-                .withTimeout(ClimbConstants.LIFT_TIME);
+                .runOnce(() -> climb.set(State.UP));
     }
 }

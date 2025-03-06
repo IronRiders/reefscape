@@ -2,6 +2,7 @@ package org.ironriders.core;
 
 import java.util.function.DoubleSupplier;
 
+import org.ironriders.climb.ClimbCommands;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
@@ -44,6 +45,7 @@ public class RobotCommands {
 			ElevatorCommands elevatorCommands,
 			CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
 			AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
+			ClimbCommands climbCommands, 
 			GenericHID controller) {
 
 		this.driveCommands = driveCommands;
