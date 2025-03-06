@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class CoralIntakeCommands {
     private final CoralIntakeSubsystem intake;
     private Runnable onSucess;
+    
     public CoralIntakeCommands(CoralIntakeSubsystem intake) {
         this.intake = intake;
         intake.publish("Coral Intake Grab", set(State.GRAB));
