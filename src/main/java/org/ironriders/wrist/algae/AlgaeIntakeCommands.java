@@ -33,7 +33,7 @@ public class AlgaeIntakeCommands {
                                         onSuccess.run();
                                     }
                                     return intake.getLimitSwitchTriggered();
-                                }),
+                                }), 
                                 Commands.waitSeconds(INTAKE_IMPATIENCE)))
                         .finallyDo(() -> intake.set(AlgaeIntakeState.STOP));
             case EJECT:
