@@ -9,7 +9,6 @@ import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.config.LimitSwitchConfig;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.units.Units;
@@ -114,25 +113,8 @@ public abstract class RelativeWristSubsystem extends WristSubsystem {
                 this.setGoal(backoffTo);
             }
         }
-    }
 
-    public void setGoal(Angle angle) {
-        this.reportInfo("Goal set to " + angle.in(Units.Degrees) + "° (currently " + this.getCurrentAngle().in(Units.Degrees) + "°)");
-        Thread.dumpStack();
-
-        var degrees = angle.in(Units.Degrees);
-
-        if (!isHomed) {
-            DriverStation.reportError("Blocking unhomed movement attempted for " + this.getClass().getSimpleName(), false); 
-            return;
-        }
-
-        goalSetpoint = new TrapezoidProfile.State(degrees, 0);
-
-        var currentAngle = getCurrentAngle();
-        if (currentAngle.equals(angle)) {
-            return;
-        }
+        super.setMotorLevel();
     }
 
     @Override

@@ -13,7 +13,7 @@ public class AlgaeWristConstants {
 
     // Need to tune
     public static final double P = 0.01;
-    public static final double I = 0.00;
+    public static final double I = 0.01;
     public static final double D = 0.0;
     
     public static final double t = 0.02;

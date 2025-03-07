@@ -98,10 +98,7 @@ public class RobotCommands {
 		algaeIntakeCommands.setOnSuccess(() -> rumble());
 		return coralWristCommands.home()
 				.andThen(algaeWristCommands.home())
-				
-				// The algae wrist should not be extended when we don't need it
-				//.andThen(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED))
-				
+				.andThen(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED))
 				.andThen(elevatorCommands.home());
 	}
 
