@@ -98,7 +98,6 @@ public class RobotCommands {
 		algaeIntakeCommands.setOnSuccess(() -> rumble());
 		return coralWristCommands.home()
 				.andThen(algaeWristCommands.home())
-				.andThen(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED))
 				.andThen(elevatorCommands.home());
 	}
 
@@ -138,6 +137,7 @@ public class RobotCommands {
 
 	public Command scoreCoral(ElevatorConstants.Level level) {
 		return Commands.sequence(
+				// Move to correct scoring level if not already there
 				elevatorCommands.set(level),
 				coralWristCommands.set(switch (level) {
 					case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
@@ -147,20 +147,25 @@ public class RobotCommands {
 								"Cannot score coral to level: " + level);
 					}
 				}),
+				// Eject
 				coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
+				// Reset positioning after scoring
 				Commands.parallel(
 						coralWristCommands.set(CoralWristConstants.State.STOWED),
 						elevatorCommands.set(ElevatorConstants.Level.Down)));
 	}
 
 	public Command prepareToGrabCoral() {
-		return Commands.parallel(
+		return Commands.sequence(
 				coralWristCommands.set(CoralWristConstants.State.STATION),
 				elevatorCommands.set(ElevatorConstants.Level.CoralStation));
 	}
 
 	public Command grabCoral() {
 		return Commands.sequence(
+				Commands.runOnce(() -> {
+					System.out.println("fpiojIOGDUY(*SDU)GGG_DSFG*DFHG)S(D*GDSG&*(G_SG&SD*(&G_SDUIYG)))");
+				}),
 				coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
 				coralWristCommands.set(CoralWristConstants.State.STOWED),
 				this.rumble(),

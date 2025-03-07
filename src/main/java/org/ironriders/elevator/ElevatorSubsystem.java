@@ -213,12 +213,12 @@ public class ElevatorSubsystem extends IronSubsystem {
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {
-        return Math.abs(getHeightInches() - level.positionInches) < 0.5;
+        return pidController.atSetpoint() &&
+                Math.abs(getHeightInches() - level.positionInches) < 0.5;
     }
 
     public void reportHomed() {
         isHomed = true;
-        encoder.setPosition(0); // reset
     }
 
     public boolean isHomed() {

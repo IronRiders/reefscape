@@ -20,7 +20,7 @@ public class DriveConstants {
     public static final File SWERVE_JSON_DIRECTORY = new File(Filesystem.getDeployDirectory(), "swerve");
 
     public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController(
-            new PIDConstants(10.0, 0.05, 0.0), // Translation PID
+            new PIDConstants(12.0, 0.2, 0.0), // Translation PID
             new PIDConstants(10.0, 0.2, 0.0) // Rotation PID
     );
 
@@ -32,10 +32,10 @@ public class DriveConstants {
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 3.0; // m/s
 
-    public static final double SWERVE_MAXIMUM_SPEED_AUTO = 1.0; // m/s
+    public static final double SWERVE_MAXIMUM_SPEED_AUTO = .25; // m/s
     public static final double SWERVE_MAXIMUM_ACCELERATION_AUTO = SWERVE_MAXIMUM_SPEED_AUTO / 2; // m/s^2
     public static final double SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO = 10; // rad/s
-    public static final double SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO = SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO / 2; // rad/s^2
+    public static final double SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO = 5; // rad/s^2
 
     public static final double JOG_DISTANCE_INCHES = 1;
     public static final double JOG_SPEED = .25;
