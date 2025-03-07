@@ -46,6 +46,13 @@
       "/SmartDashboard/Subsystems/Targeting/Reef Left Pole": "Command",
       "/SmartDashboard/Subsystems/Targeting/Reef Right Pole": "Command",
       "/SmartDashboard/Swerve Drive": "Alerts"
+    },
+    "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
@@ -57,5 +64,23 @@
   },
   "NetworkTables Info": {
     "visible": true
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "backgroundColor": [
+            0.0,
+            0.0,
+            0.0,
+            0.8500000238418579
+          ],
+          "height": 338
+        }
+      ],
+      "window": {
+        "visible": false
+      }
+    }
   }
 }
