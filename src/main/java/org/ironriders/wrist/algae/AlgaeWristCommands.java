@@ -3,7 +3,6 @@ package org.ironriders.wrist.algae;
 import org.ironriders.wrist.algae.AlgaeWristConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AlgaeWristCommands extends Command {
     private final AlgaeWristSubsystem algaeWrist;
@@ -17,7 +16,7 @@ public class AlgaeWristCommands extends Command {
     }
 
     public Command home() {
-        return algaeWrist.homeCmd().andThen(Commands.waitUntil(() -> { return algaeWrist.atPosition(); }));
+        return algaeWrist.homeCmd().andThen(set(State.STOWED));
     }
 
     public Command set(State state) {
