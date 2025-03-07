@@ -185,14 +185,14 @@ public class RobotContainer {
 			}); }));
 
 		// 14 - Algae High, 18 - Algae Low
-		secondaryController.button(14).onTrue(Commands.runOnce(() -> {
-			Commands.runOnce(() -> {
-				GameState.setAlgaeTarget(ElevatorConstants.Level.L3);
-			}); }));
-		secondaryController.button(14).onTrue(Commands.runOnce(() -> {
-			Commands.runOnce(() -> {
-				GameState.setAlgaeTarget(ElevatorConstants.Level.L2);
-			}); }));
+		//secondaryController.button(14).onTrue(Commands.runOnce(() -> {
+		//	Commands.runOnce(() -> {
+		//		GameState.setAlgaeTarget(ElevatorConstants.Level.L3);
+		//	}); }));
+		//secondaryController.button(18).onTrue(Commands.runOnce(() -> {
+		//	Commands.runOnce(() -> {
+		//		GameState.setAlgaeTarget(ElevatorConstants.Level.L2);
+		//	}); }));
 
 		// 23 - Coral Left, 24 - Coral Right
 		secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
