@@ -1,0 +1,63 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Prep L4"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Blue Start - Blue Front Left Reef"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score Coral"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Blue Front Left Reef - Blue Left Human"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Prep Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Coral"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Basic Autos",
+  "choreoAuto": false
+}
