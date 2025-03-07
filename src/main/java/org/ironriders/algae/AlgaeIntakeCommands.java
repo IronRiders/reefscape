@@ -1,7 +1,6 @@
 package org.ironriders.algae;
 
 import org.ironriders.algae.AlgaeIntakeConstants.AlgaeIntakeState;
-import com.pathplanner.lib.auto.NamedCommands;
 import static org.ironriders.algae.AlgaeIntakeConstants.DISCHARGE_TIMEOUT;
 import static org.ironriders.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
 
@@ -13,10 +12,10 @@ public class AlgaeIntakeCommands {
 
     public AlgaeIntakeCommands(AlgaeIntakeSubsystem intake) {
         this.intake = intake;
-        NamedCommands.registerCommand("Algae Intake Grab", set(AlgaeIntakeState.GRAB));
-        NamedCommands.registerCommand("Algae Intake Eject", set(AlgaeIntakeState.EJECT));
-        NamedCommands.registerCommand("Algae Intake Stop", set(AlgaeIntakeState.STOP));
 
+        intake.publish("Algae Intake Grab", set(AlgaeIntakeState.GRAB));
+        intake.publish("Algae Intake Eject", set(AlgaeIntakeState.EJECT));
+        intake.publish("Algae Intake Stop", set(AlgaeIntakeState.STOP));
     }
 
     public Command set(AlgaeIntakeConstants.AlgaeIntakeState state) {

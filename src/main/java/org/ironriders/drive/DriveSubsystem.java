@@ -15,9 +15,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.vision.Vision;
 
 /**
- * The SwerveSubsystem encompasses everything that the Swerve Drive needs to
- * function.
- * It keeps track of the robot's position and angle, and uses the controller
+ * The DriveSubsystem encompasses everything that the Swerve Drive needs to
+ * function. It keeps track of the robot's position and angle, and uses the controller
  * input to figure out how the individual modules need to turn and be angled.
  */
 public class DriveSubsystem extends SubsystemBase {
@@ -27,16 +26,16 @@ public class DriveSubsystem extends SubsystemBase {
 	private SwerveDrive swerveDrive;
 	private Vision vision;
 
-	public DriveSubsystem(Vision vision) throws RuntimeException {
+	public DriveSubsystem() throws RuntimeException {
 		try {
-			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
-																					// directory.
-					.createSwerveDrive(DriveConstants.SWERVE_MAXIMUM_SPEED_TELEOP);
+			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
+					.createSwerveDrive(DriveConstants.SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
 		}
 
 		commands = new DriveCommands(this);
+		this.vision = new Vision(swerveDrive);
 
 		swerveDrive.setHeadingCorrection(false);
 		SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -67,7 +66,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		vision.addPoseEstimate(swerveDrive);
+		vision.updateAll();
+		vision.addPoseEstimates();
 	}
 
 	/**
@@ -96,6 +96,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public Vision getVision() {
 		return vision;
+	}
+
+	public Pose2d getPose() {
+		return this.swerveDrive.getPose();
 	}
 
 	/** Resets the Odemetry to the current position */

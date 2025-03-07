@@ -1,6 +1,9 @@
-package org.ironriders.core;
+package org.ironriders.lib;
 
-public class Utils {
+/**
+ * Utility class to encourage the robot's dangerous math addiction.
+ */
+public class RobotUtils {
 
     /**
      * Applies a control curve (currently just an exponential function)
