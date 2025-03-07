@@ -20,7 +20,7 @@ public class DriveConstants {
     public static final File SWERVE_JSON_DIRECTORY = new File(Filesystem.getDeployDirectory(), "swerve");
 
     public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController(
-            new PIDConstants(12.0, 0.2, 0.0), // Translation PID
+            new PIDConstants(10.0, 0.05, 0.0), // Translation PID
             new PIDConstants(10.0, 0.2, 0.0) // Rotation PID
     );
 

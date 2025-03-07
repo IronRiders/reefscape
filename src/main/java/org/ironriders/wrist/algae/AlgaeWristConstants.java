@@ -13,9 +13,10 @@ public class AlgaeWristConstants {
     public static final int ALGAEWRISTMOTOR = 14;
 
     // Need to tune
-    public static final double P = 0.05;
-    public static final double I = 0.05;
+    public static final double P = 0.01;
+    public static final double I = 0.00;
     public static final double D = 0.0;
+    
     public static final double t = 0.02;
     public static final double SPROCKET_RATIO=(13/12);
     public static final double GEAR_RATIO = 1.0 / 64.0 * SPROCKET_RATIO;

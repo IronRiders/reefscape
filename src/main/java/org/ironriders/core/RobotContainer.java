@@ -167,24 +167,24 @@ public class RobotContainer {
 				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
 		// 9/10 - L4, 13/14 - L3 & AH, 17/18 - L2 & AL, 21/22 - L1
-		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
+		secondaryController.button(9).onTrue(
 			Commands.runOnce(() -> {
 				GameState.setCoralTarget(ElevatorConstants.Level.L4);
-			}); }));
-		secondaryController.button(13).onTrue(Commands.runOnce(() -> {
+			}));
+		secondaryController.button(13).onTrue(
 			Commands.runOnce(() -> {
 				GameState.setCoralTarget(ElevatorConstants.Level.L3);
 				GameState.setAlgaeTarget(ElevatorConstants.Level.L3);
-			}); }));
-		secondaryController.button(17).onTrue(Commands.runOnce(() -> {
+			}));
+		secondaryController.button(17).onTrue(
 			Commands.runOnce(() -> {
 				GameState.setCoralTarget(ElevatorConstants.Level.L2);
 				GameState.setAlgaeTarget(ElevatorConstants.Level.L2);
-			}); }));
-		secondaryController.button(21).onTrue(Commands.runOnce(() -> {
+			}));
+		secondaryController.button(21).onTrue(
 			Commands.runOnce(() -> {
 				GameState.setCoralTarget(ElevatorConstants.Level.L1);
-			}); }));
+			}));
 
 		// 23 - Coral Left, 24 - Coral Right
 		secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
@@ -198,7 +198,7 @@ public class RobotContainer {
 		
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
+		primaryController.leftBumper().onTrue(Commands.runOnce(() -> {
 			Commands.deferredProxy(() -> {
 				return robotCommands.grabAlgae(GameState.getAlgaeTarget());
 			});
@@ -207,10 +207,8 @@ public class RobotContainer {
 		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
-		primaryController.leftBumper().onTrue(Commands.runOnce(() -> {
-			Commands.deferredProxy(() -> {
-				return robotCommands.scoreCoral(GameState.getCoralTarget());
-			});
+		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
+			robotCommands.scoreCoral(GameState.getCoralTarget()).schedule();
 		}));
 
 		primaryController.y().onTrue(driveCommands.pathfindToTarget());

@@ -98,6 +98,7 @@ public class RobotCommands {
 		algaeIntakeCommands.setOnSuccess(() -> rumble());
 		return coralWristCommands.home()
 				.andThen(algaeWristCommands.home())
+				.andThen(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED))
 				.andThen(elevatorCommands.home());
 	}
 
@@ -153,16 +154,13 @@ public class RobotCommands {
 	}
 
 	public Command prepareToGrabCoral() {
-		return Commands.sequence(
+		return Commands.parallel(
 				coralWristCommands.set(CoralWristConstants.State.STATION),
 				elevatorCommands.set(ElevatorConstants.Level.CoralStation));
 	}
 
 	public Command grabCoral() {
 		return Commands.sequence(
-				Commands.runOnce(() -> {
-					System.out.println("fpiojIOGDUY(*SDU)GGG_DSFG*DFHG)S(D*GDSG&*(G_SG&SD*(&G_SDUIYG)))");
-				}),
 				coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
 				coralWristCommands.set(CoralWristConstants.State.STOWED),
 				this.rumble(),

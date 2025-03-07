@@ -25,8 +25,8 @@ public class ElevatorCommands {
         return elevatorSubsystem.runOnce(() -> {
             elevatorSubsystem.setPositionInches(level.positionInches);
         })
-                .until(() -> elevatorSubsystem.isAtPosition(level))
                 .andThen(Commands.waitUntil(() -> { return elevatorSubsystem.isAtPosition(level); }))
+                .andThen(elevatorSubsystem.runOnce(() -> { System.out.println("I AM GGOING TO BLORNK MUYSELF"); }))
                 .handleInterrupt(elevatorSubsystem::reset);
     }
 
@@ -38,7 +38,7 @@ public class ElevatorCommands {
 
         elevatorSubsystem.reportInfo("Homing");
 
-        Command findHome = elevatorSubsystem.defer(
+        return elevatorSubsystem.defer(
             () -> new Command() {
                 public void execute() {
                     elevatorSubsystem.setMotor(-0.1);
@@ -50,29 +50,10 @@ public class ElevatorCommands {
 
                 public void end(boolean interrupted) {
                     elevatorSubsystem.stopMotor();
-                }
-            }
-        );
-
-        Command moveOffHome = elevatorSubsystem.defer(
-            () -> new Command() {
-                public void execute() {
-                    elevatorSubsystem.setMotor(0.1);
-                }
-
-                public boolean isFinished() {
-                    return !elevatorSubsystem.getBottomLimitSwitch().isPressed();
-                }
-
-                public void end(boolean interrupted) {
-                    elevatorSubsystem.stopMotor();
                     elevatorSubsystem.reportHomed();
                 }
             }
         );
-
-        // Drive elevator homing
-        return findHome.andThen(moveOffHome);
     }
 
     public Command reset(){

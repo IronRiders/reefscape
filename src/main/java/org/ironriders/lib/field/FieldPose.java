@@ -57,7 +57,7 @@ public class FieldPose {
 
         @Override
         protected Distance getXOffset() {
-            return super.getXOffset().plus(Units.Inches.of(3));
+            return super.getXOffset().plus(Units.Inches.of(-7));
         }
     }
     
@@ -65,7 +65,7 @@ public class FieldPose {
     static final Distance CORAL_INTAKE_OFFSET = Units.Inches.of(7);
     static final Distance STATION_SLOT_SPACING = Units.Inches.of(8);
     static public final int STATION_SLOT_COUNT = 9;
-    static final Distance REEF_POLE_SPACING = Units.Inches.of(12.94);
+    static final Distance REEF_POLE_SPACING = Units.Inches.of(-12.94);
 
     /**
      * The element targeted.
