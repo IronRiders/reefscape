@@ -16,7 +16,7 @@ public class AlgaeWristCommands extends Command {
     }
 
     public Command home() {
-        return algaeWrist.homeCmd().andThen(set(State.STOWED));
+        return algaeWrist.homeCmd();
     }
 
     public Command set(State state) {
