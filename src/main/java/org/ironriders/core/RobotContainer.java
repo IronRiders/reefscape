@@ -215,6 +215,9 @@ public class RobotContainer {
 		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
 
+		primaryController.a().onTrue(driveCommands.pathfindToTarget());
+		primaryController.x().onTrue(driveCommands.cancelPathfind());
+
 		primaryController.leftBumper().onTrue(Commands.runOnce(() -> {
 			Commands.deferredProxy(() -> {
 				return robotCommands.scoreCoral(GameState.getCoralTarget());

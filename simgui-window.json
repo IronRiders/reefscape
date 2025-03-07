@@ -6,16 +6,21 @@
     "GLOBAL": {
       "font": "Proggy Dotted",
       "fps": "120",
-      "height": "720",
+      "height": "583",
       "maximized": "0",
       "style": "0",
       "userScale": "2",
-      "width": "1280",
-      "xpos": "638",
-      "ypos": "231"
+      "width": "944",
+      "xpos": "974",
+      "ypos": "495"
     }
   },
   "Window": {
+    "###/FMSInfo": {
+      "Collapsed": "0",
+      "Pos": "89,544",
+      "Size": "181,167"
+    },
     "###Analog Inputs": {
       "Collapsed": "0",
       "Pos": "602,32",
@@ -23,32 +28,37 @@
     },
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "5,540",
+      "Pos": "63,368",
       "Size": "169,184"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "206,77",
+      "Pos": "250,148",
       "Size": "796,222"
     },
     "###NetworkTables": {
       "Collapsed": "0",
-      "Pos": "357,53",
+      "Pos": "925,564",
       "Size": "750,401"
     },
     "###NetworkTables Info": {
       "Collapsed": "0",
-      "Pos": "455,68",
-      "Size": "750,260"
+      "Pos": "925,357",
+      "Size": "750,416"
     },
     "###Other Devices": {
       "Collapsed": "0",
-      "Pos": "1025,20",
+      "Pos": "925,20",
       "Size": "250,695"
+    },
+    "###Plot <0>": {
+      "Collapsed": "0",
+      "Pos": "60,60",
+      "Size": "700,400"
     },
     "###System Joysticks": {
       "Collapsed": "0",
-      "Pos": "413,432",
+      "Pos": "409,560",
       "Size": "204,218"
     },
     "###Timing": {
