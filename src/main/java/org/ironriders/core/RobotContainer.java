@@ -166,32 +166,24 @@ public class RobotContainer {
 		secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.DOWN))
 				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
-		// 9/10 - L4, 13 - L3, 17 - L2, 21/22 - L1
+		// 9/10 - L4, 13/14 - L3 & AH, 17/18 - L2 & AL, 21/22 - L1
 		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
 			Commands.runOnce(() -> {
 				GameState.setCoralTarget(ElevatorConstants.Level.L4);
 			}); }));
-		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
+		secondaryController.button(13).onTrue(Commands.runOnce(() -> {
 			Commands.runOnce(() -> {
 				GameState.setCoralTarget(ElevatorConstants.Level.L3);
-			}); }));
-		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
-			Commands.runOnce(() -> {
-				GameState.setCoralTarget(ElevatorConstants.Level.L2);
-			}); }));
-		secondaryController.button(9).onTrue(Commands.runOnce(() -> {
-			Commands.runOnce(() -> {
-				GameState.setCoralTarget(ElevatorConstants.Level.L1);
-			}); }));
-
-		// 14 - Algae High, 18 - Algae Low
-		secondaryController.button(14).onTrue(Commands.runOnce(() -> {
-			Commands.runOnce(() -> {
 				GameState.setAlgaeTarget(ElevatorConstants.Level.L3);
 			}); }));
-		secondaryController.button(14).onTrue(Commands.runOnce(() -> {
+		secondaryController.button(17).onTrue(Commands.runOnce(() -> {
 			Commands.runOnce(() -> {
+				GameState.setCoralTarget(ElevatorConstants.Level.L2);
 				GameState.setAlgaeTarget(ElevatorConstants.Level.L2);
+			}); }));
+		secondaryController.button(21).onTrue(Commands.runOnce(() -> {
+			Commands.runOnce(() -> {
+				GameState.setCoralTarget(ElevatorConstants.Level.L1);
 			}); }));
 
 		// 23 - Coral Left, 24 - Coral Right
