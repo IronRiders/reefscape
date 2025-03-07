@@ -1,10 +1,8 @@
 [![CI](https://github.com/IronRiders/reefscape/actions/workflows/gradle.yml/badge.svg)](https://github.com/IronRiders/reefscape/actions/workflows/gradle.yml)
-# *Iron Riders* - Season 2025 Repository
-
-![image](https://github.com/user-attachments/assets/65a361c1-4db4-4ecb-b378-381c4e049c19)
+![8x2 Banner](https://github.com/user-attachments/assets/ca7bddfc-8815-40c6-bc6c-3a8b020dff7a)
 
 ## Our Design
-![image](https://github.com/user-attachments/assets/ca139c1f-0d89-40ab-acfa-6226a85a31f5)
+<img width="333" alt="Screenshot 2025-02-20 at 10 26 24 AM" src="https://github.com/user-attachments/assets/25f614d0-6132-49de-bf14-9df33aab691e" />
 
 ## Game Overview
 >In REEFSCAPE presented by Haas, two competing alliances are invited to score coral, harvest algae, and

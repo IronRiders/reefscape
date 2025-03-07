@@ -1,0 +1,86 @@
+{
+  "HALProvider": {
+    "Analog Inputs": {
+      "window": {
+        "visible": true
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/Auto Select": "String Chooser",
+      "/SmartDashboard/Encoders": "Alerts",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/IMU": "Alerts",
+      "/SmartDashboard/JSON": "Alerts",
+      "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/Pigeon 2 (v6) [9]": "Gyro",
+      "/SmartDashboard/Subsystems/AlgaeIntake/Algae Intake Eject": "Command",
+      "/SmartDashboard/Subsystems/AlgaeIntake/Algae Intake Grab": "Command",
+      "/SmartDashboard/Subsystems/AlgaeIntake/Algae Intake Stop": "Command",
+      "/SmartDashboard/Subsystems/AlgaeWrist/Algae Wrist Extended": "Command",
+      "/SmartDashboard/Subsystems/AlgaeWrist/Algae Wrist Stowed": "Command",
+      "/SmartDashboard/Subsystems/AlgaeWrist/Home": "Command",
+      "/SmartDashboard/Subsystems/CoralIntake/Coral Intake Eject": "Command",
+      "/SmartDashboard/Subsystems/CoralIntake/Coral Intake Grab": "Command",
+      "/SmartDashboard/Subsystems/CoralIntake/Coral Intake Stop": "Command",
+      "/SmartDashboard/Subsystems/CoralWrist/Home": "Command",
+      "/SmartDashboard/Subsystems/CoralWrist/Wrist Coral Station": "Command",
+      "/SmartDashboard/Subsystems/CoralWrist/Wrist L1-L3": "Command",
+      "/SmartDashboard/Subsystems/CoralWrist/Wrist L4": "Command",
+      "/SmartDashboard/Subsystems/CoralWrist/Wrist Upright": "Command",
+      "/SmartDashboard/Subsystems/Drive/Drive to target": "Command",
+      "/SmartDashboard/Subsystems/Elevator/Elevator going home": "Command",
+      "/SmartDashboard/Subsystems/Elevator/Elevator going to Coral Station": "Command",
+      "/SmartDashboard/Subsystems/Elevator/Elevator rising to L1": "Command",
+      "/SmartDashboard/Subsystems/Elevator/Elevator rising to L2": "Command",
+      "/SmartDashboard/Subsystems/Elevator/Elevator rising to L3": "Command",
+      "/SmartDashboard/Subsystems/Elevator/Elevator rising to L4": "Command",
+      "/SmartDashboard/Subsystems/Elevator/Home": "Command",
+      "/SmartDashboard/Subsystems/Targeting/Coral Station": "Command",
+      "/SmartDashboard/Subsystems/Targeting/Nearest": "Command",
+      "/SmartDashboard/Subsystems/Targeting/Processor": "Command",
+      "/SmartDashboard/Subsystems/Targeting/Reef": "Command",
+      "/SmartDashboard/Subsystems/Targeting/Reef Left Pole": "Command",
+      "/SmartDashboard/Subsystems/Targeting/Reef Right Pole": "Command",
+      "/SmartDashboard/Swerve Drive": "Alerts"
+    },
+    "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "FMSInfo": {
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "backgroundColor": [
+            0.0,
+            0.0,
+            0.0,
+            0.8500000238418579
+          ],
+          "height": 338
+        }
+      ],
+      "window": {
+        "visible": false
+      }
+    }
+  }
+}
