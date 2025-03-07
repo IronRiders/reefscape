@@ -1,6 +1,7 @@
 package org.ironriders.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 import org.ironriders.elevator.ElevatorConstants.*;
@@ -52,8 +53,11 @@ public class ElevatorCommands {
                     elevatorSubsystem.stopMotor();
                 }
             }
-        );
+        ).withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
 
+        // For the elevator we can just sit on the limit switch at the bottom
+        // with motors killed
+        /*
         Command moveOffHome = elevatorSubsystem.defer(
             () -> new Command() {
                 public void execute() {
@@ -70,9 +74,12 @@ public class ElevatorCommands {
                 }
             }
         );
+        */
 
         // Drive elevator homing
-        return findHome.andThen(moveOffHome);
+        return findHome
+            .andThen(elevatorSubsystem::reportHomed)
+            .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
     }
 
     public Command reset(){

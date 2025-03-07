@@ -1,7 +1,5 @@
 package org.ironriders.wrist;
 
-import java.util.Optional;
-
 import org.ironriders.lib.IronSubsystem;
 import org.ironriders.lib.data.PID;
 
@@ -124,11 +122,13 @@ public abstract class WristSubsystem extends IronSubsystem {
         // backoff is past the goal because large bounces may push us further
         // out of bounds 
         if (this.forwardLimit.isPressed()) {
+            reportWarning("Crashed on forward limit");
             var backoffTo = getCurrentAngle().minus(CRASH_BACKOFF);
             if (backoffTo.lt(Units.Degrees.of(goalSetpoint.position))) {
                 this.setGoal(backoffTo);
             }
         } else if (this.reverseLimit.isPressed()) {
+            reportWarning("Crashed on reverse limit");
             var backoffTo = getCurrentAngle().plus(CRASH_BACKOFF);
             if (backoffTo.gt(Units.Degrees.of(goalSetpoint.position))) {
                 this.setGoal(backoffTo);
@@ -142,7 +142,8 @@ public abstract class WristSubsystem extends IronSubsystem {
     }
 
     public void setGoal(Angle angle) {
-        this.reportInfo("Goal set to " + angle.in(Units.Degrees) + " degrees");
+        this.reportInfo("Goal set to " + angle.in(Units.Degrees) + "° (currently " + this.getCurrentAngle().in(Units.Degrees) + "°)");
+        Thread.dumpStack();
 
         var degrees = angle.in(Units.Degrees);
 
@@ -185,11 +186,11 @@ public abstract class WristSubsystem extends IronSubsystem {
     }
 
     public Command moveToCmd(Angle angle) {
-        return this.runOnce(() -> this.setGoal(angle));
-    }
+        return this.runOnce(() -> this.setGoal(angle)).andThen(Commands.waitUntil(this::atPosition));
+    } 
 
     public Command homeCmd() {
-        return homeCmd(false);
+        return homeCmd(false).andThen(Commands.waitUntil(() -> isHomed));
     }
 
     public Command homeCmd(boolean force) {
