@@ -5,9 +5,9 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import static org.ironriders.wrist.coral.CoralWristConstants.*;
 
 import org.ironriders.lib.data.PID;
-import org.ironriders.wrist.WristSubsystem;
+import org.ironriders.wrist.RelativeWristSubsystem;
 
-public class CoralWristSubsystem extends WristSubsystem {
+public class CoralWristSubsystem extends RelativeWristSubsystem {
     private final CoralWristCommands commands;
 
     // private ArmFeedforward coralFeedforward = new

@@ -3,7 +3,6 @@ package org.ironriders.wrist.coral;
 import org.ironriders.wrist.coral.CoralWristConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public class CoralWristCommands {
     private final CoralWristSubsystem coralWrist;
@@ -19,7 +18,7 @@ public class CoralWristCommands {
     }
 
     public Command set(State state) {
-        return coralWrist.moveToCmd(state.getAngle()).andThen(Commands.waitUntil(() -> { return coralWrist.atPosition(); }));
+        return coralWrist.moveToCmd(state.getAngle());
     }
 
     public Command reset() {
