@@ -15,9 +15,9 @@ public class ClimbSubsystem extends SubsystemBase {
 
     private final SparkMax climbMotor = new SparkMax(ClimbConstants.CLIMBER_MOTOR_CAN_ID, SparkLowLevel.MotorType.kBrushless);
     private final SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
-    private final RelativeEncoder climbEncoder = climbMotor.getAlternateEncoder();
-
     private final ClimbCommands commands;
+
+    private double deadReckoning = 0;
 
     public ClimbSubsystem() {
         climbMotorConfig // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
@@ -26,18 +26,17 @@ public class ClimbSubsystem extends SubsystemBase {
                 .idleMode(IdleMode.kBrake);
         climbMotor.configure(climbMotorConfig,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
 
-        climbEncoder.setPosition(0);
-
         commands = new ClimbCommands(this);
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Climb Encoder Value", climbEncoder.getPosition());
+        this.deadReckoning += climbMotor.get();
+        SmartDashboard.putNumber("Climb Encoder Value", deadReckoning);
     }
 
     public void set(ClimbConstants.State state) {
-        // if (climbEncoder.getPosition() >= ClimbConstants.CLIMBER_LIMIT)
+        // if (deadReckoning >= ClimbConstants.CLIMBER_LIMIT)
         //     return;
         climbMotor.set(state.speed);
     }
