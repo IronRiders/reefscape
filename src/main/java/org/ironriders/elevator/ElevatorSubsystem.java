@@ -196,6 +196,7 @@ public class ElevatorSubsystem extends IronSubsystem {
         getDiagnostic("I", I);
         getDiagnostic("D", D);
         publish("Homed", isHomed);
+        System.out.println(isHomed);
         publish("State", currentTarget.toString());
         publish("Primary Motor Current", primaryMotor.getOutputCurrent());
         publish("Velocity", periodicSetpoint.velocity);

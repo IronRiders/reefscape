@@ -102,6 +102,7 @@ public abstract class WristSubsystem extends IronSubsystem {
         }
         
         publish("Homed", isHomed);
+        System.out.println(isHomed);
         publish("Rotation", getCurrentAngle().in(Units.Degrees));
         publish("Output", motor.get());
         publish("Goal", goalSetpoint.position);

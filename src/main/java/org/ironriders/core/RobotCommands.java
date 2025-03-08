@@ -96,9 +96,9 @@ public class RobotCommands {
 	public Command startup() {
 		coralIntakeCommands.setOnSuccess(() -> rumble());
 		algaeIntakeCommands.setOnSuccess(() -> rumble());
-		return coralWristCommands.home()
+		return coralWristCommands.home()				
 				.andThen(algaeWristCommands.home())
-				.andThen(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED))
+				// .andThen(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED))
 				.andThen(elevatorCommands.home());
 	}
 
