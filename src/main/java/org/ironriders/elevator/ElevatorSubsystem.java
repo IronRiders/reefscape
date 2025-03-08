@@ -215,7 +215,7 @@ public class ElevatorSubsystem extends IronSubsystem {
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {
-        return Math.abs(getHeightInches() - level.positionInches) < 0.5;
+        return Math.abs(getHeightInches() - level.positionInches) < 0.15;
     }
 
     public void reportHomed() {
