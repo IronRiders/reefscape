@@ -40,7 +40,7 @@ public class AlgaeWristConstants {
     public enum State { // max seems to be 40, min ~0
         STARTING(-90), // Starting position is beyond lower limit, exact position unknown
         STOWED(-45), // Computed home position
-        EXTENDED(0);
+        EXTENDED(-10);
 
         final Angle angle;
 
