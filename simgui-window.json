@@ -11,14 +11,14 @@
       "style": "0",
       "userScale": "2",
       "width": "959",
-      "xpos": "0",
-      "ypos": "575"
+      "xpos": "84",
+      "ypos": "477"
     }
   },
   "Window": {
     "###/FMSInfo": {
       "Collapsed": "0",
-      "Pos": "3,360",
+      "Pos": "17,424",
       "Size": "217,194"
     },
     "###Analog Inputs": {
@@ -28,12 +28,12 @@
     },
     "###FMS": {
       "Collapsed": "0",
-      "Pos": "2,431",
+      "Pos": "216,253",
       "Size": "202,214"
     },
     "###Joysticks": {
       "Collapsed": "0",
-      "Pos": "-1,431",
+      "Pos": "-17,698",
       "Size": "976,179"
     },
     "###NetworkTables": {
