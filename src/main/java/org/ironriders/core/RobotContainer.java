@@ -190,9 +190,9 @@ public class RobotContainer {
 		secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
 		secondaryController.button(24).onTrue(targetingCommands.targetReefPole(Side.Right));
 
-		// 19 - Eject Coral, 20 - Eject Algae
-		secondaryController.button(19).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
-		secondaryController.button(20).onTrue(algaeIntakeCommands.set(State.EJECT));
+		// 19 - Eject Coral, 20 - Eject Algae (Now it is 19 Jogs elevator Up 20 Jogs elevator down)
+		secondaryController.button(19).onTrue(elevatorCommands.jogCommand(true));
+		secondaryController.button(20).onTrue(elevatorCommands.jogCommand(false));
 
 		// PRIMARY CONTROLS
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
