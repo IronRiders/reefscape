@@ -31,14 +31,14 @@ public class CoralWristConstants {
 
     public static final double t = 0.02;
 
-    public static final double MAX_ACC = 90; //90;
-    public static final double MAX_VEL = 180; //180;
+    public static final double MAX_ACC = 90;
+    public static final double MAX_VEL = 90; // Was 180; try to keep from throwing coral
 
     public enum State {
         STATION(32.5),
         STOWED(90), // Will stop at limit
-        L1toL3(30),
-        L4(0);
+        L1toL3(0),
+        L4(-30);
 
         final Angle angle;
 

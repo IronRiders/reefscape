@@ -54,13 +54,18 @@ public class FieldPose {
         protected Distance getYOffset() {
             return this.pole == Side.Left ? Units.Inches.of(0) : REEF_POLE_SPACING;
         }
+
+        @Override
+        protected Distance getXOffset() {
+            return super.getXOffset().plus(Units.Inches.of(-7));
+        }
     }
     
     static final Distance ROBOT_LENGTH = Units.Inches.of(37);
     static final Distance CORAL_INTAKE_OFFSET = Units.Inches.of(7);
     static final Distance STATION_SLOT_SPACING = Units.Inches.of(8);
     static public final int STATION_SLOT_COUNT = 9;
-    static final Distance REEF_POLE_SPACING = Units.Inches.of(12.94);
+    static final Distance REEF_POLE_SPACING = Units.Inches.of(-12.94);
 
     /**
      * The element targeted.
@@ -97,7 +102,7 @@ public class FieldPose {
 
         final var robotRotation = elementPose.getRotation().rotateBy(Rotation2d.k180deg);
 
-        final var zeroAngleRelativeTranslation = new Translation2d(ROBOT_LENGTH.div(-2), getYOffset());
+        final var zeroAngleRelativeTranslation = new Translation2d(getXOffset(), getYOffset());
 
         final var relativeTranslation = zeroAngleRelativeTranslation.rotateBy(robotRotation);
 
@@ -108,5 +113,9 @@ public class FieldPose {
 
     protected Distance getYOffset() {
         return Units.Inches.of(0);
+    }
+
+    protected Distance getXOffset() {
+        return ROBOT_LENGTH.div(-2);
     }
 }

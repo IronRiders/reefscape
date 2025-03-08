@@ -162,11 +162,12 @@ public class ElevatorSubsystem extends IronSubsystem {
 
     public void setPositionInches(double inches) {
         if (!isHomed && inches > 0) {
-            System.out.println("Warning: Elevator not homed! Home first before moving to positions.");
+            reportError("Warning: Elevator not homed! Home first before moving to positions.");
             return;
         }
 
         // Update goal state for motion profile
+        reportInfo("Elevator moving to " + inches + " inches");
         goalSetpoint = new TrapezoidProfile.State(MathUtil.clamp(inches, MIN_POSITION, MAX_POSITION), 0);
     }
 
@@ -213,12 +214,12 @@ public class ElevatorSubsystem extends IronSubsystem {
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {
-        return pidController.atSetpoint() &&
-                Math.abs(getHeightInches() - level.positionInches) < 0.5;
+        return Math.abs(getHeightInches() - level.positionInches) < 0.5;
     }
 
     public void reportHomed() {
         isHomed = true;
+        encoder.setPosition(0); // reset
     }
 
     public boolean isHomed() {
