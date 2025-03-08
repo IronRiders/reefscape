@@ -37,6 +37,8 @@ public class ClimbSubsystem extends SubsystemBase {
     }
 
     public void set(ClimbConstants.State state) {
+        // if (climbEncoder.getPosition() >= ClimbConstants.CLIMBER_LIMIT)
+        //     return;
         climbMotor.set(state.speed);
     }
 
