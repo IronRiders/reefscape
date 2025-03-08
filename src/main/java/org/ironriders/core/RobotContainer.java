@@ -195,12 +195,10 @@ public class RobotContainer {
 		secondaryController.button(20).onTrue(elevatorCommands.jogCommand(false));
 
 		// PRIMARY CONTROLS
-		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
+		primaryController.rightBumper().onTrue(robotCommands.scoreAlgae());
 
 		primaryController.leftBumper().onTrue(Commands.runOnce(() -> {
-			Commands.deferredProxy(() -> {
-				return robotCommands.grabAlgae(GameState.getAlgaeTarget());
-			});
+			robotCommands.grabAlgae(GameState.getAlgaeTarget()).schedule();
 		}));
 
 		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
@@ -208,7 +206,6 @@ public class RobotContainer {
 
 		primaryController.a().onTrue(driveCommands.pathfindToTarget());
 		primaryController.x().onTrue(driveCommands.cancelPathfind());
-
 
 		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
 			robotCommands.scoreCoral(GameState.getCoralTarget()).schedule();

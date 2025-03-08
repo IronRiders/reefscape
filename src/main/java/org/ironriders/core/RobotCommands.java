@@ -74,16 +74,6 @@ public class RobotCommands {
 		NamedCommands.registerCommand("Score Coral L4",
 				this.scoreCoral(ElevatorConstants.Level.L4));
 
-
-        NamedCommands.registerCommand("Prepare to Score Coral L1",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L1));
-		NamedCommands.registerCommand("Prepare to Score Coral L2",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L2));
-		NamedCommands.registerCommand("Prepare to Score Coral L3",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L3));                
-        NamedCommands.registerCommand("Prepare to Score Coral L4",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
-
 		NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
 		NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
 
@@ -106,7 +96,7 @@ public class RobotCommands {
 	public Command startup() {
 		coralIntakeCommands.setOnSuccess(() -> rumble());
 		algaeIntakeCommands.setOnSuccess(() -> rumble());
-		return coralWristCommands.home()				
+		return coralWristCommands.home()
 				.andThen(algaeWristCommands.home())
 				.andThen(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED))
 				.andThen(elevatorCommands.home());
@@ -146,19 +136,6 @@ public class RobotCommands {
 		// TODO
 	}
 
-        public Command prepareToScoreCoral(ElevatorConstants.Level level) {
-		return Commands.sequence(
-				elevatorCommands.set(level),
-				coralWristCommands.set(switch (level) {
-					case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
-					case L4 -> CoralWristConstants.State.L4;
-					default -> {
-						throw new IllegalArgumentException(
-								"Cannot score coral to level: " + level);
-					}
-				}));
-	}
-        
 	public Command scoreCoral(ElevatorConstants.Level level) {
 		return Commands.sequence(
 				elevatorCommands.set(level),
@@ -186,7 +163,6 @@ public class RobotCommands {
 		return Commands.sequence(
 				coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
 				coralWristCommands.set(CoralWristConstants.State.STOWED),
-				this.rumble(),
 				elevatorCommands.set(ElevatorConstants.Level.Down));
 	}
 
@@ -197,8 +173,7 @@ public class RobotCommands {
 						elevatorCommands.set(ElevatorConstants.Level.Down),
 						algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED)),
 				algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP),
-				algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP));
 	}
 
 	public Command grabAlgae(ElevatorConstants.Level level) {
@@ -207,8 +182,6 @@ public class RobotCommands {
 						elevatorCommands.set(level),
 						algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED),
 						algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB)),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB),
-				algaeWristCommands.set(AlgaeWristConstants.State.STOWED),
-				this.rumble());
+				algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB));
 	}
 }
