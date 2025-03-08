@@ -220,6 +220,9 @@ public class ElevatorSubsystem extends IronSubsystem {
     public void reportHomed() {
         isHomed = true;
         encoder.setPosition(0); // reset
+        setGoal(Level.Down);
+        periodicSetpoint.position=0;
+        periodicSetpoint.velocity=0;
     }
 
     public boolean isHomed() {

@@ -9,8 +9,6 @@ public class AlgaeWristCommands extends Command {
 
     public AlgaeWristCommands(AlgaeWristSubsystem wrist) {
         this.algaeWrist = wrist;
-
-        wrist.publish("Home", home());
         wrist.publish("Algae Wrist Stowed", set(State.STOWED));
         wrist.publish("Algae Wrist Extended", set(State.EXTENDED));
     }

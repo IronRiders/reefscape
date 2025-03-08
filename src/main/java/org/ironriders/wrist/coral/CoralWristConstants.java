@@ -25,7 +25,7 @@ public class CoralWristConstants {
     // public static final double CORAL_WRIST_ENCODER_OFFSET = 0; // please test
     public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
 
-    public static final Angle HOME_ANGLE = Units.Degrees.of(48);
+    public static final Angle HOME_ANGLE = Units.Degrees.of(71);
 
     public static final double GEAR_RATIO = 0.01;
 
