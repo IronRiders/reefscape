@@ -57,6 +57,12 @@ public class ElevatorCommands {
         );
     }
 
+    public Command jogCommand(boolean jogUp){
+        return elevatorSubsystem.runOnce(() -> {
+            elevatorSubsystem.jog(jogUp);;
+        });
+    }
+
     public Command reset(){
         return elevatorSubsystem.runOnce(elevatorSubsystem::reset);
     }
