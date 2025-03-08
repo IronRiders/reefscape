@@ -36,7 +36,7 @@ public class CoralWristConstants {
 
     public enum State {
         STATION(20),
-        STOWED(90), // Will stop at limit
+        STOWED(45), // Will stop at limit
         L1toL3(0),
         L4(-30);
 
