@@ -195,7 +195,6 @@ public class RobotContainer {
 		secondaryController.button(20).onTrue(algaeIntakeCommands.set(State.EJECT));
 
 		// PRIMARY CONTROLS
-		
 		primaryController.rightBumper().onFalse(robotCommands.scoreAlgae());
 
 		primaryController.leftBumper().onTrue(Commands.runOnce(() -> {
