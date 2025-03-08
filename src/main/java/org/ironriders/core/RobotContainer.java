@@ -208,8 +208,8 @@ public class RobotContainer {
 		primaryController.x().onTrue(driveCommands.cancelPathfind());
 
 		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
-			robotCommands.scoreCoral(GameState.getCoralTarget()).schedule();
-		}));
+			robotCommands.prepareToScoreCoral(GameState.getCoralTarget()).schedule();
+		})).onFalse(robotCommands.scoreCoral());
 
 		primaryController.y().onTrue(driveCommands.pathfindToTarget());
 
