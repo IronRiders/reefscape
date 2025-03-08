@@ -75,13 +75,13 @@ public class RobotCommands {
 				this.scoreCoral(ElevatorConstants.Level.L4));
 
 
-                NamedCommands.registerCommand("Prepare to Score Coral L1",
+        NamedCommands.registerCommand("Prepare to Score Coral L1",
 				this.prepareToScoreCoral(ElevatorConstants.Level.L1));
 		NamedCommands.registerCommand("Prepare to Score Coral L2",
 				this.prepareToScoreCoral(ElevatorConstants.Level.L2));
 		NamedCommands.registerCommand("Prepare to Score Coral L3",
 				this.prepareToScoreCoral(ElevatorConstants.Level.L3));                
-                NamedCommands.registerCommand("Prepare to Score Coral L4",
+        NamedCommands.registerCommand("Prepare to Score Coral L4",
 				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
 
 		NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
