@@ -18,6 +18,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
@@ -209,10 +210,10 @@ public class Vision {
                 return Optional.empty();
 
             // trash if estimate is too far from the believed current pose
-            // Transform2d differenceTransform = pose.estimatedPose.toPose2d().minus(swerveDrive.getPose());
-            // if (Math.abs(differenceTransform.getX()) > 2 || Math.abs(differenceTransform.getY()) > 2) {
-            //     return Optional.empty();
-            // }
+            Transform2d differenceTransform = pose.estimatedPose.toPose2d().minus(swerveDrive.getPose());
+            if (Math.abs(differenceTransform.getX()) > 1.5 || Math.abs(differenceTransform.getY()) > 1.5) {
+                return Optional.empty();
+            }
 
             // return actual estimate if it gets through all that ^^^
             hasPose=true;

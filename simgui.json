@@ -16,6 +16,7 @@
       "/SmartDashboard/IMU": "Alerts",
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/PathPlanner": "Alerts",
       "/SmartDashboard/Pigeon 2 (v6) [9]": "Gyro",
       "/SmartDashboard/Subsystems/AlgaeIntake/Algae Intake Eject": "Command",
       "/SmartDashboard/Subsystems/AlgaeIntake/Algae Intake Grab": "Command",
