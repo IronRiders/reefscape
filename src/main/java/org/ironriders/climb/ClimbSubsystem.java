@@ -1,4 +1,6 @@
 package org.ironriders.climb;
+import java.util.DuplicateFormatFlagsException;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
@@ -16,10 +18,14 @@ public class ClimbSubsystem extends SubsystemBase {
     private final SparkMax climbMotor = new SparkMax(ClimbConstants.CLIMBER_MOTOR_CAN_ID, SparkLowLevel.MotorType.kBrushless);
     private final SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
     private final ClimbCommands commands;
-
-    private double deadReckoning = 0;
+    private final RelativeEncoder encoder;
+    double oldValue;
+    double newValue;
+    boolean staysUp;
 
     public ClimbSubsystem() {
+        encoder = climbMotor.getEncoder();
+
         climbMotorConfig // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
                 .smartCurrentLimit(ClimbConstants.CURRENT_LIMIT)
                 //.voltageCompensation(ClimbContstants.COMPENSATION)
@@ -31,14 +37,31 @@ public class ClimbSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        this.deadReckoning += climbMotor.get();
-        SmartDashboard.putNumber("Climb Encoder Value", deadReckoning);
+        newValue = encoder.getPosition();
+
+        if((oldValue > newValue) && staysUp) {
+            double compensate = (oldValue-newValue) * ClimbConstants.FAKE_PID_COMPENSATION;
+            
+            climbMotor.set(compensate);
+
+            System.out.println("Compensating for climber falling by seting motor to " + compensate);
+            SmartDashboard.putNumber("Climber Compensation", compensate);
+        }
+        oldValue = newValue;
+        System.out.println("(Climber): Not using auto up");
     }
 
     public void set(ClimbConstants.State state) {
-        // if (deadReckoning >= ClimbConstants.CLIMBER_LIMIT)
-        //     return;
         climbMotor.set(state.speed);
+
+        if(state == ClimbConstants.State.UP || state == ClimbConstants.State.STOP) {
+            staysUp = true;
+            SmartDashboard.putBoolean("Climber Compensation Mode", staysUp);
+        }
+        else {
+            staysUp = false;
+            SmartDashboard.putBoolean("Climber Compensation Mode", staysUp);
+        }
     }
 
     public ClimbCommands getCommands() {
