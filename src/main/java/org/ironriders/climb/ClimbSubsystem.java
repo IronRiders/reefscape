@@ -37,7 +37,7 @@ public class ClimbSubsystem extends SubsystemBase {
         climbMotorConfigCoast // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
                 .smartCurrentLimit(ClimbConstants.CURRENT_LIMIT)
                 //.voltageCompensation(ClimbContstants.COMPENSATION)
-                .idleMode(IdleMode.kCoast);
+                .idleMode(IdleMode.kBrake);
         climbMotor.configure(climbMotorConfigCoast,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
             
         climbMotorConfigBrake // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
@@ -66,7 +66,7 @@ public class ClimbSubsystem extends SubsystemBase {
         }
             
         oldValue = newValue;
-        System.out.println("(Climber): Not using auto up");
+        //System.out.println("(Climber): Not using auto up");
         
     }
 
@@ -91,7 +91,7 @@ public class ClimbSubsystem extends SubsystemBase {
         climbMotor.set(state.speed);
 
         if(state == ClimbConstants.State.UP || state == ClimbConstants.State.STOP) {
-            staysUp = true;
+            staysUp = false;
             SmartDashboard.putBoolean("Climber Compensation Mode", staysUp);
         }
         else {

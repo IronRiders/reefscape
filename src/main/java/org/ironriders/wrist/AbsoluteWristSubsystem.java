@@ -46,6 +46,8 @@ public class AbsoluteWristSubsystem extends WristSubsystem {
 
         encoder = motor.getAbsoluteEncoder();
         encoder.getPosition();
+
+        reset();
     }
 
     @Override
@@ -133,6 +135,6 @@ public class AbsoluteWristSubsystem extends WristSubsystem {
 
     @Override
     public Command homeCmd(boolean force) {
-        return Commands.none();
+        return this.runOnce(this::reset);
     }
 }

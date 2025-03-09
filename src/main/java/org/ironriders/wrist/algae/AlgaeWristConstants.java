@@ -12,8 +12,8 @@ public class AlgaeWristConstants {
     public static final int ALGAEWRISTMOTOR = 14;
 
     // Need to tune
-    public static final double P = 0.005;
-    public static final double I = 0.0;
+    public static final double P = 0.01;
+    public static final double I = 0.01;
     public static final double D = 0.0;
     
     public static final double t = 0.02;
@@ -23,7 +23,7 @@ public class AlgaeWristConstants {
     public static final Angle ENCODER_OFFSET = Units.Degrees.of(100);
     public static final Angle REVERSE_LIMIT = Units.Degrees.of(-50);
     public static final Angle FORWARD_LIMIT = Units.Degrees.of(5);
-    public static final double MAX_ACC = 90;
+    public static final double MAX_ACC = 45;
     public static final double MAX_VEL = 45; //90;
 
     // public static final double ALGAEWRISTKS = 0.0; //The static gain in volts. //
@@ -34,13 +34,16 @@ public class AlgaeWristConstants {
     // V/(rad/s).
 
     public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 20; 
+    //public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 5; 
+
 
     public static final double ALGAE_WRIST_TOLERENCE = 2; // tune me please
 
     public enum State {
         STARTING(-90), // Starting position is beyond lower limit, exact position unknown
         STOWED(-40), // Computed home position
-        EXTENDED(25);
+        //EXTENDED(27.3);
+        EXTENDED(10);
 
         final Angle angle;
 
