@@ -12,8 +12,4 @@ public class ClimbCommands {
         return climb
                 .runOnce(() -> climb.set(state));
     }
-
-    public Command brakeClimber(boolean breakOn){
-        return climb.runOnce(() -> climb.brakeClimber(breakOn));
-    }
 }

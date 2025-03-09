@@ -22,4 +22,15 @@ public class ClimbConstants {
 
         State(double speed) { this.speed = speed; }
     }
+
+    public enum Limits {
+        HOME(0),
+        MAX(-123.5),
+        TARGET(15);
+
+        public final double pos;
+
+        Limits(double pos) { this.pos = pos; }
+
+    }
 }
