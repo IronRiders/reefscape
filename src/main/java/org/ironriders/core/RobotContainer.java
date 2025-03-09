@@ -152,9 +152,13 @@ public class RobotContainer {
 
 		// SECONDARY CONTROLS
 
-		// 1/2 - Coral Home, 3/4 - Elevator Home
+		// 1 - Coral Home, 2 - Elevator Home
 		secondaryController.button(1).onTrue(coralWristCommands.home());
-		secondaryController.button(3).onTrue(elevatorCommands.home());
+		secondaryController.button(2).onTrue(elevatorCommands.home());
+
+		// 3 - Algae Stowed, 4 - Algae Reef
+		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
+		secondaryController.button(4).onTrue(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED));
 
 		// 5/6 - Target Station, 7/8 - Target Processor
 		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.STATION));
@@ -187,19 +191,28 @@ public class RobotContainer {
 			}));
 
 		// 23 - Coral Left, 24 - Coral Right
-		secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
-		secondaryController.button(24).onTrue(targetingCommands.targetReefPole(Side.Right));
+		// secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
+		// secondaryController.button(24).onTrue(targetingCommands.targetReefPole(Side.Right));
 
-		// 19 - Eject Coral, 20 - Eject Algae
+		// 23 - Algae between L2-L3 , 24 - Algae between L3-L4
+		secondaryController.button(23).onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
+		secondaryController.button(24).onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
+
+
+		// 19 - Eject Coral, 20 - Elevator to down position
 		secondaryController.button(19).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
-		secondaryController.button(20).onTrue(algaeIntakeCommands.set(State.EJECT));
+		secondaryController.button(20).onTrue(elevatorCommands.set(ElevatorConstants.Level.Down));
 
 		// PRIMARY CONTROLS
-		primaryController.rightBumper().onTrue(robotCommands.scoreAlgae());
+		// primaryController.rightBumper().onTrue(robotCommands.scoreAlgae());
+		primaryController.rightBumper().whileTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT));
 
-		primaryController.leftBumper().onTrue(Commands.runOnce(() -> {
-			robotCommands.grabAlgae(GameState.getAlgaeTarget()).schedule();
-		}));
+		// primaryController.leftBumper().onTrue(Commands.deferredProxy(() -> {
+		// 	return robotCommands.grabAlgae(GameState.getAlgaeTarget());
+		// }));
+
+		primaryController.leftBumper().whileTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB));
+	
 
 		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
 		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
