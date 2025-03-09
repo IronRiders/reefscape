@@ -97,6 +97,7 @@ public class RobotCommands {
 	 * limitations.
 	 */
 	public Command startup() {
+		climbCommands.brakeClimber(true);
 		coralIntakeCommands.setOnSuccess(() -> rumble());
 		algaeIntakeCommands.setOnSuccess(() -> rumble());
 		return coralWristCommands.home()

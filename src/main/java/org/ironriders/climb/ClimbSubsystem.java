@@ -23,6 +23,7 @@ public class ClimbSubsystem extends SubsystemBase {
     private final SparkMax climbMotor = new SparkMax(ClimbConstants.CLIMBER_MOTOR_CAN_ID, SparkLowLevel.MotorType.kBrushless);
     private final SparkMaxConfig climbMotorConfigBrake = new SparkMaxConfig();
     private final SparkMaxConfig climbMotorConfigCoast = new SparkMaxConfig();
+
     private final ClimbCommands commands;
     private final RelativeEncoder encoder;
 
@@ -46,6 +47,8 @@ public class ClimbSubsystem extends SubsystemBase {
                 .softLimit.forwardSoftLimit(MAX_POSITION);
         // climbMotor.configure(climbMotorConfigBrake,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
 
+        SmartDashboard.putNumber("Climber Compensation", 0);
+
         commands = new ClimbCommands(this);
     }
 
@@ -54,15 +57,21 @@ public class ClimbSubsystem extends SubsystemBase {
         newValue = encoder.getPosition();
         updatePostion();
         if((oldValue > newValue) && staysUp) {
-            double compensate = (oldValue-newValue) * ClimbConstants.FAKE_PID_COMPENSATION;
+            double compensate = (oldValue-newValue) * ClimbConstants.GEAR_RATIO;
             
             climbMotor.set(compensate);
 
             System.out.println("Compensating for climber falling by seting motor to " + compensate);
             SmartDashboard.putNumber("Climber Compensation", compensate);
         }
+            
         oldValue = newValue;
         System.out.println("(Climber): Not using auto up");
+        
+    }
+
+    public void brakeClimberMotor(boolean brakeOn){
+
     }
 
     public void brakeClimber(boolean breakOn){
