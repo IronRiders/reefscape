@@ -27,7 +27,6 @@ public class ElevatorCommands {
             elevatorSubsystem.setPositionInches(level.positionInches);
         })
                 .andThen(Commands.waitUntil(() -> { return elevatorSubsystem.isAtPosition(level); }))
-                .andThen(elevatorSubsystem.runOnce(() -> { System.out.println("I AM GGOING TO BLORNK MUYSELF"); }))
                 .handleInterrupt(elevatorSubsystem::reset);
     }
 

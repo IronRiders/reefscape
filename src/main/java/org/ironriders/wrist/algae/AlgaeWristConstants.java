@@ -12,8 +12,8 @@ public class AlgaeWristConstants {
     public static final int ALGAEWRISTMOTOR = 14;
 
     // Need to tune
-    public static final double P = 0.01;
-    public static final double I = 0.01;
+    public static final double P = 0.005;
+    public static final double I = 0.0;
     public static final double D = 0.0;
     
     public static final double t = 0.02;

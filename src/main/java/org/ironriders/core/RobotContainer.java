@@ -141,7 +141,7 @@ public class RobotContainer {
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								-primaryController.getRightX(),
+								primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
@@ -221,8 +221,8 @@ public class RobotContainer {
 		primaryController.x().onTrue(driveCommands.cancelPathfind());
 
 		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
-			robotCommands.scoreCoral(GameState.getCoralTarget()).schedule();
-		}));
+			robotCommands.prepareToScoreCoral(GameState.getCoralTarget()).schedule();
+		})).onFalse(robotCommands.scoreCoral());
 
 		primaryController.y().onTrue(driveCommands.pathfindToTarget());
 
