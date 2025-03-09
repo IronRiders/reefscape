@@ -11,7 +11,7 @@ public class AlgaeIntakeConstants {
     public static final int ALGAERIGHTINTAKEMOTOR = 16;
     // public static final int ALGAE_LIMITSWITCH = -1;
 
-    public static final int ALGAE_INTAKE_CURRENT_STALL_LIMIT = 1; // FOR TESTING!!!
+    public static final int ALGAE_INTAKE_CURRENT_STALL_LIMIT = 10; // FOR TESTING!!!
 
 
     public static final int DISCHARGE_TIMEOUT = 1; // these are both in SECONDS
