@@ -4,13 +4,13 @@ import java.util.function.DoubleSupplier;
 
 import org.ironriders.climb.ClimbCommands;
 import org.ironriders.climb.ClimbConstants;
+import org.ironriders.dash.DashboardSubsystem;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
+import org.ironriders.lib.GameState;
 import org.ironriders.lib.field.FieldElement.ElementType;
 import org.ironriders.targeting.TargetingCommands;
-import org.ironriders.wrist.algae.AlgaeIntakeCommands;
-import org.ironriders.wrist.algae.AlgaeWristCommands;
 import org.ironriders.wrist.coral.CoralIntakeCommands;
 import org.ironriders.wrist.coral.CoralIntakeConstants;
 import org.ironriders.wrist.coral.CoralWristCommands;
@@ -19,6 +19,7 @@ import org.ironriders.drive.DriveConstants;
 import org.ironriders.wrist.algae.*;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -76,7 +77,9 @@ public class RobotCommands {
 
 		NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
 		NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
+		
 
+		SmartDashboard.putData("Invert Controls", invertControlsCommand());
 		// NamedCommands.registerCommand("Prepare to Grab Algae",
 		// this.prepareToGrabAlgae());
 		// NamedCommands.registerCommand("Grab Algae", this.grabAlgae());
@@ -121,6 +124,10 @@ public class RobotCommands {
 	 */
 	public Command jog(double robotRelativeAngleDegrees) {
 		return driveCommands.jog(robotRelativeAngleDegrees);
+	}
+
+	public Command invertControlsCommand() {
+		return Commands.runOnce(() -> GameState.invertControl());
 	}
 
 	public Command rumble() {
