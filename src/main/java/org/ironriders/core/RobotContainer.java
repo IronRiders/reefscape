@@ -205,13 +205,14 @@ public class RobotContainer {
 
 		// PRIMARY CONTROLS
 		// primaryController.rightBumper().onTrue(robotCommands.scoreAlgae());
-		primaryController.rightBumper().whileTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT));
+		primaryController.rightBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT)).onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP));
+
 
 		// primaryController.leftBumper().onTrue(Commands.deferredProxy(() -> {
 		// 	return robotCommands.grabAlgae(GameState.getAlgaeTarget());
 		// }));
 
-		primaryController.leftBumper().whileTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB));
+		primaryController.leftBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB)).onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP));
 	
 
 		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
