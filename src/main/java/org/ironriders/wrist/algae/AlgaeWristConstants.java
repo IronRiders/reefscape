@@ -37,10 +37,10 @@ public class AlgaeWristConstants {
 
     public static final double ALGAE_WRIST_TOLERENCE = 2; // tune me please
 
-    public enum State { // max seems to be 40, min ~0
+    public enum State {
         STARTING(-90), // Starting position is beyond lower limit, exact position unknown
         STOWED(-40), // Computed home position
-        EXTENDED(0);
+        EXTENDED(15);
 
         final Angle angle;
 
