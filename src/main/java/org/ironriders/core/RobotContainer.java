@@ -168,9 +168,9 @@ public class RobotContainer {
 		secondaryController.button(7).onTrue(targetingCommands.targetNearest(ElementType.PROCESSOR));
 
 		// 11/12 - Climb Up, 13/14 - Climb Reset
-		secondaryController.button(11).onTrue(climbCommands.set(ClimbConstants.State.UP))
+		secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.UP))
 				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
-		secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.DOWN))
+		secondaryController.button(11).onTrue(climbCommands.set(ClimbConstants.State.DOWN))
 				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
 		// 9/10 - L4, 13/14 - L3 & AH, 17/18 - L2 & AL, 21/22 - L1
