@@ -29,7 +29,9 @@ import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.elevator.ElevatorConstants.Level;
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.RobotUtils;
+import org.ironriders.lib.field.FieldElement;
 import org.ironriders.lib.field.FieldElement.ElementType;
+import org.ironriders.lib.field.FieldElement.Position;
 import org.ironriders.lib.field.FieldPose.Side;
 import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.targeting.TargetingSubsystem;
@@ -167,9 +169,12 @@ public class RobotContainer {
 		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.STATION));
 		secondaryController.button(7).onTrue(targetingCommands.targetNearest(ElementType.PROCESSOR));
 
-		// 11/12 - Climb Up, 13/14 - Climb Reset
-		secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.UP))
-				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
+		// 
+		//secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.UP))
+		//		.onFalse(climbCommands.set(ClimbConstants.State.STOP));
+
+		secondaryController.button(15).onTrue(targetingCommands.targetReefPole());
+		
 		secondaryController.button(11).onTrue(climbCommands.set(ClimbConstants.State.DOWN))
 				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
