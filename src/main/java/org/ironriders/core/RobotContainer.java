@@ -173,7 +173,8 @@ public class RobotContainer {
 		//secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.UP))
 		//		.onFalse(climbCommands.set(ClimbConstants.State.STOP));
 
-		secondaryController.button(15).onTrue(targetingCommands.targetReefPole());
+		secondaryController.button(15).onTrue(targetingCommands.targetReefPole(Side.Left));
+		secondaryController.button(16).onTrue(targetingCommands.targetReefPole(Side.Right));
 		
 		secondaryController.button(11).onTrue(climbCommands.set(ClimbConstants.State.DOWN))
 				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
