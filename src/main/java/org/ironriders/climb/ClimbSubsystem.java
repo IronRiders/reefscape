@@ -34,18 +34,12 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public ClimbSubsystem() {
         encoder = climbMotor.getEncoder();
-        climbMotorConfigCoast // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
-                .smartCurrentLimit(ClimbConstants.CURRENT_LIMIT)
-                //.voltageCompensation(ClimbContstants.COMPENSATION)
-                .idleMode(IdleMode.kBrake);
-        climbMotor.configure(climbMotorConfigCoast,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-            
         climbMotorConfigBrake // if there's an issue with breaks and stuff, the docs show that limit switch is enabled by default
                 .smartCurrentLimit(ClimbConstants.CURRENT_LIMIT)
                 //.voltageCompensation(ClimbContstants.COMPENSATION)
-                .idleMode(IdleMode.kBrake)
-                .softLimit.forwardSoftLimit(MAX_POSITION);
-        // climbMotor.configure(climbMotorConfigBrake,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
+                .idleMode(IdleMode.kBrake);
+
+        climbMotor.configure(climbMotorConfigBrake,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
 
         SmartDashboard.putNumber("Climber Compensation", 0);
 
@@ -68,19 +62,6 @@ public class ClimbSubsystem extends SubsystemBase {
         oldValue = newValue;
         //System.out.println("(Climber): Not using auto up");
         
-    }
-
-    public void brakeClimberMotor(boolean brakeOn){
-
-    }
-
-    public void brakeClimber(boolean breakOn){
-        if(breakOn){
-            climbMotor.configure(climbMotorConfigBrake,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-        }
-        else{
-            climbMotor.configure(climbMotorConfigCoast,ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-        }
     }
 
     public void updatePostion(){
