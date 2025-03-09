@@ -7,6 +7,8 @@ public class ClimbConstants {
     public static final int COMPENSATION = 12;
     public static final int CURRENT_LIMIT = 40;
     public static final int FAKE_PID_COMPENSATION = 1; //TODO: TUNE
+    public static final double MAX_POSITION = 50;
+    public static final double GEAR_RATIO = 0.01;
     //public static final double CLIMBER_LIMIT = 45;
     
     public enum State {
