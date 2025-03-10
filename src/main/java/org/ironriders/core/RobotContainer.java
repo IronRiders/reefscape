@@ -14,6 +14,8 @@ import org.ironriders.wrist.algae.AlgaeWristCommands;
 import org.ironriders.wrist.algae.AlgaeWristConstants;
 import org.ironriders.wrist.algae.AlgaeWristSubsystem;
 import org.ironriders.wrist.algae.AlgaeIntakeConstants.State;
+import org.ironriders.auto.AutoCommands;
+import org.ironriders.auto.AutoSubsystem;
 import org.ironriders.climb.ClimbCommands;
 import org.ironriders.climb.ClimbSubsystem;
 import org.ironriders.climb.ClimbConstants;
@@ -84,6 +86,9 @@ public class RobotContainer {
 
 	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
 	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
+
+	private final AutoSubsystem autoSubsystem = new AutoSubsystem();
+	private final AutoCommands autoCommands = autoSubsystem.getCommands();
 
 	private final DashboardSubsystem dashboardSubsystem = new DashboardSubsystem();
 

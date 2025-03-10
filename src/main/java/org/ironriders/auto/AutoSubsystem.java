@@ -6,7 +6,7 @@ public class AutoSubsystem extends IronSubsystem {
     private AutoCommands commands;
 
     public AutoSubsystem() {
-
+        publish("Test", "null");
     }
 
     @Override
