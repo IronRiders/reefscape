@@ -142,8 +142,6 @@ public abstract class RelativeWristSubsystem extends WristSubsystem {
             direction = -1;
         }
 
-        this.reportInfo("Homing");
-
         Command findHome = this.defer(
                 () -> new Command() {
                     public void execute() {
@@ -182,7 +180,6 @@ public abstract class RelativeWristSubsystem extends WristSubsystem {
             reset();
 
             isHomed = true;
-            this.reportInfo("Homed");
         });
 
         Command waitForHome = Commands.waitUntil(this::isHomed);

@@ -39,9 +39,7 @@ public class ElevatorCommands {
             if (elevatorSubsystem.isHomed()) {
                 return set(Level.Down);
             }
-    
-            elevatorSubsystem.reportInfo("Homing");
-
+            
             return new Command() {
                 public void execute() {
                     elevatorSubsystem.setMotor(-0.1);
