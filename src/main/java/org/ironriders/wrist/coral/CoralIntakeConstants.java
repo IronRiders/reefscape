@@ -5,7 +5,7 @@ public class CoralIntakeConstants {
 
     public static final String DASHBOARD_PREFIX_CORAL = "coral intake/";
 
-    // motor IDs (-1 = unknow)
+    // motor IDs (-1 = unknown)
     public static final int CORAL_INTAKE_MOTOR = 12;
     public static final int CORAL_INTAKE_CURRENT_STALL_LIMIT = 10; // please test
 

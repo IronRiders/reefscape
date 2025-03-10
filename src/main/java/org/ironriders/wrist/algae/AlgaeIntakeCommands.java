@@ -1,6 +1,7 @@
 package org.ironriders.wrist.algae;
 
 import org.ironriders.wrist.algae.AlgaeIntakeConstants.State;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AlgaeIntakeCommands {
@@ -18,8 +19,8 @@ public class AlgaeIntakeCommands {
 
     public Command set(AlgaeIntakeConstants.State state) {
         Command command = intake.run(() -> intake.set(state)).withTimeout(5);
-
-        // Algae intake has no limit switch! Driver must manually enable/disable
+        
+        // Algae intake has no limit switch!  Driver must manually enable/disable
         return command;
     }
 
