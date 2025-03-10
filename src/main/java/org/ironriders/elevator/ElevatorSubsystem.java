@@ -5,8 +5,7 @@ import static org.ironriders.elevator.ElevatorConstants.ELEVATOR_MOTOR_STALL_LIM
 import static org.ironriders.elevator.ElevatorConstants.FOLLOW_MOTOR_ID;
 import static org.ironriders.elevator.ElevatorConstants.I;
 import static org.ironriders.elevator.ElevatorConstants.INCHES_PER_ROTATION;
-import static org.ironriders.elevator.ElevatorConstants.MAX_POSITION;
-import static org.ironriders.elevator.ElevatorConstants.MIN_POSITION;
+import static org.ironriders.elevator.ElevatorConstants.L4_HEIGHT;
 import static org.ironriders.elevator.ElevatorConstants.P;
 import static org.ironriders.elevator.ElevatorConstants.PRIMARY_MOTOR_ID;
 
@@ -177,7 +176,7 @@ public class ElevatorSubsystem extends IronSubsystem {
 
         // Update goal state for motion profile
         reportInfo("Elevator moving to " + inches + " inches");
-        goalSetpoint = new TrapezoidProfile.State(MathUtil.clamp(inches, MIN_POSITION, MAX_POSITION), 0);
+        goalSetpoint = new TrapezoidProfile.State(MathUtil.clamp(inches, 0, L4_HEIGHT), 0);
     }
 
     public void setMotor(double set) {
