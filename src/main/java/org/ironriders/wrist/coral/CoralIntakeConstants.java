@@ -10,7 +10,7 @@ public class CoralIntakeConstants {
     public static final int CORAL_INTAKE_CURRENT_STALL_LIMIT = 10; // please test
 
     public static final double DISCHARGE_TIMEOUT = 2.5; // these are both in SECONDS
-    public static final double INTAKE_IMPATIENCE = 2.5; // how much time to wait for the limit switch before
+    public static final double INTAKE_IMPATIENCE = 7.5; // how much time to wait for the limit switch before
                                                    // stopping the motor anyway
 
     public static final double MAX_ACC =.1;
@@ -32,6 +32,4 @@ public class CoralIntakeConstants {
         }
 
     }
-
-    
 }

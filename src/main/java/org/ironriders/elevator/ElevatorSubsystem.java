@@ -133,6 +133,15 @@ public class ElevatorSubsystem extends IronSubsystem {
         updateTelemetry();
     }
 
+    public void jog(boolean Jogup){
+        if(Jogup){
+        this.goalSetpoint = new TrapezoidProfile.State(goalSetpoint.position +.1 , 0d);
+        }
+        else {
+            this.goalSetpoint = new TrapezoidProfile.State(goalSetpoint.position -.1 , 0d);
+        }
+    }
+
     public void move() {
         // Calculate the next state and update the current state
         periodicSetpoint = profile.calculate(ElevatorConstants.T, periodicSetpoint, goalSetpoint);
@@ -214,7 +223,7 @@ public class ElevatorSubsystem extends IronSubsystem {
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {
-        return Math.abs(getHeightInches() - level.positionInches) < 0.5;
+        return Math.abs(getHeightInches() - level.positionInches) < 0.15;
     }
 
     public void reportHomed() {

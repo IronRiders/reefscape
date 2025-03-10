@@ -30,22 +30,17 @@ public class CoralIntakeSubsystem extends IronSubsystem {
         coralMotorConfig
                 .smartCurrentLimit(CORAL_INTAKE_CURRENT_STALL_LIMIT)
                 .inverted(true)
-                .idleMode(IdleMode.kCoast);
+                .idleMode(IdleMode.kBrake);
         coralMotor.configure(coralMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         commands = new CoralIntakeCommands(this);
-
     }
 
     @Override
     public void periodic() {
-        hasCoral = coralMotor.getForwardLimitSwitch().isPressed();
+        hasCoral = this.getLimitSwitchTriggered();
 
         publish("Velocity", getSpeed());
         publish("Has Coral", hasCoral);
-    }
-
-    public void setHasCoral(boolean hasCoral) {
-        this.hasCoral = hasCoral;
     }
 
     public void set(State state) {

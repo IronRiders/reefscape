@@ -21,6 +21,8 @@ public class GameState {
     static private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1;
     static private ElevatorConstants.Level algaeTarget = ElevatorConstants.Level.L2;
 
+    static private boolean controlInverted = false;
+
     private GameState() {}
 
     public static Field2d getField() {
@@ -61,5 +63,13 @@ public class GameState {
 
     public static void setAlgaeTarget(ElevatorConstants.Level algaeTarget) {
         GameState.algaeTarget = algaeTarget;
+    }
+
+    public static boolean getInvertControl() {
+        return controlInverted;
+    }
+
+    public static void invertControl() {
+        GameState.controlInverted = !GameState.controlInverted;
     }
 }
