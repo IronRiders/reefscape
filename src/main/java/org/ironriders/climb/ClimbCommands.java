@@ -1,6 +1,5 @@
 package org.ironriders.climb;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public class ClimbCommands {
     public final ClimbSubsystem climb;
@@ -22,11 +21,7 @@ public class ClimbCommands {
 
     public Command goTo(ClimbConstants.Targets limit) {
         return climb
-            .defer(() -> { 
-                System.out.println("(Climber) Going to " + limit); 
-                return Commands.none();
-
-            });
+            .runOnce(() -> climb.goTo(limit));
     }
 
     private Command reZero() {
