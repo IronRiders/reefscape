@@ -40,6 +40,11 @@ public class ClimbSubsystem extends IronSubsystem {
 
     
     public ClimbSubsystem() {
+        publish("Climber P", ClimbConstants.P);
+        publish("Climber I", ClimbConstants.I);
+        publish("Climber D", ClimbConstants.D);
+
+
         encoder = climbMotor.getEncoder();
         encoder.setPosition(0); // Set pos to zero on deploy
 
