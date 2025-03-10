@@ -57,6 +57,7 @@ public class ClimbSubsystem extends IronSubsystem {
             .forwardSoftLimit(ClimbConstants.Targets.HOME.pos);
 
         climbMotorConfig.idleMode(IdleMode.kBrake);
+        climbMotorConfig.smartCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         climbMotor.configure(climbMotorConfig.apply(softLimitConfig), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         
         TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ClimbConstants.MAX_VEL, ClimbConstants.MAX_ACC);

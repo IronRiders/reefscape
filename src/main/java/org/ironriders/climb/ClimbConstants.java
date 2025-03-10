@@ -2,10 +2,8 @@ package org.ironriders.climb;
 
 public class ClimbConstants {
     public static final int CLIMBER_MOTOR_CAN_ID = 17;
-    public static final int COMPENSATION = 12;
     public static final int CURRENT_LIMIT = 40;
 
-    public static final double MAX_POSITION = 50;
     public static final double GEAR_RATIO = 1/100;
 
     public static final double P = 0;
