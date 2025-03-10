@@ -13,12 +13,11 @@ public class ElevatorConstants {
 
     public static final double MAX_VEL = 40;
     public static final double MAX_ACC = 40;
-
-    public static final double MAX_OUTPUT = 5; // please tune me tooooooo!!!!
+    public static final double ELEVATOR_POSITION_TOLERANCE = 0.15;
 
     public static final double T = .02;
     public static final double K_S = 0;
-    public static final double K_G = .0765; // Didn't tune for K_S and K_G separately
+    public static final double K_G = .0765;
     public static final double K_V = 0;
     public static final double K_A = 0;
 

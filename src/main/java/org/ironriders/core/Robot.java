@@ -29,7 +29,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
-		SmartDashboard.putBoolean("All Homed", SmartDashboard.getBoolean("Subsystems/Elevator/Homed",false)&&SmartDashboard.getBoolean("Subsystems/AlgaeWrist/Homed",false)&&SmartDashboard.getBoolean("Subsystems/CoralWrist/Homed",false));
 	}
 
 	@Override
