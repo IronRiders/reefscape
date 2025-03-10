@@ -49,7 +49,7 @@ public class ClimbSubsystem extends IronSubsystem {
         encoder = climbMotor.getEncoder();
         encoder.setPosition(0); // Set pos to zero on deploy
 
-        
+
         var softLimitConfig = new SoftLimitConfig(); // should force stop motor if it gets out of bounds
         softLimitConfig
             .reverseSoftLimitEnabled(true)
@@ -95,7 +95,7 @@ public class ClimbSubsystem extends IronSubsystem {
     }
 
     public void set(ClimbConstants.State state) {
-        System.out.println("(Climber) Warn! Directly set climber speed. This can break the climber! Use goTo() if possible!");
+        System.out.println("(Climber) Warn! Someone directly set climber speed. This can break the climber! Use goTo() if possible!");
         climbMotor.set(state.speed);
     }
 

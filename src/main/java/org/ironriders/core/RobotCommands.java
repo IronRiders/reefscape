@@ -75,9 +75,12 @@ public class RobotCommands {
 		NamedCommands.registerCommand("Score Coral L4",
 				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
 
-		NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
-		NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
+		//NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
+		//NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
 		
+		NamedCommands.registerCommand("Climber Max", climbCommands.goTo(ClimbConstants.Targets.MAX));
+		NamedCommands.registerCommand("Climber Home", climbCommands.goTo(ClimbConstants.Targets.HOME));
+		NamedCommands.registerCommand("Climber Target", climbCommands.goTo(ClimbConstants.Targets.TARGET));
 
 		SmartDashboard.putData("Invert Controls", invertControlsCommand());
 		// NamedCommands.registerCommand("Prepare to Grab Algae",
