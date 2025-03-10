@@ -93,7 +93,7 @@ public class ClimbSubsystem extends IronSubsystem {
     }
 
     public void set(ClimbConstants.State state) {
-        System.out.println("(Climber) Warn! Directly set climber speed! This can break the climber! Use goTo() if possible!");
+        System.out.println("(Climber) Warn! Directly set climber speed. This can break the climber! Use goTo() if possible!");
         climbMotor.set(state.speed);
     }
 

@@ -170,14 +170,14 @@ public class RobotContainer {
 		secondaryController.button(7).onTrue(targetingCommands.targetNearest(ElementType.PROCESSOR));
 
 		 
-		secondaryController.button(15).onTrue(climbCommands.set(ClimbConstants.State.UP))
-				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
+		secondaryController.button(15).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET))
+				.onFalse(climbCommands.goTo(ClimbConstants.Targets.HOME));
 
 		//secondaryController.button(15).onTrue(targetingCommands.targetReefPole(Side.Left));
 		secondaryController.button(16).onTrue(targetingCommands.targetReefPole(Side.Right));
 		
-		secondaryController.button(11).onTrue(climbCommands.set(ClimbConstants.State.DOWN))
-				.onFalse(climbCommands.set(ClimbConstants.State.STOP));
+		secondaryController.button(11).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX))
+				.onFalse(climbCommands.goTo(ClimbConstants.Targets.HOME));
 		
 
 		// 9/10 - L4, 13/14 - L3 & AH, 17/18 - L2 & AL, 21/22 - L1
