@@ -1,14 +1,9 @@
 package org.ironriders.elevator;
 
-import static org.ironriders.elevator.ElevatorConstants.D;
 import static org.ironriders.elevator.ElevatorConstants.ELEVATOR_MOTOR_STALL_LIMIT;
 import static org.ironriders.elevator.ElevatorConstants.ELEVATOR_POSITION_TOLERANCE;
 import static org.ironriders.elevator.ElevatorConstants.FOLLOW_MOTOR_ID;
-import static org.ironriders.elevator.ElevatorConstants.I;
 import static org.ironriders.elevator.ElevatorConstants.INCHES_PER_ROTATION;
-import static org.ironriders.elevator.ElevatorConstants.MAX_POSITION;
-import static org.ironriders.elevator.ElevatorConstants.MIN_POSITION;
-import static org.ironriders.elevator.ElevatorConstants.P;
 import static org.ironriders.elevator.ElevatorConstants.PRIMARY_MOTOR_ID;
 
 import org.ironriders.elevator.ElevatorConstants.Level;
@@ -25,11 +20,9 @@ import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This subsystem controls the big ol' elevator that moves the algae and coral
@@ -154,7 +147,7 @@ public class ElevatorSubsystem extends IronSubsystem {
     }
 
     public boolean isAtPosition(ElevatorConstants.Level level) {
-        return Math.abs(getHeightInches() - level.positionInches) < 0.15;
+        return pidController.atSetpoint();
     }
 
     public void reportHomed() {
