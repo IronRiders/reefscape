@@ -39,11 +39,6 @@ public abstract class IronSubsystem extends SubsystemBase {
         }
     }
 
-    public void reportInfo(String message) {
-        // TODO - figure out how to create green messages
-        System.out.println(messagePrefix + message);
-    }
-
     public void reportError(String message) {
         DriverStation.reportError(messagePrefix + message, false);
     }
