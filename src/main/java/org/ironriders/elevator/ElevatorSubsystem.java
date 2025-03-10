@@ -130,25 +130,13 @@ public class ElevatorSubsystem extends IronSubsystem {
         pidController.setSetpoint(set);
     }
 
-    public void stopMotor() {
+    public void reset() {
         primaryMotor.set(0);
         pidController.reset();
     }
 
     public SparkLimitSwitch getBottomLimitSwitch() {
         return bottomLimitSwitch;
-    }
-
-    public void reset() {
-        stopMotor();
-    }
-
-    public double getHeightInches() {
-        return encoder.getPosition() * INCHES_PER_ROTATION;
-    }
-
-    public boolean isAtPosition(ElevatorConstants.Level level) {
-        return pidController.atSetpoint();
     }
 
     public void reportHomed() {
@@ -158,6 +146,14 @@ public class ElevatorSubsystem extends IronSubsystem {
 
     public boolean isHomed() {
         return isHomed;
+    }
+
+    public double getHeightInches() {
+        return encoder.getPosition() * INCHES_PER_ROTATION;
+    }
+
+    public boolean isAtPosition(ElevatorConstants.Level level) {
+        return pidController.atSetpoint();
     }
 
     public ElevatorCommands getCommands() {

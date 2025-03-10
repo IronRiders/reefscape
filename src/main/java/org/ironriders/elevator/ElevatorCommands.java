@@ -52,7 +52,7 @@ public class ElevatorCommands {
                 }
 
                 public void end(boolean interrupted) {
-                    elevatorSubsystem.stopMotor();
+                    elevatorSubsystem.reset();
                     elevatorSubsystem.reportHomed();
                 }
             };
