@@ -1,11 +1,8 @@
 package org.ironriders.wrist.algae;
 
-import static org.ironriders.wrist.algae.AlgaeIntakeConstants.DISCHARGE_TIMEOUT;
-import static org.ironriders.wrist.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
-
 import org.ironriders.wrist.algae.AlgaeIntakeConstants.State;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AlgaeIntakeCommands {
 
@@ -22,7 +19,6 @@ public class AlgaeIntakeCommands {
 
     public Command set(AlgaeIntakeConstants.State state) {
         Command command = intake.run(() -> intake.set(state)).withTimeout(5);
-    
         
         // Algae intake has no limit switch!  Driver must manually enable/disable
         return command;

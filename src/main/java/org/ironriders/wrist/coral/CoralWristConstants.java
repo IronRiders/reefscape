@@ -7,7 +7,7 @@ public class CoralWristConstants {
 
     public static final String DASHBOARD_PREFIX = "coralwrist/";
 
-    // motor IDs (-1 = unknow)
+    // motor IDs (-1 = unknown)
     public static final int CORALWRISTMOTOR = 13;
 
     // Need to tune

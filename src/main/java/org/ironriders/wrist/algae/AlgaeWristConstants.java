@@ -40,7 +40,7 @@ public class AlgaeWristConstants {
     public static final double ALGAE_WRIST_TOLERENCE = 2; // tune me please
 
     public enum State {
-        STARTING(-90), // Starting position is beyond lower limit, exact position unknown
+        STARTING(-90), // Starting position is beyond lower limit, exact position unknownn
         STOWED(-40), // Computed home position
         //EXTENDED(27.3);
         EXTENDED(10);

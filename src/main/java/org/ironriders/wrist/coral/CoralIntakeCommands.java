@@ -1,6 +1,6 @@
 package org.ironriders.wrist.coral;
 
-import static org.ironriders.wrist.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.INTAKE_TIMEOUT;
 import static org.ironriders.wrist.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
 
 import org.ironriders.wrist.coral.CoralIntakeConstants.State;
@@ -32,7 +32,7 @@ public class CoralIntakeCommands {
                                     }
                                     return intake.getLimitSwitchTriggered();
                                 }),
-                                Commands.waitSeconds(INTAKE_IMPATIENCE)))
+                                Commands.waitSeconds(INTAKE_TIMEOUT)))
                         .finallyDo(() -> intake.set(State.STOP));
             case EJECT:
                 return command.withTimeout(DISCHARGE_TIMEOUT).finallyDo(() -> intake.set(State.STOP));
