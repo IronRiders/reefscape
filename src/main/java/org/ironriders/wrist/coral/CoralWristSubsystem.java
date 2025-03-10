@@ -10,15 +10,13 @@ import org.ironriders.wrist.RelativeWristSubsystem;
 public class CoralWristSubsystem extends RelativeWristSubsystem {
     private final CoralWristCommands commands;
 
-    // private ArmFeedforward coralFeedforward = new
-    // ArmFeedforward(CORALWRISTKS,CORALWRISTKG,CORALWRISTKV);
     public CoralWristSubsystem() {
         super(
             CORALWRISTMOTOR,
             GEAR_RATIO,
             HOME_ANGLE,
             true,
-            new PID(CORALWRISTKP, CORALWRISTKI, CORALWRISTKD),
+            new PID(P, I, D),
             new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC),
             CORAL_WRIST_CURRENT_STALL_LIMIT,
             false
