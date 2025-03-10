@@ -1,11 +1,8 @@
 package org.ironriders.climb;
-
-import static org.ironriders.elevator.ElevatorConstants.GEAR_RATIO;
-import static org.ironriders.elevator.ElevatorConstants.MAX_POSITION;
-
 import java.util.DuplicateFormatFlagsException;
-
 import org.ironriders.lib.IronSubsystem;
+import org.ironriders.lib.data.PID;
+import org.ironriders.wrist.algae.AlgaeWristConstants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel;
@@ -13,6 +10,10 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkRelativeEncoder;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -24,79 +25,86 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 public class ClimbSubsystem extends IronSubsystem {
 
+    private final TrapezoidProfile profile;
+    private final PIDController pidController;
+
     private final SparkMax climbMotor = new SparkMax(ClimbConstants.CLIMBER_MOTOR_CAN_ID,
             SparkLowLevel.MotorType.kBrushless);
-    private final SparkMaxConfig climbMotorConfigBrake = new SparkMaxConfig();
+    private final SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
     
     private final ClimbCommands commands;
     private final RelativeEncoder encoder;
 
-    double currentPostion;
-    double oldValue;
-    double newValue;
-    boolean staysUp;
+    private TrapezoidProfile.State goalSetpoint = new TrapezoidProfile.State();
+    private TrapezoidProfile.State periodicSetpoint = new TrapezoidProfile.State();
 
+    
     public ClimbSubsystem() {
         encoder = climbMotor.getEncoder();
         encoder.setPosition(0);
 
         var softLimitConfig = new SoftLimitConfig();
-
-        // I *think* soft limits are set in rotations of the internal encoder,
-        // not the absolute encoder.  This isn't documented.  However, on current
-        // bot, disabling limit is worse than crashing because current is low and
-        // if the motor disables the arm will crash into bearing brackets on
-        // elevator.  So leaving disabled for now
         softLimitConfig
             .reverseSoftLimitEnabled(true)
-            .reverseSoftLimit(ClimbConstants.Limits.MAX.pos)
+            .reverseSoftLimit(ClimbConstants.Targets.MAX.pos)
             .forwardSoftLimitEnabled(true)
-            .forwardSoftLimit(ClimbConstants.Limits.HOME.pos);
+            .forwardSoftLimit(ClimbConstants.Targets.HOME.pos);
 
 
-        climbMotor.configure(climbMotorConfigBrake.apply(softLimitConfig),ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
-
-        SmartDashboard.putNumber("Climber Compensation", 0);
+        climbMotor.configure(climbMotorConfig.apply(softLimitConfig),ResetMode.kResetSafeParameters,PersistMode.kPersistParameters);
         
+        TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ClimbConstants.MAX_VEL, ClimbConstants.MAX_ACC);
+        profile = new TrapezoidProfile(constraints);
+        goalSetpoint = new TrapezoidProfile.State();
+        pidController = new PIDController(
+                ClimbConstants.P,
+                ClimbConstants.I,
+                ClimbConstants.D);
+
+        pidController.setTolerance(.01);
 
         commands = new ClimbCommands(this);
     }
 
     @Override
     public void periodic() {
-        publish("Climb Motor Val", climbMotor.getEncoder().getPosition());
+        publish("Climb Motor Val", getPostion());
+    
+        periodicSetpoint = profile.calculate(ClimbConstants.T, periodicSetpoint, goalSetpoint);
+        publish("Climber set postion", periodicSetpoint.position);
 
-        newValue = encoder.getPosition();
-        updatePostion();
-        if ((oldValue > newValue) && staysUp) {
-            double compensate = (oldValue - newValue) * ClimbConstants.GEAR_RATIO;
-
-            climbMotor.set(compensate);
-
-            System.out.println("Compensating for climber falling by seting motor to " + compensate);
-            SmartDashboard.putNumber("Climber Compensation", compensate);
-
-        }
-
-        oldValue = newValue;
-        // System.out.println("(Climber): Not using auto up");
-
+        pidController.setP(SmartDashboard.getNumber("Climber P", ClimbConstants.P));
+        pidController.setI(SmartDashboard.getNumber("Climber I", ClimbConstants.I));
+        pidController.setD(SmartDashboard.getNumber("Climber D", ClimbConstants.D));
     }
 
-    public void updatePostion() {
-        currentPostion = encoder.getPosition() * GEAR_RATIO;
+    public double getPostion() {
+        return encoder.getPosition() * ClimbConstants.GEAR_RATIO;
     }
 
     public void set(ClimbConstants.State state) {
         climbMotor.set(state.speed);
+    }
 
-        if (state == ClimbConstants.State.UP || state == ClimbConstants.State.STOP) {
-            staysUp = false;
-            SmartDashboard.putBoolean("Climber Compensation Mode", staysUp);
-        } else {
-            staysUp = false;
-            SmartDashboard.putBoolean("Climber Compensation Mode", staysUp);
+    public void goTo(ClimbConstants.Targets limit) {
+        setGoal(limit);
+
+        double pidOutput = pidController.calculate(getPostion(), periodicSetpoint.position);
+        if (pidOutput == 0) {
+            climbMotor.stopMotor();
+            return;
         }
+
+        climbMotor.set(pidOutput);
+        publish("Climber PID output", pidOutput);
+    }
+
+    public void setGoal(ClimbConstants.Targets limit) {
+        this.goalSetpoint = new TrapezoidProfile.State(limit.pos, 0d);
+    }
+
+    public void reZero() {
+        encoder.setPosition(0);
     }
 
     public ClimbCommands getCommands() {

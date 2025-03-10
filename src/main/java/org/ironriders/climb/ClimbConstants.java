@@ -10,6 +10,17 @@ public class ClimbConstants {
     public static final int FAKE_PID_COMPENSATION = 1; //TODO: TUNE
     public static final double MAX_POSITION = 50;
     public static final double GEAR_RATIO = 0.01;
+
+    public static final double P = 0;
+    public static final double I = 0; 
+    public static final double D = 0; 
+
+    public static final double MOTOR_SPEED = 0.2;
+
+    public static final double MAX_ACC = 10;
+    public static final double MAX_VEL = 10;
+
+    public static final double T = .02;
     //public static final double CLIMBER_LIMIT = 45;
     
 
@@ -23,14 +34,14 @@ public class ClimbConstants {
         State(double speed) { this.speed = speed; }
     }
 
-    public enum Limits {
+    public enum Targets {
         HOME(0),
         MAX(-123.5),
         TARGET(15);
 
         public final double pos;
 
-        Limits(double pos) { this.pos = pos; }
+        Targets(double pos) { this.pos = pos; }
 
     }
 }
