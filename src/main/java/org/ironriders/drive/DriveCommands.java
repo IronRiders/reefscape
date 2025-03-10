@@ -23,7 +23,7 @@ public class DriveCommands {
 	public DriveCommands(DriveSubsystem driveSubsystem) {
 		this.driveSubsystem = driveSubsystem;
 
-		this.driveSubsystem.publish("Drive to target", pathfindToTarget());
+		this.driveSubsystem.publish("Drive to Target", pathfindToTarget());
 	}
 
 	public Command drive(Supplier<Translation2d> translation, DoubleSupplier rotation, BooleanSupplier fieldRelative) {

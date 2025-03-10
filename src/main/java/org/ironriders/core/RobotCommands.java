@@ -4,7 +4,6 @@ import java.util.function.DoubleSupplier;
 
 import org.ironriders.climb.ClimbCommands;
 import org.ironriders.climb.ClimbConstants;
-import org.ironriders.dash.DashboardSubsystem;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
@@ -32,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
  * These commands are those which the driver controls call.
  */
 public class RobotCommands {
+
 	private final DriveCommands driveCommands;
 	private final TargetingCommands targetingCommands;
 	private final ElevatorCommands elevatorCommands;
@@ -40,6 +40,7 @@ public class RobotCommands {
 	private final AlgaeWristCommands algaeWristCommands;
 	private final AlgaeIntakeCommands algaeIntakeCommands;
 	private final ClimbCommands climbCommands;
+
 	private final GenericHID controller;
 
 	public RobotCommands(
@@ -120,11 +121,6 @@ public class RobotCommands {
 		return driveCommands.driveTeleop(inputTranslationX, inputTranslationY, inputRotation, true);
 	}
 
-	/**
-	 * Produce command to jog the robot at specified robot-relative angle.
-	 * 
-	 * Jog distance is {@value DriveConstants#JOG_DISTANCE_INCHES}.
-	 */
 	public Command jog(double robotRelativeAngleDegrees) {
 		return driveCommands.jog(robotRelativeAngleDegrees);
 	}
