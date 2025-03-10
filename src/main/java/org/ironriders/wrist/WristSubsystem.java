@@ -39,9 +39,13 @@ public abstract class WristSubsystem extends IronSubsystem {
     private final TrapezoidProfile movementProfile;
 
     abstract boolean isHomed();
+
     protected abstract boolean isAtForwardLimit();
+
     protected abstract boolean isAtReverseLimit();
+
     protected abstract Angle getCurrentAngle();
+
     public abstract Command homeCmd(boolean force);
 
     protected WristSubsystem(
@@ -66,7 +70,6 @@ public abstract class WristSubsystem extends IronSubsystem {
     protected void configureMotor() {
         motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
-
 
     @Override
     public void periodic() {

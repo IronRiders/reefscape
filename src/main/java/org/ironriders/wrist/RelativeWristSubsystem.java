@@ -32,15 +32,14 @@ public abstract class RelativeWristSubsystem extends WristSubsystem {
     private final SparkLimitSwitch forwardLimit;
 
     public RelativeWristSubsystem(
-        int motorId,
-        double gearRatio,
-        Angle homeAngle,
-        boolean homeForward,
-        PID pid,
-        TrapezoidProfile.Constraints constraints,
-        int stallLimit,
-        boolean inverted
-    ) {
+            int motorId,
+            double gearRatio,
+            Angle homeAngle,
+            boolean homeForward,
+            PID pid,
+            TrapezoidProfile.Constraints constraints,
+            int stallLimit,
+            boolean inverted) {
         super(motorId, gearRatio, pid, constraints, stallLimit, inverted);
 
         this.homeAngle = homeAngle;
@@ -96,10 +95,10 @@ public abstract class RelativeWristSubsystem extends WristSubsystem {
         }
 
         // If we hit a limit, move off a bit so we can try to keep motor
-        // engaged without continually bouncing.  This will be iterative so
-        // the more we bounce, the more we back off.  Only back off if the
+        // engaged without continually bouncing. This will be iterative so
+        // the more we bounce, the more we back off. Only back off if the
         // backoff is past the goal because large bounces may push us further
-        // out of bounds 
+        // out of bounds
         if (this.forwardLimit.isPressed()) {
             reportWarning("Crashed on forward limit");
             var backoffTo = getCurrentAngle().minus(CRASH_BACKOFF);
@@ -146,36 +145,34 @@ public abstract class RelativeWristSubsystem extends WristSubsystem {
         this.reportInfo("Homing");
 
         Command findHome = this.defer(
-            () -> new Command() {
-                public void execute() {
-                    motor.set(HOMING_SPEED * direction);
-                }
+                () -> new Command() {
+                    public void execute() {
+                        motor.set(HOMING_SPEED * direction);
+                    }
 
-                public boolean isFinished() {
-                    return limit.isPressed();
-                }
+                    public boolean isFinished() {
+                        return limit.isPressed();
+                    }
 
-                public void end(boolean interrupted) {
-                    motor.stopMotor();
-                }
-            }
-        );
+                    public void end(boolean interrupted) {
+                        motor.stopMotor();
+                    }
+                });
 
         Command moveOffHome = this.defer(
-            () -> new Command() {
-                public void execute() {
-                    motor.set(HOMING_BACKOFF_SETPOINT * -direction);
-                }
+                () -> new Command() {
+                    public void execute() {
+                        motor.set(HOMING_BACKOFF_SETPOINT * -direction);
+                    }
 
-                public boolean isFinished() {
-                    return !limit.isPressed();
-                }
+                    public boolean isFinished() {
+                        return !limit.isPressed();
+                    }
 
-                public void end(boolean interrupted) {
-                    motor.stopMotor();
-                }
-            }
-        );
+                    public void end(boolean interrupted) {
+                        motor.stopMotor();
+                    }
+                });
 
         Command recordHome = this.runOnce(() -> {
             // Set encoder to rotations from 0 of home angle
@@ -189,10 +186,10 @@ public abstract class RelativeWristSubsystem extends WristSubsystem {
         });
 
         Command waitForHome = Commands.waitUntil(this::isHomed);
-    
+
         return findHome
-            .andThen(moveOffHome)
-            .andThen(recordHome)
-            .andThen(waitForHome);
+                .andThen(moveOffHome)
+                .andThen(recordHome)
+                .andThen(waitForHome);
     }
 }

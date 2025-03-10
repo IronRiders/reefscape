@@ -1,14 +1,13 @@
 package org.ironriders.targeting;
 
-import org.ironriders.drive.DriveCommands;
 import org.ironriders.lib.field.FieldElement.ElementType;
 import org.ironriders.lib.field.FieldPose.Side;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TargetingCommands {
+
     private TargetingSubsystem targetingSubsystem;
-    private DriveCommands driveCommands;
 
     public TargetingCommands(TargetingSubsystem targetingSubsystem) {
         this.targetingSubsystem = targetingSubsystem;
@@ -20,7 +19,6 @@ public class TargetingCommands {
         this.targetingSubsystem.publish("Reef", targetNearest(ElementType.REEF));
         this.targetingSubsystem.publish("Reef Left Pole", targetReefPole(Side.Left));
         this.targetingSubsystem.publish("Reef Right Pole", targetReefPole(Side.Right));
-        // TODO - individual sides
 
         this.targetingSubsystem.publish("Processor", targetNearest(ElementType.PROCESSOR));
     }
