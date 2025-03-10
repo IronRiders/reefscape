@@ -5,7 +5,7 @@ public class ElevatorConstants {
     public static final int PRIMARY_MOTOR_ID = 11;
     public static final int FOLLOW_MOTOR_ID = 10;
 
-    public static final int ELEVATOR_MOTOR_STALL_LIMIT = 30; // 30; //in amps and applies to both primary and follower
+    public static final int ELEVATOR_MOTOR_STALL_LIMIT = 30; //in amps
 
     public static final double P = 0.3;
     public static final double I = 0.05;
