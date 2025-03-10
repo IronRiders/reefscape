@@ -25,6 +25,6 @@ public class ClimbCommands {
     }
 
     private Command reZero() {
-        return climb.runOnce(() -> reZero());
+        return climb.runOnce(() -> climb.reZero());
     }
 }
