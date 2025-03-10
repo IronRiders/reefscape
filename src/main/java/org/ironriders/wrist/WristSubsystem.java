@@ -12,17 +12,17 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.units.Units;
-import edu.wpi.first.units.measure.Angle;
 
 /**
  * Functionality common to all wrists.
  * 
- * We interpret wrist angles in degrees forward relative to the floor; down is -90 and up is 90.  Angle must increase
- * as the motor moves forward.
+ * We interpret wrist angles in degrees forward relative to the floor; down is
+ * -90 and up is 90. Angle must increase as the motor moves forward.
  */
 public abstract class WristSubsystem extends IronSubsystem {
 
@@ -38,14 +38,19 @@ public abstract class WristSubsystem extends IronSubsystem {
     private TrapezoidProfile.State periodicSetpoint = new TrapezoidProfile.State();
     private final TrapezoidProfile movementProfile;
 
+    abstract boolean isHomed();
+    protected abstract boolean isAtForwardLimit();
+    protected abstract boolean isAtReverseLimit();
+    protected abstract Angle getCurrentAngle();
+    public abstract Command homeCmd(boolean force);
+
     protected WristSubsystem(
-        int motorId,
-        double gearRatio,
-        PID pid,
-        TrapezoidProfile.Constraints constraints,
-        int stallLimit,
-        boolean inverted
-    ) {
+            int motorId,
+            double gearRatio,
+            PID pid,
+            TrapezoidProfile.Constraints constraints,
+            int stallLimit,
+            boolean inverted) {
         motor = new SparkMax(motorId, MotorType.kBrushless);
         this.gearRatio = gearRatio;
         this.pid = new PIDController(pid.p, pid.i, pid.d);
@@ -56,19 +61,17 @@ public abstract class WristSubsystem extends IronSubsystem {
                 .idleMode(IdleMode.kBrake)
                 .inverted(inverted);
 
-        configureMotor();
     }
 
     protected void configureMotor() {
         motor.configure(motorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    abstract boolean isHomed();
 
     @Override
     public void periodic() {
         setMotorLevel();
-        
+
         publish("Homed", isHomed());
         publish("Rotation", getCurrentAngle().in(Units.Degrees));
         publish("Output", motor.get());
@@ -77,10 +80,6 @@ public abstract class WristSubsystem extends IronSubsystem {
         publish("ForwardLimit", isAtForwardLimit());
         publish("ReverseLimit", isAtReverseLimit());
     }
-
-    protected abstract boolean isAtForwardLimit();
-
-    protected abstract boolean isAtReverseLimit();
 
     /**
      * Update the periodic setpoint and set the motor level.
@@ -95,12 +94,11 @@ public abstract class WristSubsystem extends IronSubsystem {
     }
 
     public void setGoal(Angle angle) {
-        this.reportInfo("Goal set to " + angle.in(Units.Degrees) + "° (currently " + this.getCurrentAngle().in(Units.Degrees) + "°)");
-
         var degrees = angle.in(Units.Degrees);
 
         if (!isHomed()) {
-            DriverStation.reportError("Blocking unhomed movement attempted for " + this.getClass().getSimpleName(), false); 
+            DriverStation.reportError("Blocking unhomed movement attempted for " + this.getClass().getSimpleName(),
+                    false);
             return;
         }
 
@@ -117,11 +115,9 @@ public abstract class WristSubsystem extends IronSubsystem {
 
         goalSetpoint = createSetpoint(currentAngle);
         periodicSetpoint = createSetpoint(currentAngle);
-        
+
         pid.reset();
     }
-
-    protected abstract Angle getCurrentAngle();
 
     private TrapezoidProfile.State createSetpoint(Angle angle) {
         return createSetpoint(angle, 0);
@@ -137,11 +133,9 @@ public abstract class WristSubsystem extends IronSubsystem {
 
     public Command moveToCmd(Angle angle) {
         return this.runOnce(() -> this.setGoal(angle)).andThen(Commands.waitUntil(this::atPosition));
-    } 
+    }
 
     public Command homeCmd() {
         return homeCmd(false);
     }
-
-    public abstract Command homeCmd(boolean force);
 }

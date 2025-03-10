@@ -69,7 +69,8 @@ public class ClimbSubsystem extends IronSubsystem {
         pidController = new PIDController(
                 ClimbConstants.P,
                 ClimbConstants.I,
-                ClimbConstants.D);
+                ClimbConstants.D
+        );
 
         pidController.setTolerance(.01);
 
@@ -95,14 +96,14 @@ public class ClimbSubsystem extends IronSubsystem {
     }
 
     public void set(ClimbConstants.State state) {
-        System.out.println("(Climber) Warn! Someone directly set climber speed. This can break the climber! Use goTo() if possible!");
+        System.out.println("(Climber) Warning! Someone directly set the climber speed. This can (and has) broken the climber! Use goTo() if possible!");
         climbMotor.set(state.speed);
     }
 
     public void goTo(ClimbConstants.Targets limit) {
         setGoal(limit);
 
-        double pidOutput = pidController.calculate(getPostion() /* Encoder pos with motor gearing */, periodicSetpoint.position);
+        double pidOutput = pidController.calculate(getPostion() /* Encoder pos times motor gearing */, periodicSetpoint.position);
         if (pidOutput == 0) {
             climbMotor.stopMotor();
             return;
