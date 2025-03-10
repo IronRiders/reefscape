@@ -5,7 +5,7 @@ import static org.ironriders.wrist.algae.AlgaeIntakeConstants.ALGAE_LEFT_ID;
 import static org.ironriders.wrist.algae.AlgaeIntakeConstants.ALGAE_RIGHT_ID;
 
 import org.ironriders.lib.IronSubsystem;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants.State;
+import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -48,7 +48,7 @@ public class AlgaeIntakeSubsystem extends IronSubsystem {
         this.hasAlgae = hasAlgae;
     }
 
-    public void set(State state) {
+    public void set(AlgaeIntakeState state) {
         algaeLeftMotor.set(state.getSpeed());
         algaeRightMotor.set(-state.getSpeed());
 
@@ -65,7 +65,7 @@ public class AlgaeIntakeSubsystem extends IronSubsystem {
     }
 
     public void reset() {
-        set(State.STOP);
+        set(AlgaeIntakeState.STOP);
     }
 
     public AlgaeIntakeCommands getCommands() {

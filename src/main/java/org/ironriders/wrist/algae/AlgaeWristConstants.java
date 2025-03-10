@@ -6,48 +6,35 @@ import edu.wpi.first.units.measure.Angle;
 
 public class AlgaeWristConstants {
 
-    public static final String DASHBOARD_PREFIX = "algaewrist/";
-
-    // motor ID
-    public static final int ALGAEWRISTMOTOR = 14;
+    public static final int ALGAE_WRIST_MOTOR = 14;
 
     // Need to tune
     public static final double P = 0.01;
     public static final double I = 0.01;
     public static final double D = 0.0;
-    
-    public static final double t = 0.02;
-    public static final double SPROCKET_RATIO=(13/12);
+
+    public static final double SPROCKET_RATIO = (13 / 12);
     public static final double GEAR_RATIO = 1.0 / 64.0 * SPROCKET_RATIO;
     public static final double ENCODER_SCALE = SPROCKET_RATIO;
+
     public static final Angle ENCODER_OFFSET = Units.Degrees.of(100);
     public static final Angle REVERSE_LIMIT = Units.Degrees.of(-50);
     public static final Angle FORWARD_LIMIT = Units.Degrees.of(5);
+
     public static final double MAX_ACC = 45;
-    public static final double MAX_VEL = 45; //90;
+    public static final double MAX_VEL = 45;
 
-    // public static final double ALGAEWRISTKS = 0.0; //The static gain in volts. //
-    // Need to test
-    // public static final double ALGAEWRISTKG = 0.0; //The gravity gain in volts.
-    // // Need to test
-    // public static final double ALGAEWRISTKV = 0.0; // The velocity gain in
-    // V/(rad/s).
+    public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 20;
+    public static final double ALGAE_WRIST_TOLERANCE = 2; // tune me please
 
-    public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 20; 
-    //public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 5; 
-
-
-    public static final double ALGAE_WRIST_TOLERENCE = 2; // tune me please
-
-    public enum State {
+    public enum AlgaeWristState {
         STARTING(-90), // Starting position is beyond lower limit, exact position unknownn
         STOWED(-40), // Computed home position
-        //EXTENDED(27.3);
         EXTENDED(10);
 
         final Angle angle;
 
-        State(double degrees) {
+        AlgaeWristState(double degrees) {
             this.angle = Units.Degrees.of(degrees);
         }
 

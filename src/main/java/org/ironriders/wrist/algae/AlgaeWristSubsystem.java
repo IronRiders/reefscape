@@ -1,7 +1,7 @@
 package org.ironriders.wrist.algae;
 
-import static org.ironriders.wrist.algae.AlgaeWristConstants.ALGAEWRISTMOTOR;
 import static org.ironriders.wrist.algae.AlgaeWristConstants.ALGAE_WRIST_CURRENT_STALL_LIMIT;
+import static org.ironriders.wrist.algae.AlgaeWristConstants.ALGAE_WRIST_MOTOR;
 import static org.ironriders.wrist.algae.AlgaeWristConstants.ENCODER_OFFSET;
 import static org.ironriders.wrist.algae.AlgaeWristConstants.FORWARD_LIMIT;
 import static org.ironriders.wrist.algae.AlgaeWristConstants.GEAR_RATIO;
@@ -20,7 +20,7 @@ public class AlgaeWristSubsystem extends AbsoluteWristSubsystem {
 
     public AlgaeWristSubsystem() {
         super(
-                ALGAEWRISTMOTOR,
+                ALGAE_WRIST_MOTOR,
                 GEAR_RATIO,
                 SPROCKET_RATIO,
                 ENCODER_OFFSET,
@@ -30,8 +30,7 @@ public class AlgaeWristSubsystem extends AbsoluteWristSubsystem {
                 new PID(AlgaeWristConstants.P, AlgaeWristConstants.I, AlgaeWristConstants.D),
                 new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC),
                 ALGAE_WRIST_CURRENT_STALL_LIMIT,
-                false
-            );
+                false);
 
         commands = new AlgaeWristCommands(this);
     }

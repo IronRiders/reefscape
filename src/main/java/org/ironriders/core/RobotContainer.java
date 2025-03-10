@@ -78,7 +78,8 @@ public class RobotContainer {
 
 	private final SendableChooser<Command> autoChooser;
 
-	private final CommandXboxController primaryController = new CommandXboxController(DriveConstants.PRIMARY_CONTROLLER_PORT);
+	private final CommandXboxController primaryController = new CommandXboxController(
+			DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
 
 	public final RobotCommands robotCommands = new RobotCommands(
@@ -104,6 +105,7 @@ public class RobotContainer {
 	}
 
 	private void configureBindings() {
+
 		// DRIVE CONTROLS
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
@@ -125,6 +127,35 @@ public class RobotContainer {
 		primaryController.axisMagnitudeGreaterThan(
 				1, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
 
+		// primaryController.rightBumper().onTrue(robotCommands.scoreAlgae());
+		primaryController.rightBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.EJECT))
+				.onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP));
+
+		// primaryController.leftBumper().onTrue(Commands.deferredProxy(() -> {
+		// return robotCommands.grabAlgae(GameState.getAlgaeTarget());
+		// }));
+
+		primaryController.leftBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB))
+				.onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP));
+
+		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
+		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
+
+		primaryController.a().onTrue(driveCommands.pathfindToTarget());
+		primaryController.x().onTrue(driveCommands.cancelPathfind());
+
+		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
+			robotCommands.prepareToScoreCoral(GameState.getCoralTarget()).schedule();
+		})).onFalse(robotCommands.scoreCoral());
+
+		primaryController.y().onTrue(driveCommands.pathfindToTarget());
+
+		// Configure dpad as jog control. wpilib exposes dpad as goofy "pov" values
+		// which are an angle; we create a trigger for each discrete 45-degree angle
+		for (var angle = 0; angle < 360; angle += 45) {
+			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
+		}
+
 		// SECONDARY CONTROLS
 
 		// 1 - Coral Home, 2 - Elevator Home
@@ -132,8 +163,8 @@ public class RobotContainer {
 		secondaryController.button(2).onTrue(elevatorCommands.home());
 
 		// 3 - Algae Stowed, 4 - Algae Reef
-		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristConstants.State.STOWED));
-		secondaryController.button(4).onTrue(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED));
+		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.STOWED));
+		secondaryController.button(4).onTrue(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED));
 
 		// 5/6 - Target Station, 7/8 - Target Processor
 		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.STATION));
@@ -177,38 +208,8 @@ public class RobotContainer {
 		secondaryController.button(24).onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
 
 		// 19 - Eject Coral, 20 - Elevator to down position
-		secondaryController.button(19).onTrue(coralIntakeCommands.set(CoralIntakeConstants.State.EJECT));
+		secondaryController.button(19).onTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT));
 		secondaryController.button(20).onTrue(elevatorCommands.set(ElevatorConstants.Level.Down));
-
-		// PRIMARY CONTROLS
-		// primaryController.rightBumper().onTrue(robotCommands.scoreAlgae());
-		primaryController.rightBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT))
-				.onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP));
-
-		// primaryController.leftBumper().onTrue(Commands.deferredProxy(() -> {
-		// return robotCommands.grabAlgae(GameState.getAlgaeTarget());
-		// }));
-
-		primaryController.leftBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB))
-				.onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP));
-
-		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
-		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
-
-		primaryController.a().onTrue(driveCommands.pathfindToTarget());
-		primaryController.x().onTrue(driveCommands.cancelPathfind());
-
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
-			robotCommands.prepareToScoreCoral(GameState.getCoralTarget()).schedule();
-		})).onFalse(robotCommands.scoreCoral());
-
-		primaryController.y().onTrue(driveCommands.pathfindToTarget());
-
-		// Configure dpad as jog control. wpilib exposes dpad as goofy "pov" values
-		// which are an angle; we create a trigger for each discrete 45-degree angle
-		for (var angle = 0; angle < 360; angle += 45) {
-			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
-		}
 	}
 
 	/**
