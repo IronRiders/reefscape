@@ -1,4 +1,5 @@
 package org.ironriders.climb;
+import java.lang.annotation.Target;
 import java.util.DuplicateFormatFlagsException;
 import org.ironriders.lib.IronSubsystem;
 import org.ironriders.lib.data.PID;
@@ -115,6 +116,8 @@ public class ClimbSubsystem extends IronSubsystem {
 
     public void reZero() {
         encoder.setPosition(0);
+        periodicSetpoint = new TrapezoidProfile.State(0, 0d); 
+        goalSetpoint = new TrapezoidProfile.State(0, 0d);
     }
 
     public ClimbCommands getCommands() {
