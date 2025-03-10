@@ -14,6 +14,7 @@
       "/SmartDashboard/Encoders": "Alerts",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/IMU": "Alerts",
+      "/SmartDashboard/Invert Controls": "Command",
       "/SmartDashboard/JSON": "Alerts",
       "/SmartDashboard/Motors": "Alerts",
       "/SmartDashboard/PathPlanner": "Alerts",
@@ -24,6 +25,10 @@
       "/SmartDashboard/Subsystems/AlgaeWrist/Algae Wrist Extended": "Command",
       "/SmartDashboard/Subsystems/AlgaeWrist/Algae Wrist Stowed": "Command",
       "/SmartDashboard/Subsystems/AlgaeWrist/Home": "Command",
+      "/SmartDashboard/Subsystems/Climb/Climb to HOME": "Command",
+      "/SmartDashboard/Subsystems/Climb/Climb to MAX": "Command",
+      "/SmartDashboard/Subsystems/Climb/Climb to TARGET": "Command",
+      "/SmartDashboard/Subsystems/Climb/Re-zero (TESTING ONLY)": "Command",
       "/SmartDashboard/Subsystems/CoralIntake/Coral Intake Eject": "Command",
       "/SmartDashboard/Subsystems/CoralIntake/Coral Intake Grab": "Command",
       "/SmartDashboard/Subsystems/CoralIntake/Coral Intake Stop": "Command",
@@ -64,6 +69,20 @@
     }
   },
   "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      }
+    },
     "visible": true
   },
   "Plot": {

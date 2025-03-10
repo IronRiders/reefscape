@@ -11,8 +11,8 @@ public class CoralWristConstants {
     public static final int CORALWRISTMOTOR = 13;
 
     // Need to tune
-    public static final double CORALWRISTKP = .05;
-    public static final double CORALWRISTKI = 0;
+    public static final double CORALWRISTKP = 0.01;
+    public static final double CORALWRISTKI = 0.0;
     public static final double CORALWRISTKD = 0.0;
     // public static final double CORALWRISTKS = 0.0; //The static gain in volts. //
     // Need to test
@@ -35,8 +35,8 @@ public class CoralWristConstants {
     public static final double MAX_VEL = 90; // Was 180; try to keep from throwing coral
 
     public enum State {
-        STATION(32.5),
-        STOWED(90), // Will stop at limit
+        STATION(20),
+        STOWED(45), // Will stop at limit
         L1toL3(0),
         L4(-30);
 

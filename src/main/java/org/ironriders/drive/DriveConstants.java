@@ -14,6 +14,7 @@ public class DriveConstants {
     public static final int PRIMARY_CONTROLLER_PORT = 0;
     public static final int KEYPAD_CONTROLLER_PORT = 1;
     public static final int TERTIARY_CONTROLLER_PORT = 2;
+    public static boolean INVERTTELEOPCONTROLS = false;
 
     public static final double PATHFIND_CANCEL_THRESHOLD = 0.3; // 0-1, controller input
 

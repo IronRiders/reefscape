@@ -1,7 +1,6 @@
 package org.ironriders.wrist.algae;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-
 public class AlgaeIntakeConstants {
 
     public static final String DASHBOARD_PREFIX_ALGAE = "algae intake/";
@@ -11,7 +10,7 @@ public class AlgaeIntakeConstants {
     public static final int ALGAERIGHTINTAKEMOTOR = 16;
     // public static final int ALGAE_LIMITSWITCH = -1;
 
-    public static final int ALGAE_INTAKE_CURRENT_STALL_LIMIT = 1; // FOR TESTING!!!
+    public static final int ALGAE_INTAKE_CURRENT_STALL_LIMIT = 2; // FOR TESTING!!!
 
 
     public static final int DISCHARGE_TIMEOUT = 1; // these are both in SECONDS

@@ -35,9 +35,6 @@ public class TargetingCommands {
     }
 
     public Command targetReefPole(Side side) {
-
-        System.out.println("Targeting " + side + " side");
-
         return targetingSubsystem
             .runOnce(() -> {
                 targetingSubsystem.setTargetPole(side);

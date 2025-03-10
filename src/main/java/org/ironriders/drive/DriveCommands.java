@@ -65,7 +65,6 @@ public class DriveCommands {
 		var velocity = vector.div(scale);
 
 		return driveSubsystem.runOnce(() -> {
-			System.out.println("Jogging " + robotRelativeAngleDegrees + "° (robot relative)");
 			var startPosition = driveSubsystem.getPose().getTranslation();
 
 			driveTeleop(velocity::getX, velocity::getY, () -> 0, false)
