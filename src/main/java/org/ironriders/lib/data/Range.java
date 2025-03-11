@@ -1,6 +1,7 @@
 package org.ironriders.lib.data;
 
 public class Range<T> {
+
     public T low;
     public T high;
 

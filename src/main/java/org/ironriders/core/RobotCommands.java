@@ -3,23 +3,20 @@ package org.ironriders.core;
 import java.util.function.DoubleSupplier;
 
 import org.ironriders.climb.ClimbCommands;
-import org.ironriders.climb.ClimbConstants;
-import org.ironriders.dash.DashboardSubsystem;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
-import org.ironriders.lib.GameState;
-import org.ironriders.lib.field.FieldElement.ElementType;
 import org.ironriders.targeting.TargetingCommands;
+import org.ironriders.wrist.algae.AlgaeIntakeCommands;
+import org.ironriders.wrist.algae.AlgaeIntakeConstants;
+import org.ironriders.wrist.algae.AlgaeWristCommands;
+import org.ironriders.wrist.algae.AlgaeWristConstants;
 import org.ironriders.wrist.coral.CoralIntakeCommands;
 import org.ironriders.wrist.coral.CoralIntakeConstants;
 import org.ironriders.wrist.coral.CoralWristCommands;
 import org.ironriders.wrist.coral.CoralWristConstants;
-import org.ironriders.drive.DriveConstants;
-import org.ironriders.wrist.algae.*;
-import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -31,7 +28,9 @@ import edu.wpi.first.wpilibj2.command.Commands;
  * 
  * These commands are those which the driver controls call.
  */
+@SuppressWarnings("unused")
 public class RobotCommands {
+
 	private final DriveCommands driveCommands;
 	private final TargetingCommands targetingCommands;
 	private final ElevatorCommands elevatorCommands;
@@ -40,6 +39,7 @@ public class RobotCommands {
 	private final AlgaeWristCommands algaeWristCommands;
 	private final AlgaeIntakeCommands algaeIntakeCommands;
 	private final ClimbCommands climbCommands;
+
 	private final GenericHID controller;
 
 	public RobotCommands(
@@ -61,35 +61,7 @@ public class RobotCommands {
 		this.climbCommands = climbCommands;
 		this.controller = controller;
 
-		// register named commands
-		// NamedCommands.registerCommand("Prepare to Score Algae",
-		// this.prepareToScoreAlgae());
-		// NamedCommands.registerCommand("Score Algae", this.scoreAlgae());
-
-		NamedCommands.registerCommand("Score Coral L1",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L1));
-		NamedCommands.registerCommand("Score Coral L2",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L2));
-		NamedCommands.registerCommand("Score Coral L3",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L3));
-		NamedCommands.registerCommand("Score Coral L4",
-				this.prepareToScoreCoral(ElevatorConstants.Level.L4));
-
-		//NamedCommands.registerCommand("Climber Down", climbCommands.set(ClimbConstants.State.DOWN));
-		//NamedCommands.registerCommand("Climber Up", climbCommands.set(ClimbConstants.State.UP));
-		
-		NamedCommands.registerCommand("Climber Max", climbCommands.goTo(ClimbConstants.Targets.MAX));
-		NamedCommands.registerCommand("Climber Home", climbCommands.goTo(ClimbConstants.Targets.HOME));
-		NamedCommands.registerCommand("Climber Target", climbCommands.goTo(ClimbConstants.Targets.TARGET));
-
-		SmartDashboard.putData("Invert Controls", invertControlsCommand());
-		// NamedCommands.registerCommand("Prepare to Grab Algae",
-		// this.prepareToGrabAlgae());
-		// NamedCommands.registerCommand("Grab Algae", this.grabAlgae());
-
-		// NamedCommands.registerCommand("Prepare to Grab Coral",
-		// this.prepareToGrabCoral());
-		// NamedCommands.registerCommand("Grab Coral", this.grabCoral());
+		// TODO: Named commands, implement along w/ on-the-fly autos
 	}
 
 	/**
@@ -104,7 +76,7 @@ public class RobotCommands {
 		algaeIntakeCommands.setOnSuccess(() -> rumble());
 		return coralWristCommands.home()
 				.andThen(algaeWristCommands.home())
-				.andThen(algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED))
+				.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED))
 				.andThen(elevatorCommands.home());
 	}
 
@@ -120,17 +92,8 @@ public class RobotCommands {
 		return driveCommands.driveTeleop(inputTranslationX, inputTranslationY, inputRotation, true);
 	}
 
-	/**
-	 * Produce command to jog the robot at specified robot-relative angle.
-	 * 
-	 * Jog distance is {@value DriveConstants#JOG_DISTANCE_INCHES}.
-	 */
 	public Command jog(double robotRelativeAngleDegrees) {
 		return driveCommands.jog(robotRelativeAngleDegrees);
-	}
-
-	public Command invertControlsCommand() {
-		return Commands.runOnce(() -> GameState.invertControl());
 	}
 
 	public Command rumble() {
@@ -143,15 +106,15 @@ public class RobotCommands {
 
 	public Command toggleClimber() {
 		return Commands.none();
-		// TODO
+		//return climbCommands.goTo(Targets.TARGET);
 	}
 
 	public Command prepareToScoreCoral(ElevatorConstants.Level level) {
 		return Commands.sequence(
 				elevatorCommands.set(level),
 				coralWristCommands.set(switch (level) {
-					case L1, L2, L3 -> CoralWristConstants.State.L1toL3;
-					case L4 -> CoralWristConstants.State.L4;
+					case L1, L2, L3 -> CoralWristConstants.CoralWristState.L1toL3;
+					case L4 -> CoralWristConstants.CoralWristState.L4;
 					default -> {
 						throw new IllegalArgumentException(
 								"Cannot score coral to level: " + level);
@@ -161,22 +124,22 @@ public class RobotCommands {
 
 	public Command scoreCoral() {
 		return Commands.sequence(
-				coralIntakeCommands.set(CoralIntakeConstants.State.EJECT),
+				coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT),
 				Commands.parallel(
-						coralWristCommands.set(CoralWristConstants.State.STOWED),
+						coralWristCommands.set(CoralWristConstants.CoralWristState.STOWED),
 						elevatorCommands.set(ElevatorConstants.Level.Down)));
 	}
 
 	public Command prepareToGrabCoral() {
 		return Commands.parallel(
-				coralWristCommands.set(CoralWristConstants.State.STATION),
+				coralWristCommands.set(CoralWristConstants.CoralWristState.STATION),
 				elevatorCommands.set(ElevatorConstants.Level.CoralStation));
 	}
 
 	public Command grabCoral() {
 		return Commands.sequence(
-				coralIntakeCommands.set(CoralIntakeConstants.State.GRAB),
-				coralWristCommands.set(CoralWristConstants.State.STOWED),
+				coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.GRAB),
+				coralWristCommands.set(CoralWristConstants.CoralWristState.STOWED),
 				elevatorCommands.set(ElevatorConstants.Level.Down));
 	}
 
@@ -185,17 +148,17 @@ public class RobotCommands {
 		return Commands.sequence(
 				Commands.parallel(
 						elevatorCommands.set(ElevatorConstants.Level.Down),
-						algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED)),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.EJECT),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.STOP));
+						algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED)),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.EJECT),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP));
 	}
 
 	public Command grabAlgae(ElevatorConstants.Level level) {
 		return Commands.sequence(
 				Commands.parallel(
 						elevatorCommands.set(level),
-						algaeWristCommands.set(AlgaeWristConstants.State.EXTENDED),
-						algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB)),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.State.GRAB));
+						algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED),
+						algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB)),
+				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB));
 	}
 }
