@@ -5,7 +5,7 @@ public class ElevatorConstants {
     public static final int PRIMARY_MOTOR_ID = 11;
     public static final int FOLLOW_MOTOR_ID = 10;
 
-    public static final int ELEVATOR_MOTOR_STALL_LIMIT = 30; //in amps
+    public static final int ELEVATOR_MOTOR_STALL_LIMIT = 30; // in amps
 
     public static final double P = 0.3;
     public static final double I = 0.05;
@@ -25,7 +25,7 @@ public class ElevatorConstants {
     public static final double SPROCKET_DIAMETER = 1.7567;
     public static final int NUMBER_OF_STAGES = 2;
     public static final double INCHES_PER_ROTATION = GEAR_RATIO * SPROCKET_DIAMETER * Math.PI * NUMBER_OF_STAGES;
-    
+
     public static final double DOWN_HEIGHT = 0;
     public static final double CORAL_STATION_HEIGHT = 8.8;
     public static final double L1_HEIGHT = 4;

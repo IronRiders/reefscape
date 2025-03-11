@@ -1,7 +1,8 @@
 package org.ironriders.elevator;
 
+import org.ironriders.elevator.ElevatorConstants.Level;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import org.ironriders.elevator.ElevatorConstants.*;
 
 public class ElevatorCommands {
 
@@ -39,7 +40,7 @@ public class ElevatorCommands {
             if (elevatorSubsystem.isHomed()) {
                 return set(Level.Down);
             }
-            
+
             return new Command() {
                 public void execute() {
                     elevatorSubsystem.setMotor(-0.1);

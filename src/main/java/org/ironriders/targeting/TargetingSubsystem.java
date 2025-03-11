@@ -21,7 +21,7 @@ public class TargetingSubsystem extends IronSubsystem {
 
 	private boolean targetNearestElement = true;
 	private int targetSlot = FieldPose.STATION_SLOT_COUNT / 2;
-	
+
 	private Side targetPole = Side.Left;
 	private Level targetLevel = Level.L1;
 	private TargetingCommands commands;

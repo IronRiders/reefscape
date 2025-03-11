@@ -3,9 +3,8 @@ package org.ironriders.drive;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.OptionalInt;
-
 import java.util.Optional;
+import java.util.OptionalInt;
 
 import org.ironriders.lib.field.FieldUtils;
 import org.photonvision.EstimatedRobotPose;
@@ -40,8 +39,8 @@ public class Vision {
     private SwerveDrive swerveDrive = null;
     private List<VisionCamera> cams = new ArrayList<>();
 
-    public boolean hasPose=false;
-    
+    public boolean hasPose = false;
+
     public Vision(SwerveDrive drive) {
         this.swerveDrive = drive;
         cams.add(new VisionCamera("frontLeft",
@@ -51,8 +50,8 @@ public class Vision {
                 createOffset(11.5, -11.5, 6.5, 15, 157.5),
                 VecBuilder.fill(0.5, 0.5, 1.0)));
         // cams.add(new VisionCamera("backRight",
-        //         createOffset(-11.5, 11.5, 6.5, 15, -157.5),
-        //         VecBuilder.fill(0.5, 0.5, 1.0)));
+        // createOffset(-11.5, 11.5, 6.5, 15, -157.5),
+        // VecBuilder.fill(0.5, 0.5, 1.0)));
         cams.add(new VisionCamera("frontRight",
                 createOffset(11.5, -11.5, 6.5, 15, -22.5),
                 VecBuilder.fill(0.5, 0.5, 1.0)));
@@ -216,7 +215,7 @@ public class Vision {
             }
 
             // return actual estimate if it gets through all that ^^^
-            hasPose=true;
+            hasPose = true;
             return Optional.of(pose);
         }
     }

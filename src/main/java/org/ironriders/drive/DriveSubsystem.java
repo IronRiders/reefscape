@@ -21,7 +21,8 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 /**
  * The DriveSubsystem encompasses everything that the Swerve Drive needs to
- * function. It keeps track of the robot's position and angle, and uses the controller
+ * function. It keeps track of the robot's position and angle, and uses the
+ * controller
  * input to figure out how the individual modules need to turn and be angled.
  */
 public class DriveSubsystem extends IronSubsystem {
@@ -35,7 +36,8 @@ public class DriveSubsystem extends IronSubsystem {
 
 	public DriveSubsystem() throws RuntimeException {
 		try {
-			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
+			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
+																					// directory.
 					.createSwerveDrive(DriveConstants.SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
@@ -74,7 +76,6 @@ public class DriveSubsystem extends IronSubsystem {
 		GameState.setRobotPose(() -> Optional.of(swerveDrive.getPose()));
 	}
 
-	
 	@Override
 	public void periodic() {
 		vision.updateAll();

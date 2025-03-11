@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		generalInit();
-		
+
 		robotContainer.robotCommands.invertControlsCommand().schedule();
 	}
 

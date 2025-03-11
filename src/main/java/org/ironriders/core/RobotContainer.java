@@ -70,11 +70,11 @@ public class RobotContainer {
 	public final AlgaeWristSubsystem algaeWristSubystem = new AlgaeWristSubsystem();
 	public final AlgaeWristCommands algaeWristCommands = algaeWristSubystem.getCommands();
 
-	private final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
-	private final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
+	public final AlgaeIntakeSubsystem algaeIntakeSubsystem = new AlgaeIntakeSubsystem();
+	public final AlgaeIntakeCommands algaeIntakeCommands = algaeIntakeSubsystem.getCommands();
 
-	private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
-	private final ClimbCommands climbCommands = climbSubsystem.getCommands();
+	public final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+	public final ClimbCommands climbCommands = climbSubsystem.getCommands();
 
 	private final SendableChooser<Command> autoChooser;
 

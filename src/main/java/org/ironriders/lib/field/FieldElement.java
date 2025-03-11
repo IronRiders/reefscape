@@ -16,8 +16,9 @@ import edu.wpi.first.wpilibj.DriverStation;
  * Includes pose, function, and various utility routines for retrieving.
  */
 public class FieldElement {
+    
     /**
-     * The type of elements on the field. 
+     * The type of elements on the field.
      */
     public enum ElementType {
         STATION,
@@ -54,31 +55,31 @@ public class FieldElement {
     final public ElementType type;
     final public Pose3d pose;
     final public String name;
-    
+
     private static int[] BLUE_TAGS = {
-        13,
-        12,
-        18,
-        19,
-        20,
-        21,
-        22,
-        17,
-        16,
-        14
+            13,
+            12,
+            18,
+            19,
+            20,
+            21,
+            22,
+            17,
+            16,
+            14
     };
 
     private static int[] RED_TAGS = {
-        1,
-        2,
-        7,
-        6,
-        11,
-        10,
-        9,
-        8,
-        3,
-        5,
+            1,
+            2,
+            7,
+            6,
+            11,
+            10,
+            9,
+            8,
+            3,
+            5,
     };
 
     private static List<FieldElement> BLUE_ELEMENTS = loadElements(DriverStation.Alliance.Blue, BLUE_TAGS);
@@ -131,21 +132,21 @@ public class FieldElement {
     public static Optional<FieldElement> nearestTo(Pose2d pose) {
         return findNearest(pose, Optional.empty());
     }
-    
+
     private static List<FieldElement> loadElements(DriverStation.Alliance alliance, int[] tags) {
         return Stream.of(Position.values())
-            .map(element -> {
-                var pose = FieldUtils.FIELD_LAYOUT.getTagPose(tags[element.id]);
-                if (pose.isEmpty()) {
-                    Optional.empty();
-                }
-                return Optional.of(new FieldElement(element, pose.get()));
-            })
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .toList();
+                .map(element -> {
+                    var pose = FieldUtils.FIELD_LAYOUT.getTagPose(tags[element.id]);
+                    if (pose.isEmpty()) {
+                        Optional.empty();
+                    }
+                    return Optional.of(new FieldElement(element, pose.get()));
+                })
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
     }
-    
+
     private static Optional<FieldElement> findNearest(Pose2d pose, Optional<ElementType> type) {
         double distance = -1;
         Optional<FieldElement> found = Optional.empty();

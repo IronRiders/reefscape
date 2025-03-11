@@ -3,7 +3,6 @@ package org.ironriders.core;
 import java.util.function.DoubleSupplier;
 
 import org.ironriders.climb.ClimbCommands;
-import org.ironriders.climb.ClimbConstants;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
@@ -18,10 +17,7 @@ import org.ironriders.wrist.coral.CoralIntakeConstants;
 import org.ironriders.wrist.coral.CoralWristCommands;
 import org.ironriders.wrist.coral.CoralWristConstants;
 
-import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 

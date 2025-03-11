@@ -25,31 +25,31 @@ public class TargetingCommands {
 
     public Command targetStationSlot(int number) {
         return targetingSubsystem
-            .runOnce(() -> {
-                targetingSubsystem.setTargetSlot(number);
-                targetingSubsystem.targetNearest(ElementType.STATION);
-            })
-            .ignoringDisable(true);
+                .runOnce(() -> {
+                    targetingSubsystem.setTargetSlot(number);
+                    targetingSubsystem.targetNearest(ElementType.STATION);
+                })
+                .ignoringDisable(true);
     }
 
     public Command targetReefPole(Side side) {
         return targetingSubsystem
-            .runOnce(() -> {
-                targetingSubsystem.setTargetPole(side);
-                targetingSubsystem.targetNearest(ElementType.REEF);
-            })
-            .ignoringDisable(true);
+                .runOnce(() -> {
+                    targetingSubsystem.setTargetPole(side);
+                    targetingSubsystem.targetNearest(ElementType.REEF);
+                })
+                .ignoringDisable(true);
     }
 
     public Command targetNearest() {
         return targetingSubsystem
-            .runOnce(targetingSubsystem::targetNearest)
-            .ignoringDisable(true);
+                .runOnce(targetingSubsystem::targetNearest)
+                .ignoringDisable(true);
     }
 
     public Command targetNearest(ElementType type) {
         return targetingSubsystem
-            .runOnce(() -> targetingSubsystem.targetNearest(type))
-            .ignoringDisable(true);
+                .runOnce(() -> targetingSubsystem.targetNearest(type))
+                .ignoringDisable(true);
     }
 }
