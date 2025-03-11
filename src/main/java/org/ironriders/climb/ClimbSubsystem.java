@@ -48,7 +48,7 @@ public class ClimbSubsystem extends IronSubsystem {
                 .forwardSoftLimitEnabled(true)
                 .forwardSoftLimit(ClimbConstants.Targets.HOME.pos); // Home is also the minimum position
 
-        climbMotorConfig.idleMode(IdleMode.kBrake);
+        climbMotorConfig.idleMode(IdleMode.kCoast); // for testing set to coast 
         climbMotorConfig.smartCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         climbMotor.configure(climbMotorConfig.apply(softLimitConfig), ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
