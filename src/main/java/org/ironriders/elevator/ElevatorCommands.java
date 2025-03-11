@@ -1,10 +1,8 @@
 package org.ironriders.elevator;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-import edu.wpi.first.wpilibj2.command.Commands;
+import org.ironriders.elevator.ElevatorConstants.Level;
 
-import org.ironriders.elevator.ElevatorConstants.*;
+import edu.wpi.first.wpilibj2.command.Command;
 
 public class ElevatorCommands {
 
@@ -13,33 +11,46 @@ public class ElevatorCommands {
     public ElevatorCommands(ElevatorSubsystem elevator) {
         this.elevatorSubsystem = elevator;
 
-        elevator.publish("Home", home());
-        elevator.publish("Elevator rising to L1", set(Level.L1));
-        elevator.publish("Elevator rising to L2", set(Level.L2));
-        elevator.publish("Elevator rising to L3", set(Level.L3));
-        elevator.publish("Elevator rising to L4", set(Level.L4));
-        elevator.publish("Elevator going home", set(Level.Down));
-        elevator.publish("Elevator going to Coral Station", set(Level.CoralStation));
+        elevator.publish("Rehome", home());
+
+        elevator.publish("Elevator to L1", set(Level.L1));
+        elevator.publish("Elevator to L2", set(Level.L2));
+        elevator.publish("Elevator to L3", set(Level.L3));
+        elevator.publish("Elevator to L4", set(Level.L4));
+
+        elevator.publish("Elevator to Coral Station", set(Level.CoralStation));
+        elevator.publish("Elevator Down", set(Level.Down));
     }
 
+    /**
+     * Command to set the elevator's target position to one of several predefined levels.
+     * @return a Command to change target, finishes when the elevator has reached it.
+     */
     public Command set(ElevatorConstants.Level level) {
-        return elevatorSubsystem.runOnce(() -> {
-            elevatorSubsystem.setPositionInches(level.positionInches);
-        })
-                .andThen(Commands.waitUntil(() -> { return elevatorSubsystem.isAtPosition(level); }))
-                .handleInterrupt(elevatorSubsystem::reset);
+        return new Command() {
+            public void execute() {
+                elevatorSubsystem.setGoal(level);
+            }
+
+            public boolean isFinished() {
+                return elevatorSubsystem.isAtPosition(level);
+            }
+        };
     }
 
+    /**
+     * Command to home the elevator, finding the bottom pos and remembering it.
+     * @return a Command that finishes when the bottom limit switch is pressed.
+     */
     public Command home() {
-        // If elevator is already homed, move to home position
-        if (elevatorSubsystem.isHomed()) {
-            return set(Level.Down);
-        }
+        // we use defer here so that the elevatorSubsystem.isHomed() occurs at runtime
+        return elevatorSubsystem.defer(() -> {
 
-        elevatorSubsystem.reportInfo("Homing");
+            if (elevatorSubsystem.isHomed()) {
+                return set(Level.Down);
+            }
 
-        return elevatorSubsystem.defer(
-            () -> new Command() {
+            return new Command() {
                 public void execute() {
                     elevatorSubsystem.setMotor(-0.1);
                 }
@@ -49,22 +60,14 @@ public class ElevatorCommands {
                 }
 
                 public void end(boolean interrupted) {
-                    elevatorSubsystem.stopMotor();
+                    elevatorSubsystem.reset();
                     elevatorSubsystem.reportHomed();
                 }
-            }
-        );
-    }
-
-    public Command jogCommand(boolean jogUp){
-        return elevatorSubsystem.runOnce(() -> {
-            elevatorSubsystem.jog(jogUp);;
+            };
         });
     }
 
-    public Command reset(){
+    public Command reset() {
         return elevatorSubsystem.runOnce(elevatorSubsystem::reset);
     }
 }
-
-    

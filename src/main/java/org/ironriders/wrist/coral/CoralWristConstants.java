@@ -5,36 +5,28 @@ import edu.wpi.first.units.measure.Angle;
 
 public class CoralWristConstants {
 
-    public static final String DASHBOARD_PREFIX = "coralwrist/";
-
-    // motor IDs (-1 = unknow)
-    public static final int CORALWRISTMOTOR = 13;
+    public static final int CORAL_WRIST_MOTOR = 13;
 
     // Need to tune
-    public static final double CORALWRISTKP = 0.01;
-    public static final double CORALWRISTKI = 0.0;
-    public static final double CORALWRISTKD = 0.0;
-    // public static final double CORALWRISTKS = 0.0; //The static gain in volts. //
-    // Need to test
-    // public static final double CORALWRISTKG = 0.0; //The gravity gain in volts.
-    // // Need to test
-    // public static final double CORALWRISTKV = 0.0; // The velocity gain in
-    // V/(rad/s).
+    public static final double P = 0.01;
+    public static final double I = 0.0;
+    public static final double D = 0.0;
 
-    public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 10; // please test
-    // public static final double CORAL_WRIST_ENCODER_OFFSET = 0; // please test
-    public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
+    public static final double SPROCKET_RATIO = 1;
+    public static final double GEAR_RATIO = 1.0 / 100.0;
+    public static final double ENCODER_SCALE = SPROCKET_RATIO;
 
-    public static final Angle HOME_ANGLE = Units.Degrees.of(48);
-
-    public static final double GEAR_RATIO = 0.01;
-
-    public static final double t = 0.02;
+    public static final Angle ENCODER_OFFSET = Units.Degrees.of(48);
+    public static final Angle REVERSE_LIMIT = Units.Degrees.of(-50); // TODO: TUNE
+    public static final Angle FORWARD_LIMIT = Units.Degrees.of(5); // TODO: TUNE
 
     public static final double MAX_ACC = 90;
-    public static final double MAX_VEL = 90; // Was 180; try to keep from throwing coral
+    public static final double MAX_VEL = 90;
 
-    public enum State {
+    public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 10;
+    public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
+
+    public enum CoralWristState {
         STATION(20),
         STOWED(45), // Will stop at limit
         L1toL3(0),
@@ -42,7 +34,7 @@ public class CoralWristConstants {
 
         final Angle angle;
 
-        State(double degrees) {
+        CoralWristState(double degrees) {
             this.angle = Units.Degrees.of(degrees);
         }
 

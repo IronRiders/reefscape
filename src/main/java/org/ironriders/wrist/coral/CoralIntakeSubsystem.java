@@ -1,19 +1,18 @@
 package org.ironriders.wrist.coral;
 
+import static org.ironriders.wrist.coral.CoralIntakeConstants.CORAL_INTAKE_CURRENT_STALL_LIMIT;
+import static org.ironriders.wrist.coral.CoralIntakeConstants.CORAL_INTAKE_MOTOR;
+
+import org.ironriders.lib.IronSubsystem;
+import org.ironriders.wrist.coral.CoralIntakeConstants.CoralIntakeState;
+
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLimitSwitch;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkBase.ResetMode;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import static org.ironriders.wrist.coral.CoralIntakeConstants.*;
-
-import org.ironriders.lib.IronSubsystem;
-import org.ironriders.wrist.coral.CoralIntakeConstants.State;
 
 public class CoralIntakeSubsystem extends IronSubsystem {
 
@@ -23,8 +22,6 @@ public class CoralIntakeSubsystem extends IronSubsystem {
     private final SparkMaxConfig coralMotorConfig = new SparkMaxConfig();
 
     private final SparkLimitSwitch beamBreak = coralMotor.getForwardLimitSwitch();
-
-    private boolean hasCoral = false;
 
     public CoralIntakeSubsystem() {
         coralMotorConfig
@@ -37,32 +34,21 @@ public class CoralIntakeSubsystem extends IronSubsystem {
 
     @Override
     public void periodic() {
-        hasCoral = this.getLimitSwitchTriggered();
-
-        publish("Velocity", getSpeed());
-        publish("Has Coral", hasCoral);
+        publish("Velocity", coralMotor.getEncoder().getVelocity());
+        publish("Limit Switch Triggered", getLimitSwitchTriggered());
     }
 
-    public void set(State state) {
+    public void set(CoralIntakeState state) {
         coralMotor.set(state.getSpeed());
 
-        SmartDashboard.putString(DASHBOARD_PREFIX_CORAL + "state", state.name());
-    }
-
-    private double getSpeed() {
-        return coralMotor.getEncoder().getVelocity();
+        publish("Set State", state.name());
     }
 
     public boolean getLimitSwitchTriggered() {
         return beamBreak.isPressed();
     }
 
-    public void reset() {
-        set(State.STOP);
-    }
-
     public CoralIntakeCommands getCommands() {
         return commands;
     }
-
 }
