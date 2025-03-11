@@ -46,7 +46,7 @@ public class ClimbSubsystem extends IronSubsystem {
                 .reverseSoftLimitEnabled(true)
                 .reverseSoftLimit(ClimbConstants.Targets.MAX.pos)
                 .forwardSoftLimitEnabled(true)
-                .forwardSoftLimit(ClimbConstants.Targets.HOME.pos);
+                .forwardSoftLimit(ClimbConstants.Targets.HOME.pos); // Home is also the minimum position
 
         climbMotorConfig.idleMode(IdleMode.kBrake);
         climbMotorConfig.smartCurrentLimit(ClimbConstants.CURRENT_LIMIT);
@@ -74,7 +74,9 @@ public class ClimbSubsystem extends IronSubsystem {
         periodicSetpoint = profile.calculate(ClimbConstants.T, periodicSetpoint, goalSetpoint);
 
         publish("Climber set postion", periodicSetpoint.position);
-        publish("Climb Motor Val", getPostion());
+        //publish("Climb Motor Val", getPostion());
+        publish("Climb Motor Val", encoder.getPosition()); // for testing
+
         publish("Climber target pos", goalSetpoint.position);
         publish("Climber target velo", goalSetpoint.velocity);
         publish("Climber PID output", pidOutput);

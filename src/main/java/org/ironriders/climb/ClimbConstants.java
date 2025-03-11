@@ -10,7 +10,7 @@ public class ClimbConstants {
     public static final double I = 0; 
     public static final double D = 0;
 
-    public static final double MAX_ACC = 2;
+    public static final double MAX_ACC = 2; // test velocitys
     public static final double MAX_VEL = 2;
 
     public static final double T = .02;
