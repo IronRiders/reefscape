@@ -1,5 +1,7 @@
 package org.ironriders.climb;
 
+import java.util.Optional;
+
 import org.ironriders.lib.IronSubsystem;
 
 import com.revrobotics.RelativeEncoder;
@@ -27,8 +29,12 @@ public class ClimbSubsystem extends IronSubsystem {
     private final ClimbCommands commands;
     private final RelativeEncoder encoder;
 
+    private double pidOutput;
+
     private TrapezoidProfile.State goalSetpoint = new TrapezoidProfile.State();
     private TrapezoidProfile.State periodicSetpoint = new TrapezoidProfile.State();
+
+    private SoftLimitConfig softLimitConfig = new SoftLimitConfig(); // should force stop motor if it gets out of bounds
 
     public ClimbSubsystem() {
         publish("Climber P", ClimbConstants.P);
@@ -38,14 +44,13 @@ public class ClimbSubsystem extends IronSubsystem {
         encoder = climbMotor.getEncoder();
         encoder.setPosition(0); // Set pos to zero on deploy
 
-        var softLimitConfig = new SoftLimitConfig(); // should force stop motor if it gets out of bounds
         softLimitConfig
                 .reverseSoftLimitEnabled(true)
                 .reverseSoftLimit(ClimbConstants.Targets.MAX.pos)
                 .forwardSoftLimitEnabled(true)
-                .forwardSoftLimit(ClimbConstants.Targets.HOME.pos);
+                .forwardSoftLimit(ClimbConstants.Targets.HOME.pos); // Home is also the minimum position
 
-        climbMotorConfig.idleMode(IdleMode.kBrake);
+        climbMotorConfig.idleMode(IdleMode.kCoast); // for testing set to coast 
         climbMotorConfig.smartCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         climbMotor.configure(climbMotorConfig.apply(softLimitConfig), ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
@@ -71,9 +76,12 @@ public class ClimbSubsystem extends IronSubsystem {
         periodicSetpoint = profile.calculate(ClimbConstants.T, periodicSetpoint, goalSetpoint);
 
         publish("Climber set postion", periodicSetpoint.position);
-        publish("Climb Motor Val", getPostion());
+        //publish("Climb Motor Val", getPostion());
+        publish("Climb Motor Val", encoder.getPosition()); // for testing
+
         publish("Climber target pos", goalSetpoint.position);
         publish("Climber target velo", goalSetpoint.velocity);
+        publish("Climber PID output", pidOutput);
 
         pidController.setP(SmartDashboard.getNumber("Climber P", ClimbConstants.P));
         pidController.setI(SmartDashboard.getNumber("Climber I", ClimbConstants.I));
@@ -93,11 +101,20 @@ public class ClimbSubsystem extends IronSubsystem {
     public void goTo(ClimbConstants.Targets limit) {
         setGoal(limit);
 
-        double pidOutput = pidController.calculate(getPostion() /* Encoder pos times motor gearing */,
+        pidOutput = pidController.calculate(getPostion() /* Encoder pos times motor gearing */,
                 periodicSetpoint.position);
 
+        if (pidOutput == 0) {
+            climbMotor.stopMotor();
+                return;
+        }
+        
         climbMotor.set(pidOutput);
-        publish("Climber PID output", pidOutput);
+  
+    }
+
+    public double getGoal() {
+        return goalSetpoint.position;
     }
 
     public void setGoal(ClimbConstants.Targets limit) {

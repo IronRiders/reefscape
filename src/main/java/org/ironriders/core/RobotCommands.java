@@ -6,7 +6,6 @@ import org.ironriders.climb.ClimbCommands;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
-import org.ironriders.lib.GameState;
 import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.wrist.algae.AlgaeIntakeCommands;
 import org.ironriders.wrist.algae.AlgaeIntakeConstants;
@@ -107,7 +106,7 @@ public class RobotCommands {
 
 	public Command toggleClimber() {
 		return Commands.none();
-		// TODO
+		//return climbCommands.goTo(Targets.TARGET);
 	}
 
 	public Command prepareToScoreCoral(ElevatorConstants.Level level) {
