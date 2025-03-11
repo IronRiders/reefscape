@@ -10,12 +10,13 @@ import edu.wpi.first.units.measure.Distance;
  * Fully specified robot pose relative to a field element.
  */
 public class FieldPose {
+    
     /**
      * Field pose at coral station.
      */
     public static class Station extends FieldPose {
         /**
-         * Target slot (0-8).  Slot 0 is closest to driver.
+         * Target slot (0-8). Slot 0 is closest to driver.
          */
         public final int slot;
 
@@ -35,12 +36,12 @@ public class FieldPose {
      */
     public static class Reef extends FieldPose {
         /**
-         * Target pole.  Only affects targeting of reef.
+         * Target pole. Only affects targeting of reef.
          */
         public final Side pole;
 
         /**
-         * Target level.  Only affects targeting of reef.
+         * Target level. Only affects targeting of reef.
          */
         public final Level level;
 
@@ -60,7 +61,7 @@ public class FieldPose {
             return super.getXOffset().plus(Units.Inches.of(-7));
         }
     }
-    
+
     static final Distance ROBOT_LENGTH = Units.Inches.of(37);
     static final Distance CORAL_INTAKE_OFFSET = Units.Inches.of(7);
     static final Distance STATION_SLOT_SPACING = Units.Inches.of(8);

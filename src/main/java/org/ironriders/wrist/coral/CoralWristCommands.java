@@ -1,6 +1,6 @@
 package org.ironriders.wrist.coral;
 
-import org.ironriders.wrist.coral.CoralWristConstants.*;
+import org.ironriders.wrist.coral.CoralWristConstants.CoralWristState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -11,13 +11,13 @@ public class CoralWristCommands {
         this.coralWrist = wrist;
 
         wrist.publish("Home", home());
-        wrist.publish("Wrist Coral Station", set(State.STATION));
-        wrist.publish("Wrist Upright", set(State.STOWED));
-        wrist.publish("Wrist L1-L3", set(State.L1toL3));
-        wrist.publish("Wrist L4", set(State.L4));
+        wrist.publish("Wrist Coral Station", set(CoralWristState.STATION));
+        wrist.publish("Wrist Upright", set(CoralWristState.STOWED));
+        wrist.publish("Wrist L1-L3", set(CoralWristState.L1toL3));
+        wrist.publish("Wrist L4", set(CoralWristState.L4));
     }
 
-    public Command set(State state) {
+    public Command set(CoralWristState state) {
         return coralWrist.moveToCmd(state.getAngle());
     }
 

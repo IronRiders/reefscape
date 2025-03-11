@@ -1,4 +1,5 @@
 package org.ironriders.climb;
+
 import org.ironriders.lib.IronSubsystem;
 
 import com.revrobotics.RelativeEncoder;
@@ -22,7 +23,7 @@ public class ClimbSubsystem extends IronSubsystem {
     private final SparkMax climbMotor = new SparkMax(ClimbConstants.CLIMBER_MOTOR_CAN_ID,
             SparkLowLevel.MotorType.kBrushless);
     private final SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
-    
+
     private final ClimbCommands commands;
     private final RelativeEncoder encoder;
 
@@ -38,21 +39,22 @@ public class ClimbSubsystem extends IronSubsystem {
         publish("Climber I", ClimbConstants.I);
         publish("Climber D", ClimbConstants.D);
 
-
         encoder = climbMotor.getEncoder();
         encoder.setPosition(0); // Set pos to zero on deploy
 
         softLimitConfig
-            .reverseSoftLimitEnabled(true)
-            .reverseSoftLimit(ClimbConstants.Targets.MAX.pos)
-            .forwardSoftLimitEnabled(true)
-            .forwardSoftLimit(ClimbConstants.Targets.HOME.pos);
+                .reverseSoftLimitEnabled(true)
+                .reverseSoftLimit(ClimbConstants.Targets.MAX.pos)
+                .forwardSoftLimitEnabled(true)
+                .forwardSoftLimit(ClimbConstants.Targets.HOME.pos);
 
         climbMotorConfig.idleMode(IdleMode.kBrake);
         climbMotorConfig.smartCurrentLimit(ClimbConstants.CURRENT_LIMIT);
-        climbMotor.configure(climbMotorConfig.apply(softLimitConfig), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        
-        TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ClimbConstants.MAX_VEL, ClimbConstants.MAX_ACC);
+        climbMotor.configure(climbMotorConfig.apply(softLimitConfig), ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
+
+        TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(ClimbConstants.MAX_VEL,
+                ClimbConstants.MAX_ACC);
         profile = new TrapezoidProfile(constraints);
 
         goalSetpoint = new TrapezoidProfile.State();
@@ -87,19 +89,22 @@ public class ClimbSubsystem extends IronSubsystem {
     }
 
     public void set(ClimbConstants.State state) {
-        System.out.println("(Climber) Warn! Someone directly set climber speed. This can break the climber! Use goTo() if possible!");
+        System.out.println(
+                "(Climber) Warning! Someone directly set the climber speed. This can (and has) broken the climber! Use goTo() if possible!");
         climbMotor.set(state.speed);
     }
 
     public void goTo(ClimbConstants.Targets limit) {
         setGoal(limit);
 
-        pidOutput = pidController.calculate(getPostion() /* Encoder pos with motor gearing */, periodicSetpoint.position);
+        pidOutput = pidController.calculate(getPostion() /* Encoder pos times motor gearing */,
+                periodicSetpoint.position);
+
         if (pidOutput == 0) {
             climbMotor.stopMotor();
-            return;
+                return;
         }
-
+        
         climbMotor.set(pidOutput);
   
     }
@@ -110,7 +115,7 @@ public class ClimbSubsystem extends IronSubsystem {
 
     public void reZero() {
         encoder.setPosition(0);
-        periodicSetpoint = new TrapezoidProfile.State(0, 0d); 
+        periodicSetpoint = new TrapezoidProfile.State(0, 0d);
         goalSetpoint = new TrapezoidProfile.State(0, 0d);
     }
 

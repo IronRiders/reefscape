@@ -1,9 +1,9 @@
 package org.ironriders.wrist.coral;
 
-import static org.ironriders.wrist.algae.AlgaeIntakeConstants.INTAKE_IMPATIENCE;
 import static org.ironriders.wrist.coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
+import static org.ironriders.wrist.coral.CoralIntakeConstants.INTAKE_IMPATIENCE;
 
-import org.ironriders.wrist.coral.CoralIntakeConstants.State;
+import org.ironriders.wrist.coral.CoralIntakeConstants.CoralIntakeState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -15,34 +15,39 @@ public class CoralIntakeCommands {
 
     public CoralIntakeCommands(CoralIntakeSubsystem intake) {
         this.intake = intake;
-        intake.publish("Coral Intake Grab", set(State.GRAB));
-        intake.publish("Coral Intake Eject", set(State.EJECT));
-        intake.publish("Coral Intake Stop", set(State.STOP));
+
+        intake.publish("Coral Intake Grab", set(CoralIntakeState.GRAB));
+        intake.publish("Coral Intake Eject", set(CoralIntakeState.EJECT));
+        intake.publish("Coral Intake Stop", set(CoralIntakeState.STOP));
     }
 
-    public Command set(CoralIntakeConstants.State state) {
+    public Command set(CoralIntakeConstants.CoralIntakeState state) {
         Command command = intake.run(() -> intake.set(state));
+
         switch (state) {
             case GRAB:
-                return command
-                        .andThen(Commands.race(
-                                Commands.waitUntil(() -> {
-                                    if (intake.getLimitSwitchTriggered() && onSuccess != null) {
-                                        onSuccess.run();
-                                    }
-                                    return intake.getLimitSwitchTriggered();
-                                }),
-                                Commands.waitSeconds(INTAKE_IMPATIENCE)))
-                        .finallyDo(() -> intake.set(State.STOP));
+                // making an actual command override here, mostly for convenience
+                return new Command() {
+                    public void execute() {
+                        intake.set(CoralIntakeState.GRAB);
+                    }
+
+                    public boolean isFinished() {
+                        if (intake.getLimitSwitchTriggered()) {
+                            onSuccess.run();
+                        }
+                        return intake.getLimitSwitchTriggered();
+                    }
+                }.withDeadline(Commands.waitSeconds(INTAKE_IMPATIENCE));
             case EJECT:
-                return command.withTimeout(DISCHARGE_TIMEOUT).finallyDo(() -> intake.set(State.STOP));
+                return command.withTimeout(DISCHARGE_TIMEOUT).finallyDo(() -> intake.set(CoralIntakeState.STOP));
             default:
-                return command.finallyDo(() -> intake.set(State.STOP));
+                return command.finallyDo(() -> intake.set(CoralIntakeState.STOP));
         }
     }
 
     public Command reset() {
-        return intake.runOnce(intake::reset);
+        return intake.runOnce(() -> intake.set(CoralIntakeState.STOP));
     }
 
     public CoralIntakeSubsystem getCoralIntake() {
