@@ -97,10 +97,6 @@ public class RobotCommands {
 		return driveCommands.jog(robotRelativeAngleDegrees);
 	}
 
-	public Command invertControlsCommand() {
-		return Commands.runOnce(() -> GameState.invertControl());
-	}
-
 	public Command rumble() {
 		return Commands.sequence(
 				Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 1)),

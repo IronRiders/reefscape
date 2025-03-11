@@ -33,6 +33,9 @@ public class ElevatorConstants {
     public static final double L3_HEIGHT = 20;
     public static final double L4_HEIGHT = 53;
 
+    /**
+     * This enum represents each specific/discrete position the elevator needs to go to.
+     */
     public enum Level {
         Down(DOWN_HEIGHT),
         CoralStation(CORAL_STATION_HEIGHT),

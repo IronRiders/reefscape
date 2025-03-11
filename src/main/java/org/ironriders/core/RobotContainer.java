@@ -100,25 +100,21 @@ public class RobotContainer {
 		SmartDashboard.putData("Auto Select", autoChooser);
 	}
 
-	private int getInvert() {
-		return GameState.getInvertControl() ? -1 : 1;
-	}
-
 	private void configureBindings() {
 
 		// DRIVE CONTROLS
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> RobotUtils.controlCurve(
-								getInvert() * primaryController.getLeftY(),
+								-primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								getInvert() * primaryController.getLeftX(),
+								-primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								-getInvert() * primaryController.getRightX(),
+								-primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 

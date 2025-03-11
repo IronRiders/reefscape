@@ -39,6 +39,7 @@ public class ElevatorSubsystem extends IronSubsystem {
 
     private final RelativeEncoder encoder = primaryMotor.getEncoder();
 
+    // profile is used to calculate our periodic outputs
     private final TrapezoidProfile profile;
     private final ElevatorFeedforward feedforward;
     private final PIDController pidController;
@@ -53,6 +54,7 @@ public class ElevatorSubsystem extends IronSubsystem {
 
     public ElevatorSubsystem() {
 
+        // lots of config!!
         SparkMaxConfig primaryConfig = new SparkMaxConfig();
         SparkMaxConfig followerConfig = new SparkMaxConfig();
 
