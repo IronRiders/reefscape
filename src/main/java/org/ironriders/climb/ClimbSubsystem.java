@@ -1,28 +1,18 @@
 package org.ironriders.climb;
-import java.lang.annotation.Target;
-import java.util.DuplicateFormatFlagsException;
 import org.ironriders.lib.IronSubsystem;
-import org.ironriders.lib.data.PID;
-import org.ironriders.wrist.algae.AlgaeWristConstants;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkRelativeEncoder;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.revrobotics.spark.config.LimitSwitchConfig;
-import com.revrobotics.spark.config.SoftLimitConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SoftLimitConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ClimbSubsystem extends IronSubsystem {
 
@@ -36,10 +26,13 @@ public class ClimbSubsystem extends IronSubsystem {
     private final ClimbCommands commands;
     private final RelativeEncoder encoder;
 
+    private double pidOutput;
+
     private TrapezoidProfile.State goalSetpoint = new TrapezoidProfile.State();
     private TrapezoidProfile.State periodicSetpoint = new TrapezoidProfile.State();
 
-    
+    private SoftLimitConfig softLimitConfig = new SoftLimitConfig(); // should force stop motor if it gets out of bounds
+
     public ClimbSubsystem() {
         publish("Climber P", ClimbConstants.P);
         publish("Climber I", ClimbConstants.I);
@@ -49,8 +42,6 @@ public class ClimbSubsystem extends IronSubsystem {
         encoder = climbMotor.getEncoder();
         encoder.setPosition(0); // Set pos to zero on deploy
 
-
-        var softLimitConfig = new SoftLimitConfig(); // should force stop motor if it gets out of bounds
         softLimitConfig
             .reverseSoftLimitEnabled(true)
             .reverseSoftLimit(ClimbConstants.Targets.MAX.pos)
@@ -84,6 +75,7 @@ public class ClimbSubsystem extends IronSubsystem {
         publish("Climb Motor Val", getPostion());
         publish("Climber target pos", goalSetpoint.position);
         publish("Climber target velo", goalSetpoint.velocity);
+        publish("Climber PID output", pidOutput);
 
         pidController.setP(SmartDashboard.getNumber("Climber P", ClimbConstants.P));
         pidController.setI(SmartDashboard.getNumber("Climber I", ClimbConstants.I));
@@ -102,14 +94,14 @@ public class ClimbSubsystem extends IronSubsystem {
     public void goTo(ClimbConstants.Targets limit) {
         setGoal(limit);
 
-        double pidOutput = pidController.calculate(getPostion() /* Encoder pos with motor gearing */, periodicSetpoint.position);
+        pidOutput = pidController.calculate(getPostion() /* Encoder pos with motor gearing */, periodicSetpoint.position);
         if (pidOutput == 0) {
             climbMotor.stopMotor();
             return;
         }
 
         climbMotor.set(pidOutput);
-        publish("Climber PID output", pidOutput);
+  
     }
 
     public void setGoal(ClimbConstants.Targets limit) {
