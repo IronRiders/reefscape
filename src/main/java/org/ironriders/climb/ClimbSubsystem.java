@@ -1,5 +1,7 @@
 package org.ironriders.climb;
 
+import java.util.Optional;
+
 import org.ironriders.lib.IronSubsystem;
 
 import com.revrobotics.RelativeEncoder;
@@ -109,6 +111,10 @@ public class ClimbSubsystem extends IronSubsystem {
         
         climbMotor.set(pidOutput);
   
+    }
+
+    public double getGoal() {
+        return goalSetpoint.position;
     }
 
     public void setGoal(ClimbConstants.Targets limit) {

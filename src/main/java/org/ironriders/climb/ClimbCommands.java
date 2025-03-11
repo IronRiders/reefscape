@@ -13,11 +13,6 @@ public class ClimbCommands {
         climb.publish("Climb to TARGET", goTo(ClimbConstants.Targets.TARGET));
         climb.publish("Re-zero (TESTING ONLY)", reZero());
     }
-    
-    public Command set(ClimbConstants.State state) {
-        return climb
-                .runOnce(() -> climb.set(state));
-    }
 
     public Command goTo(ClimbConstants.Targets limit) {
         return climb
@@ -26,5 +21,9 @@ public class ClimbCommands {
 
     private Command reZero() {
         return climb.runOnce(() -> climb.reZero());
+    }
+
+    public Command getGoalpoint() {
+        return climb.runOnce(() -> climb.getGoal());
     }
 }

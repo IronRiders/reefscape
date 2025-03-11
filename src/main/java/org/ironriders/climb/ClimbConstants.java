@@ -1,5 +1,8 @@
 package org.ironriders.climb;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public class ClimbConstants {
     public static final int CLIMBER_MOTOR_CAN_ID = 17;
     public static final int CURRENT_LIMIT = 40;
@@ -34,5 +37,8 @@ public class ClimbConstants {
 
         Targets(double pos) { this.pos = pos; }
 
+        public static Optional<Targets> findByCode(Double code) {
+            return Arrays.stream(values()).filter(target -> target.pos == code).findFirst();
+        }   
     }
 }
