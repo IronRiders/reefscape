@@ -7,14 +7,14 @@ public class ClimbConstants {
     public static final int CLIMBER_MOTOR_CAN_ID = 17;
     public static final int CURRENT_LIMIT = 40;
 
-    public static final double GEAR_RATIO = 1/100;
+    public static final double GEAR_RATIO = 0.001;
 
     public static final double P = 0.1;
     public static final double I = 0; 
     public static final double D = 0;
 
-    public static final double MAX_ACC = 2; // test velocitys
-    public static final double MAX_VEL = 2;
+    public static final double MAX_ACC = 0.1; // test velocitys
+    public static final double MAX_VEL = 0.1;
 
     public static final double T = .02;
 
