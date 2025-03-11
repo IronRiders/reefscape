@@ -37,6 +37,7 @@ import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.targeting.TargetingSubsystem;
 import org.ironriders.elevator.ElevatorConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -249,6 +250,13 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
+		Command autoCommand = autoChooser.getSelected();
+    if (autoCommand instanceof PathPlannerAuto auto) {
+      Pose2d startPose = auto.getStartingPose();
+      driveSubsystem.resetOdometry(startPose);
+    } else {
+      System.out.println("No PathPlanner auto selected");
+    }
 		return autoChooser.getSelected();
 	}
 }
