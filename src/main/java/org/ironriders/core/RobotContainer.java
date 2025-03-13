@@ -118,94 +118,10 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
-		primaryController.axisMagnitudeGreaterThan(
-				0, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
-		primaryController.axisMagnitudeGreaterThan(
-				1, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
+		// slows down drivetrain when pressed
+		primaryController.leftTrigger().onTrue(driveCommands.setDriveTrainSpeed(true)).onFalse(driveCommands.setDriveTrainSpeed(false));
 
-		// primaryController.rightBumper().onTrue(robotCommands.scoreAlgae());
-		primaryController.rightBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.EJECT))
-				.onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP));
-
-		// primaryController.leftBumper().onTrue(Commands.deferredProxy(() -> {
-		// return robotCommands.grabAlgae(GameState.getAlgaeTarget());
-		// }));
-
-		primaryController.leftBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB))
-				.onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP));
-
-		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
-		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
-
-		primaryController.a().onTrue(driveCommands.pathfindToTarget());
-		primaryController.x().onTrue(driveCommands.cancelPathfind());
-
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
-			robotCommands.prepareToScoreCoral(GameState.getCoralTarget()).schedule();
-		})).onFalse(robotCommands.scoreCoral());
-
-		primaryController.y().onTrue(driveCommands.pathfindToTarget());
-
-		// Configure dpad as jog control. wpilib exposes dpad as goofy "pov" values
-		// which are an angle; we create a trigger for each discrete 45-degree angle
-		for (var angle = 0; angle < 360; angle += 45) {
-			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
-		}
-
-		// SECONDARY CONTROLS
-
-		// 1 - Coral Home, 2 - Elevator Home
-		secondaryController.button(1).onTrue(coralWristCommands.home());
-		secondaryController.button(2).onTrue(elevatorCommands.home());
-
-		// 3 - Algae Stowed, 4 - Algae Reef
-		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.STOWED));
-		secondaryController.button(4).onTrue(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED));
-
-		// 5/6 - Target Station, 7/8 - Target Processor
-		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.STATION));
-		secondaryController.button(7).onTrue(targetingCommands.targetNearest(ElementType.PROCESSOR));
-
-		secondaryController.button(15).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET))
-				.onFalse(climbCommands.goTo(ClimbConstants.Targets.HOME));
-
-		// secondaryController.button(15).onTrue(targetingCommands.targetReefPole(Side.Left));
-		secondaryController.button(16).onTrue(targetingCommands.targetReefPole(Side.Right));
-
-		secondaryController.button(11).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX))
-				.onFalse(climbCommands.goTo(ClimbConstants.Targets.HOME));
-
-		// 9/10 - L4, 13/14 - L3 & AH, 17/18 - L2 & AL, 21/22 - L1
-		secondaryController.button(9).onTrue(
-				Commands.runOnce(() -> {
-					GameState.setCoralTarget(ElevatorConstants.Level.L4);
-				}));
-		secondaryController.button(13).onTrue(
-				Commands.runOnce(() -> {
-					GameState.setCoralTarget(ElevatorConstants.Level.L3);
-					GameState.setAlgaeTarget(ElevatorConstants.Level.L3);
-				}));
-		secondaryController.button(17).onTrue(
-				Commands.runOnce(() -> {
-					GameState.setCoralTarget(ElevatorConstants.Level.L2);
-					GameState.setAlgaeTarget(ElevatorConstants.Level.L2);
-				}));
-		secondaryController.button(21).onTrue(
-				Commands.runOnce(() -> {
-					GameState.setCoralTarget(ElevatorConstants.Level.L1);
-				}));
-
-		// 23 - Coral Left, 24 - Coral Right
-		// secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
-		// secondaryController.button(24).onTrue(targetingCommands.targetReefPole(Side.Right));
-
-		// 23 - Algae between L2-L3 , 24 - Algae between L3-L4
-		secondaryController.button(23).onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		secondaryController.button(24).onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
-
-		// 19 - Eject Coral, 20 - Elevator to down position
-		secondaryController.button(19).onTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT));
-		secondaryController.button(20).onTrue(elevatorCommands.set(ElevatorConstants.Level.Down));
+		primaryController.leftBumper().onTrue(driveCommands.jog(0));
 	}
 
 	/**
