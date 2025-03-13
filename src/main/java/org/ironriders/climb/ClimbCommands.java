@@ -13,8 +13,8 @@ public class ClimbCommands {
         climb.publish("Climb to HOME", goTo(ClimbConstants.Targets.HOME));
         climb.publish("Climb to TARGET", goTo(ClimbConstants.Targets.TARGET));
         climb.publish("Re-zero (TESTING ONLY)", reZero());
-        climb.publish("Force up (TESTING ONLY)", moveSeconds(ClimbConstants.State.UP, 0.2));
-        climb.publish("Force down (TESTING ONLY)", moveSeconds(ClimbConstants.State.DOWN, 0.2));
+        climb.publish("Force up (TESTING ONLY)", moveSeconds(ClimbConstants.State.UP,1));
+        climb.publish("Force down (TESTING ONLY)", moveSeconds(ClimbConstants.State.DOWN, 1));
     }
 
     public Command goTo(ClimbConstants.Targets limit) {
@@ -31,6 +31,6 @@ public class ClimbCommands {
     }
 
     public Command moveSeconds(ClimbConstants.State state, double seconds) {
-        return climb.runOnce(() -> climb.set(state)).andThen(Commands.waitSeconds(seconds)).andThen(() -> climb.set(ClimbConstants.State.STOP));
+        return climb.runOnce(() -> climb.set(state)).andThen(Commands.waitSeconds(seconds)).andThen(() -> climb.set(ClimbConstants.State.STOP)).andThen(() -> climb.reZero());
     }
 }

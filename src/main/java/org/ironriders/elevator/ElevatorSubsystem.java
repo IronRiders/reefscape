@@ -75,10 +75,12 @@ public class ElevatorSubsystem extends IronSubsystem {
         followerConfig
                 .idleMode(IdleMode.kBrake)
                 .smartCurrentLimit(ELEVATOR_MOTOR_STALL_LIMIT)
-                .follow(ElevatorConstants.PRIMARY_MOTOR_ID, true);
+                .follow(ElevatorConstants.PRIMARY_MOTOR_ID, true)
+                .apply(forwardLimitSwitchConfig)
+                .apply(reverseLimitSwitchConfig);
 
         primaryMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        followerMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        followerMotor.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         profile = new TrapezoidProfile(
                 new TrapezoidProfile.Constraints(ElevatorConstants.MAX_VEL, ElevatorConstants.MAX_ACC));
