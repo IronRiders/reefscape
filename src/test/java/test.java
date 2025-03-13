@@ -12,8 +12,7 @@ public class test {
     ElevatorSubsystem elevatorSubsystem=new ElevatorSubsystem();
     ElevatorCommands elevatorCommands =elevatorSubsystem.getCommands();
     @Test
-    void test(){
-        
+    void test1(){
         assert(1==1);
     }
 }
