@@ -34,7 +34,7 @@ public class CoralWristSubsystem extends AbsoluteWristSubsystem {
                 new PID(P, I, D),
                 new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC),
                 CORAL_WRIST_CURRENT_STALL_LIMIT,
-                false);
+                true);
 
         pid.setTolerance(CORAL_WRIST_TOLERANCE);
 
