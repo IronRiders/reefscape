@@ -16,9 +16,9 @@ public class CoralWristConstants {
     public static final double GEAR_RATIO = 1.0 / 100.0;
     public static final double ENCODER_SCALE = SPROCKET_RATIO;
 
-    public static final Angle ENCODER_OFFSET = Units.Degrees.of(48);
-    public static final Angle REVERSE_LIMIT = Units.Degrees.of(-50); // TODO: TUNE
-    public static final Angle FORWARD_LIMIT = Units.Degrees.of(5); // TODO: TUNE
+    public static final Angle ENCODER_OFFSET = Units.Degrees.of(0); // wrong
+    public static final Angle REVERSE_LIMIT = Units.Degrees.of(-35); // TODO: TUNE
+    public static final Angle FORWARD_LIMIT = Units.Degrees.of(50); // TODO: TUNE
 
     public static final double MAX_ACC = 90;
     public static final double MAX_VEL = 90;
