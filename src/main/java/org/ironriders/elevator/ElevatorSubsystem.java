@@ -78,7 +78,7 @@ public class ElevatorSubsystem extends IronSubsystem {
                 .follow(ElevatorConstants.PRIMARY_MOTOR_ID, true);
 
         primaryMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        followerMotor.configure(primaryConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        followerMotor.configure(followerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         profile = new TrapezoidProfile(
                 new TrapezoidProfile.Constraints(ElevatorConstants.MAX_VEL, ElevatorConstants.MAX_ACC));
