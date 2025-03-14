@@ -1,34 +1,43 @@
 package org.ironriders.drive;
 
 import java.io.IOException;
+import java.util.Optional;
+
+import org.ironriders.lib.GameState;
+import org.ironriders.lib.IronSubsystem;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
-import swervelib.SwerveDrive;
-import swervelib.parser.SwerveParser;
-import swervelib.telemetry.SwerveDriveTelemetry;
-import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.ironriders.vision.Vision;
+import edu.wpi.first.wpilibj2.command.Command;
+import swervelib.SwerveDrive;
+import swervelib.parser.SwerveParser;
+import swervelib.telemetry.SwerveDriveTelemetry;
+import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 /**
  * The DriveSubsystem encompasses everything that the Swerve Drive needs to
- * function. It keeps track of the robot's position and angle, and uses the controller
+ * function. It keeps track of the robot's position and angle, and uses the
+ * controller
  * input to figure out how the individual modules need to turn and be angled.
  */
-public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends IronSubsystem {
 
 	private DriveCommands commands;
 
 	private SwerveDrive swerveDrive;
 	private Vision vision;
 
+	public Command pathfindCommand;
+
 	public DriveSubsystem() throws RuntimeException {
 		try {
-			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve directory.
+			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
+																					// directory.
 					.createSwerveDrive(DriveConstants.SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
@@ -62,12 +71,16 @@ public class DriveSubsystem extends SubsystemBase {
 					return false;
 				},
 				this);
+
+		GameState.setField(swerveDrive.field);
+		GameState.setRobotPose(() -> Optional.of(swerveDrive.getPose()));
 	}
 
 	@Override
 	public void periodic() {
 		vision.updateAll();
 		vision.addPoseEstimates();
+		publish("vision has pose", vision.hasPose);
 	}
 
 	/**

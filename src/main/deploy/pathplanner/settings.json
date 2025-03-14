@@ -2,8 +2,14 @@
   "robotWidth": 0.9,
   "robotLength": 0.9,
   "holonomicMode": true,
-  "pathFolders": [],
+  "pathFolders": [
+    "other",
+    "leave start blue",
+    "leave start red"
+  ],
   "autoFolders": [
+    "leave start blue",
+    "leave start red",
     "Basic Autos",
     "Level 2 Autos",
     "Level 3 Autos"
