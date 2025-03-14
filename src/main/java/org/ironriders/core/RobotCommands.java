@@ -11,6 +11,7 @@ import org.ironriders.wrist.algae.AlgaeIntakeCommands;
 import org.ironriders.wrist.algae.AlgaeIntakeConstants;
 import org.ironriders.wrist.algae.AlgaeWristCommands;
 import org.ironriders.wrist.algae.AlgaeWristConstants;
+import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
 import org.ironriders.wrist.coral.CoralIntakeCommands;
 import org.ironriders.wrist.coral.CoralIntakeConstants;
 import org.ironriders.wrist.coral.CoralWristCommands;
@@ -109,17 +110,21 @@ public class RobotCommands {
 		//return climbCommands.goTo(Targets.TARGET);
 	}
 
-	public Command prepareToScoreCoral(ElevatorConstants.Level level) {
+	public Command moveElevatorAndWrist(ElevatorConstants.Level level) {
 		return Commands.sequence(
 				elevatorCommands.set(level),
+				Commands.parallel(
+				algaeWristCommands.set(AlgaeWristState.STOWED),
 				coralWristCommands.set(switch (level) {
 					case L1, L2, L3 -> CoralWristConstants.CoralWristState.L1toL3;
 					case L4 -> CoralWristConstants.CoralWristState.L4;
+					case CoralStation -> CoralWristConstants.CoralWristState.STATION;
+					case Down -> CoralWristConstants.CoralWristState.STOWED;
 					default -> {
 						throw new IllegalArgumentException(
 								"Cannot score coral to level: " + level);
 					}
-				}));
+				})));
 	}
 
 	public Command scoreCoral() {
