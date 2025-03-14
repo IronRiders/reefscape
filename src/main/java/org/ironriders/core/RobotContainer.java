@@ -131,6 +131,9 @@ public class RobotContainer {
 		}
 		// y vision align station not implmented yet //TODO
 		// x vision align reef not implmented yet //TODO
+		primaryController.y().onTrue(targetingCommands.targetNearest(ElementType.STATION).andThen(driveCommands.pathfindToTarget()));
+		primaryController.x().onTrue(targetingCommands.targetNearest(ElementType.REEF).andThen(driveCommands.pathfindToTarget()));
+
 
 		//Secondary Driver left side buttons
 		secondaryController.button(1).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
