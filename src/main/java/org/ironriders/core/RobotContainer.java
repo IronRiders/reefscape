@@ -27,12 +27,14 @@ import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
 import org.ironriders.wrist.algae.AlgaeWristCommands;
 import org.ironriders.wrist.algae.AlgaeWristConstants;
 import org.ironriders.wrist.algae.AlgaeWristSubsystem;
+import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
 import org.ironriders.wrist.coral.CoralIntakeCommands;
 import org.ironriders.wrist.coral.CoralIntakeConstants;
 import org.ironriders.wrist.coral.CoralIntakeSubsystem;
 import org.ironriders.wrist.coral.CoralWristCommands;
 import org.ironriders.wrist.coral.CoralWristSubsystem;
+import org.ironriders.wrist.coral.CoralIntakeConstants.CoralIntakeState;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -132,18 +134,22 @@ public class RobotContainer {
 		// x vision align reef not implmented yet //TODO
 
 		//Secondary Driver left side buttons
-		secondaryController.button(5).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L1));
-		secondaryController.button(6).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L2));
-		secondaryController.button(7).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L3));
-		secondaryController.button(8).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L4));
-		secondaryController.button(9).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.CoralStation));
-		secondaryController.button(10).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.Down));
+		secondaryController.button(0).onTrue(coralIntakeCommands.set(CoralIntakeState.EJECT));
+		secondaryController.button(1).onTrue(coralIntakeCommands.set(CoralIntakeState.GRAB));
+		secondaryController.button(2).onTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB));
+		secondaryController.button(3).onTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB));
+
+		secondaryController.button(4).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L2));
+		secondaryController.button(5).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L3));
+		secondaryController.button(6).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L4));
+		secondaryController.button(7).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.CoralStation));
+		secondaryController.button(8).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.Down));
 		
 		//right side buttons
-		secondaryController.button(11).onTrue(algaeWristCommands.set(AlgaeWristState.EXTENDED));
-		secondaryController.button(12).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
-		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
-		secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
+		secondaryController.button(10).onTrue(algaeWristCommands.set(AlgaeWristState.EXTENDED));
+		secondaryController.button(11).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
+		secondaryController.button(12).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
+		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
 	}
 
 	/**
