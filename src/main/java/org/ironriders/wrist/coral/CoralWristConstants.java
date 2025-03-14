@@ -30,7 +30,7 @@ public class CoralWristConstants {
         STATION(20),
         STOWED(45), // Will stop at limit
         L1toL3(0),
-        L4(-30);
+        L4(-20);
 
         final Angle angle;
 
