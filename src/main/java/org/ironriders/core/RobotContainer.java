@@ -35,7 +35,7 @@ import org.ironriders.wrist.coral.CoralIntakeSubsystem;
 import org.ironriders.wrist.coral.CoralWristCommands;
 import org.ironriders.wrist.coral.CoralWristSubsystem;
 import com.pathplanner.lib.auto.AutoBuilder;
-import org.ironriders.dash.DashboardSubsystem;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.elevator.ElevatorConstants.Level;
