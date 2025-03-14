@@ -34,6 +34,7 @@ public class DriveConstants {
     public static final double ROTATION_CONTROL_DEADBAND = 0.8;
 
     public static final double SWERVE_DRIVE_MAX_SPEED = 5.0; // m/s
+    public static final double SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP = Math.PI * 4; // rad/s
 
     public static final double SWERVE_MAXIMUM_SPEED_AUTO = 2.0; // m/s
     public static final double SWERVE_MAXIMUM_ACCELERATION_AUTO = SWERVE_MAXIMUM_SPEED_AUTO / 2; // m/s^2

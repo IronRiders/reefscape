@@ -16,10 +16,11 @@ import static org.ironriders.wrist.coral.CoralWristConstants.SPROCKET_RATIO;
 
 import org.ironriders.lib.data.PID;
 import org.ironriders.wrist.AbsoluteWristSubsystem;
+import org.ironriders.wrist.AbsoluteWristSubsystemCoral;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-public class CoralWristSubsystem extends AbsoluteWristSubsystem {
+public class CoralWristSubsystem extends AbsoluteWristSubsystemCoral {
     private final CoralWristCommands commands;
 
     public CoralWristSubsystem() {
@@ -30,7 +31,7 @@ public class CoralWristSubsystem extends AbsoluteWristSubsystem {
                 ENCODER_OFFSET,
                 REVERSE_LIMIT,
                 FORWARD_LIMIT,
-                true,
+                false,
                 new PID(P, I, D),
                 new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC),
                 CORAL_WRIST_CURRENT_STALL_LIMIT,

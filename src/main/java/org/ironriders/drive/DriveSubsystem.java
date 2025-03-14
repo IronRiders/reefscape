@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.IronSubsystem;
+import static org.ironriders.drive.DriveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
@@ -36,9 +37,9 @@ public class DriveSubsystem extends IronSubsystem {
 
 	public DriveSubsystem() throws RuntimeException {
 		try {
-			swerveDrive = new SwerveParser(DriveConstants.SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
+			swerveDrive = new SwerveParser(SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
 																					// directory.
-					.createSwerveDrive(DriveConstants.SWERVE_DRIVE_MAX_SPEED);
+					.createSwerveDrive(SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
 		}
@@ -118,5 +119,15 @@ public class DriveSubsystem extends IronSubsystem {
 	/** Resets the Odemetry to the current position */
 	public void resetOdometry(Pose2d pose2d) {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
+	}
+
+	public void setSpeed(boolean slow){
+		if(slow){
+			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED *.5 , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
+		}
+		else{
+			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
+		}
+		
 	}
 }
