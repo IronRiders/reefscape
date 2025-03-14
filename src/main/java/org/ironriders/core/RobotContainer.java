@@ -4,6 +4,8 @@
 
 package org.ironriders.core;
 
+import static org.ironriders.wrist.coral.CoralWristConstants.FORWARD_LIMIT;
+
 import org.ironriders.climb.ClimbCommands;
 import org.ironriders.climb.ClimbConstants;
 import org.ironriders.climb.ClimbSubsystem;
@@ -25,6 +27,7 @@ import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
 import org.ironriders.wrist.algae.AlgaeWristCommands;
 import org.ironriders.wrist.algae.AlgaeWristConstants;
 import org.ironriders.wrist.algae.AlgaeWristSubsystem;
+import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
 import org.ironriders.wrist.coral.CoralIntakeCommands;
 import org.ironriders.wrist.coral.CoralIntakeConstants;
 import org.ironriders.wrist.coral.CoralIntakeSubsystem;
@@ -39,6 +42,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -80,7 +84,7 @@ public class RobotContainer {
 
 	private final CommandXboxController primaryController = new CommandXboxController(
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
-	private final CommandGenericHID secondaryController = new CommandGenericHID(DriveConstants.KEYPAD_CONTROLLER_PORT);
+	private final CommandGenericHID secondaryController = new CommandJoystick(DriveConstants.KEYPAD_CONTROLLER_PORT);
 
 	public final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, targetingCommands, elevatorCommands,
@@ -118,99 +122,31 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
-		primaryController.axisMagnitudeGreaterThan(
-				0, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
-		primaryController.axisMagnitudeGreaterThan(
-				1, DriveConstants.PATHFIND_CANCEL_THRESHOLD).onTrue(driveCommands.cancelPathfind());
-
-		// primaryController.rightBumper().onTrue(robotCommands.scoreAlgae());
-		primaryController.rightBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.EJECT))
-				.onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP));
-
-		// primaryController.leftBumper().onTrue(Commands.deferredProxy(() -> {
-		// return robotCommands.grabAlgae(GameState.getAlgaeTarget());
-		// }));
-
-		primaryController.leftBumper().onTrue(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB))
-				.onFalse(algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP));
-
-		primaryController.leftTrigger().onTrue(robotCommands.prepareToGrabCoral());
-		primaryController.leftTrigger().onFalse(robotCommands.grabCoral());
-
-		primaryController.a().onTrue(driveCommands.pathfindToTarget());
-		primaryController.x().onTrue(driveCommands.cancelPathfind());
-
-		primaryController.rightTrigger().onTrue(Commands.runOnce(() -> {
-			robotCommands.prepareToScoreCoral(GameState.getCoralTarget()).schedule();
-		})).onFalse(robotCommands.scoreCoral());
-
-		primaryController.y().onTrue(driveCommands.pathfindToTarget());
-
-		// Configure dpad as jog control. wpilib exposes dpad as goofy "pov" values
-		// which are an angle; we create a trigger for each discrete 45-degree angle
+		// slows down drivetrain when pressed
+		primaryController.leftTrigger().onTrue(driveCommands.setDriveTrainSpeed(true)).onFalse(driveCommands.setDriveTrainSpeed(false));
+		// jog commands on pov buttons
 		for (var angle = 0; angle < 360; angle += 45) {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
 		}
+		// y vision align station not implmented yet //TODO
+		// x vision align reef not implmented yet //TODO
 
-		// SECONDARY CONTROLS
-
-		// 1 - Coral Home, 2 - Elevator Home
-		secondaryController.button(1).onTrue(coralWristCommands.home());
-		secondaryController.button(2).onTrue(elevatorCommands.home());
-
-		// 3 - Algae Stowed, 4 - Algae Reef
-		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.STOWED));
-		secondaryController.button(4).onTrue(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED));
-
-		// 5/6 - Target Station, 7/8 - Target Processor
-		secondaryController.button(5).onTrue(targetingCommands.targetNearest(ElementType.STATION));
-		secondaryController.button(7).onTrue(targetingCommands.targetNearest(ElementType.PROCESSOR));
-
-		secondaryController.button(15).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET))
-				.onFalse(climbCommands.goTo(ClimbConstants.Targets.HOME));
-
-		// secondaryController.button(15).onTrue(targetingCommands.targetReefPole(Side.Left));
-		secondaryController.button(16).onTrue(targetingCommands.targetReefPole(Side.Right));
-
-		secondaryController.button(11).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX))
-				.onFalse(climbCommands.goTo(ClimbConstants.Targets.HOME));
-
-		// 9/10 - L4, 13/14 - L3 & AH, 17/18 - L2 & AL, 21/22 - L1
-		secondaryController.button(9).onTrue(
-				Commands.runOnce(() -> {
-					GameState.setCoralTarget(ElevatorConstants.Level.L4);
-				}));
-		secondaryController.button(13).onTrue(
-				Commands.runOnce(() -> {
-					GameState.setCoralTarget(ElevatorConstants.Level.L3);
-					GameState.setAlgaeTarget(ElevatorConstants.Level.L3);
-				}));
-		secondaryController.button(17).onTrue(
-				Commands.runOnce(() -> {
-					GameState.setCoralTarget(ElevatorConstants.Level.L2);
-					GameState.setAlgaeTarget(ElevatorConstants.Level.L2);
-				}));
-		secondaryController.button(21).onTrue(
-				Commands.runOnce(() -> {
-					GameState.setCoralTarget(ElevatorConstants.Level.L1);
-				}));
-
-		// 23 - Coral Left, 24 - Coral Right
-		// secondaryController.button(23).onTrue(targetingCommands.targetReefPole(Side.Left));
-		// secondaryController.button(24).onTrue(targetingCommands.targetReefPole(Side.Right));
-
-		// 23 - Algae between L2-L3 , 24 - Algae between L3-L4
-		secondaryController.button(23).onTrue(elevatorCommands.set(ElevatorConstants.Level.L2));
-		secondaryController.button(24).onTrue(elevatorCommands.set(ElevatorConstants.Level.L3));
-
-		// 19 - Eject Coral, 20 - Elevator to down position
-		secondaryController.button(19).onTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT));
-		secondaryController.button(20).onTrue(elevatorCommands.set(ElevatorConstants.Level.Down));
+		//Secondary Driver left side buttons
+		secondaryController.button(5).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L1));
+		secondaryController.button(6).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L2));
+		secondaryController.button(7).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L3));
+		secondaryController.button(8).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L4));
+		secondaryController.button(9).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.CoralStation));
+		secondaryController.button(10).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.Down));
+		
+		//right side buttons
+		secondaryController.button(11).onTrue(algaeWristCommands.set(AlgaeWristState.EXTENDED));
+		secondaryController.button(12).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
+		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
+		secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
 	}
 
 	/**
-	 * Use this to pass the autonomous command to the main {@link Robot} class.
-	 *
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {

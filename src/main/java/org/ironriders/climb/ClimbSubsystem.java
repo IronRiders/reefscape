@@ -1,7 +1,5 @@
 package org.ironriders.climb;
 
-import java.util.Optional;
-
 import org.ironriders.lib.IronSubsystem;
 
 import com.revrobotics.RelativeEncoder;
