@@ -1,27 +1,26 @@
 package org.ironriders.wrist.algae;
 
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.ALGAE_INTAKE_CURRENT_STALL_LIMIT;
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.ALGAE_LEFT_ID;
+import static org.ironriders.wrist.algae.AlgaeIntakeConstants.ALGAE_RIGHT_ID;
+
+import org.ironriders.lib.IronSubsystem;
+import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
+
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import static org.ironriders.wrist.algae.AlgaeIntakeConstants.*;
-
-import org.ironriders.lib.IronSubsystem;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants.State;
 
 public class AlgaeIntakeSubsystem extends IronSubsystem {
 
     private final AlgaeIntakeCommands commands;
 
-    // find actual motor IDs
-    private final SparkMax algaeLeftMotor = new SparkMax(ALGAELEFTINTAKEMOTOR, MotorType.kBrushless);
-    private final SparkMax algaeRightMotor = new SparkMax(ALGAERIGHTINTAKEMOTOR, MotorType.kBrushless);
+    private final SparkMax algaeLeftMotor = new SparkMax(ALGAE_LEFT_ID, MotorType.kBrushless);
+    private final SparkMax algaeRightMotor = new SparkMax(ALGAE_RIGHT_ID, MotorType.kBrushless);
     private final SparkMaxConfig algaeMotorConfig = new SparkMaxConfig();
-
 
     @SuppressWarnings("unused")
     private boolean hasAlgae = false;
@@ -40,7 +39,6 @@ public class AlgaeIntakeSubsystem extends IronSubsystem {
 
     @Override
     public void periodic() {
-
         publish("Velocity", getSpeed());
         publish("Forward Left Motor Current", algaeLeftMotor.getOutputCurrent());
         publish("Forward Right Motor Current", algaeRightMotor.getOutputCurrent());
@@ -50,11 +48,11 @@ public class AlgaeIntakeSubsystem extends IronSubsystem {
         this.hasAlgae = hasAlgae;
     }
 
-    public void set(State state) {
+    public void set(AlgaeIntakeState state) {
         algaeLeftMotor.set(state.getSpeed());
         algaeRightMotor.set(-state.getSpeed());
 
-        SmartDashboard.putString(DASHBOARD_PREFIX_ALGAE + "state", state.name());
+        publish("Algae State", state.name());
     }
 
     private double getSpeed() {
@@ -67,7 +65,7 @@ public class AlgaeIntakeSubsystem extends IronSubsystem {
     }
 
     public void reset() {
-        set(State.STOP);
+        set(AlgaeIntakeState.STOP);
     }
 
     public AlgaeIntakeCommands getCommands() {

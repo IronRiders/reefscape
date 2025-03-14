@@ -10,7 +10,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AbsoluteWristSubsystem extends WristSubsystem {
 
@@ -24,18 +23,17 @@ public class AbsoluteWristSubsystem extends WristSubsystem {
     AbsoluteEncoder encoder;
 
     public AbsoluteWristSubsystem(
-        int motorId,
-        double gearRatio,
-        double encoderScale,
-        Angle encoderOffset,
-        Angle reverseLimit,
-        Angle forwardLimit,
-        boolean invertEncoder,
-        PID pid,
-        TrapezoidProfile.Constraints constraints,
-        int stallLimit,
-        boolean inverted
-    ) {
+            int motorId,
+            double gearRatio,
+            double encoderScale,
+            Angle encoderOffset,
+            Angle reverseLimit,
+            Angle forwardLimit,
+            boolean invertEncoder,
+            PID pid,
+            TrapezoidProfile.Constraints constraints,
+            int stallLimit,
+            boolean inverted) {
         super(motorId, gearRatio, pid, constraints, stallLimit, inverted);
 
         this.encoderScale = encoderScale;
@@ -46,6 +44,8 @@ public class AbsoluteWristSubsystem extends WristSubsystem {
 
         encoder = motor.getAbsoluteEncoder();
         encoder.getPosition();
+
+        reset();
     }
 
     @Override
@@ -63,25 +63,25 @@ public class AbsoluteWristSubsystem extends WristSubsystem {
         var softLimitConfig = new SoftLimitConfig();
 
         // I *think* soft limits are set in rotations of the internal encoder,
-        // not the absolute encoder.  This isn't documented.  However, on current
+        // not the absolute encoder. This isn't documented. However, on current
         // bot, disabling limit is worse than crashing because current is low and
         // if the motor disables the arm will crash into bearing brackets on
-        // elevator.  So leaving disabled for now
+        // elevator. So leaving disabled for now
         softLimitConfig
-            .reverseSoftLimitEnabled(false)
-            .forwardSoftLimitEnabled(false);
-            // .reverseSoftLimitEnabled(true)
-            // .reverseSoftLimit(TODO)
-            // .forwardSoftLimitEnabled(true)
-            // .forwardSoftLimit(TODO);
+                .reverseSoftLimitEnabled(false)
+                .forwardSoftLimitEnabled(false);
+        // .reverseSoftLimitEnabled(true)
+        // .reverseSoftLimit(TODO)
+        // .forwardSoftLimitEnabled(true)
+        // .forwardSoftLimit(TODO);
 
         var limitSwitchConfig = new LimitSwitchConfig();
         limitSwitchConfig
-            .reverseLimitSwitchEnabled(false)
-            .forwardLimitSwitchEnabled(false);
-        
+                .reverseLimitSwitchEnabled(false)
+                .forwardLimitSwitchEnabled(false);
+
         motorConfig
-            .apply(softLimitConfig);
+                .apply(softLimitConfig);
 
         super.configureMotor();
     }
@@ -101,7 +101,7 @@ public class AbsoluteWristSubsystem extends WristSubsystem {
         if (goal.lt(reverseLimit)) {
             goal = reverseLimit;
         }
-        
+
         if (goal.gt(forwardLimit)) {
             goal = forwardLimit;
         }
@@ -119,7 +119,7 @@ public class AbsoluteWristSubsystem extends WristSubsystem {
     @Override
     protected Angle getCurrentAngle() {
         var angle = Units.Rotations.of(encoder.getPosition());
-        
+
         angle = angle.times(encoderScale);
 
         if (invertEncoder) {
@@ -133,6 +133,6 @@ public class AbsoluteWristSubsystem extends WristSubsystem {
 
     @Override
     public Command homeCmd(boolean force) {
-        return Commands.none();
+        return this.runOnce(this::reset);
     }
 }

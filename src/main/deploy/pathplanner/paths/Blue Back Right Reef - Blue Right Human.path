@@ -47,7 +47,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Dock",
+      "name": "",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": null

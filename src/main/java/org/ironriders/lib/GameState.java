@@ -18,10 +18,9 @@ public class GameState {
     static private Supplier<Optional<Pose2d>> robotPose = () -> Optional.empty();
     static private Supplier<Optional<FieldPose>> targetRobotPose = () -> Optional.empty();
 
+    // these represent our current elevator targets for their respective game pieces.
     static private ElevatorConstants.Level coralTarget = ElevatorConstants.Level.L1;
     static private ElevatorConstants.Level algaeTarget = ElevatorConstants.Level.L2;
-
-    static private boolean controlInverted = false;
 
     private GameState() {}
 
@@ -63,13 +62,5 @@ public class GameState {
 
     public static void setAlgaeTarget(ElevatorConstants.Level algaeTarget) {
         GameState.algaeTarget = algaeTarget;
-    }
-
-    public static boolean getInvertControl() {
-        return controlInverted;
-    }
-
-    public static void invertControl() {
-        GameState.controlInverted = !GameState.controlInverted;
     }
 }

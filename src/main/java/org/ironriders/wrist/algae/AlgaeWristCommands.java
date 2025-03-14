@@ -1,6 +1,6 @@
 package org.ironriders.wrist.algae;
 
-import org.ironriders.wrist.algae.AlgaeWristConstants.*;
+import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -11,15 +11,15 @@ public class AlgaeWristCommands extends Command {
         this.algaeWrist = wrist;
 
         wrist.publish("Home", home());
-        wrist.publish("Algae Wrist Stowed", set(State.STOWED));
-        wrist.publish("Algae Wrist Extended", set(State.EXTENDED));
+        wrist.publish("Algae Wrist Stowed", set(AlgaeWristState.STOWED));
+        wrist.publish("Algae Wrist Extended", set(AlgaeWristState.EXTENDED));
     }
 
     public Command home() {
         return algaeWrist.homeCmd();
     }
 
-    public Command set(State state) {
+    public Command set(AlgaeWristState state) {
         return algaeWrist.moveToCmd(state.getAngle());
     }
 

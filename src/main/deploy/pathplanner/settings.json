@@ -9,7 +9,10 @@
   ],
   "autoFolders": [
     "leave start blue",
-    "leave start red"
+    "leave start red",
+    "Basic Autos",
+    "Level 2 Autos",
+    "Level 3 Autos"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
