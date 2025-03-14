@@ -27,6 +27,7 @@ import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
 import org.ironriders.wrist.algae.AlgaeWristCommands;
 import org.ironriders.wrist.algae.AlgaeWristConstants;
 import org.ironriders.wrist.algae.AlgaeWristSubsystem;
+import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
 import org.ironriders.wrist.coral.CoralIntakeCommands;
 import org.ironriders.wrist.coral.CoralIntakeConstants;
@@ -134,6 +135,8 @@ public class RobotContainer {
 		//Secondary Driver left side buttons
 		secondaryController.button(1).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
 		secondaryController.button(2).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.GRAB)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
+		secondaryController.button(3).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
+		secondaryController.button(4).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.EJECT)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
 
 		secondaryController.button(5).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L1));
 		secondaryController.button(6).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L2));
