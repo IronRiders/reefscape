@@ -30,9 +30,23 @@ import org.ironriders.wrist.coral.CoralIntakeConstants;
 import org.ironriders.wrist.coral.CoralIntakeSubsystem;
 import org.ironriders.wrist.coral.CoralWristCommands;
 import org.ironriders.wrist.coral.CoralWristSubsystem;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-
+import org.ironriders.dash.DashboardSubsystem;
+import org.ironriders.elevator.ElevatorCommands;
+import org.ironriders.elevator.ElevatorSubsystem;
+import org.ironriders.elevator.ElevatorConstants.Level;
+import org.ironriders.lib.GameState;
+import org.ironriders.lib.RobotUtils;
+import org.ironriders.lib.field.FieldElement;
+import org.ironriders.lib.field.FieldElement.ElementType;
+import org.ironriders.lib.field.FieldElement.Position;
+import org.ironriders.lib.field.FieldPose.Side;
+import org.ironriders.targeting.TargetingCommands;
+import org.ironriders.targeting.TargetingSubsystem;
+import org.ironriders.elevator.ElevatorConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -214,6 +228,13 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
-		return autoChooser.getSelected();
+		Command autoCommand = autoChooser.getSelected();
+    if (autoCommand instanceof PathPlannerAuto auto) {
+      Pose2d startPose = auto.getStartingPose();
+      driveSubsystem.resetOdometry(startPose);
+    } else {
+      System.out.println("No PathPlanner auto selected");
+    }
+		return autoCommand;
 	}
 }
