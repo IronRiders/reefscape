@@ -64,7 +64,7 @@ public abstract class WristSubsystem extends IronSubsystem {
                 .smartCurrentLimit(stallLimit)
                 .idleMode(IdleMode.kBrake)
                 .inverted(inverted);
-
+        configureMotor();
     }
 
     protected void configureMotor() {

@@ -7,6 +7,7 @@ import com.revrobotics.spark.config.LimitSwitchConfig;
 import com.revrobotics.spark.config.SoftLimitConfig;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.AngleUnit;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -58,7 +59,7 @@ public class AbsoluteWristSubsystemCoral extends WristSubsystem {
         return getCurrentAngle().lt(reverseLimit);
     }
 
-    @Override
+   /*  @Override
     protected void configureMotor() {
         var softLimitConfig = new SoftLimitConfig();
 
@@ -80,11 +81,11 @@ public class AbsoluteWristSubsystemCoral extends WristSubsystem {
                 .reverseLimitSwitchEnabled(false)
                 .forwardLimitSwitchEnabled(false);
 
-        motorConfig
-                .apply(softLimitConfig);
+      //  motorConfig
+        //        .apply(softLimitConfig);
 
         super.configureMotor();
-    }
+    }*/
 
     @Override
     protected void setMotorLevel() {
@@ -119,7 +120,7 @@ public class AbsoluteWristSubsystemCoral extends WristSubsystem {
     @Override
     protected Angle getCurrentAngle() {
         var angle = Units.Rotations.of(encoder.getPosition());
-
+        publish("rawRotation",Units.Rotations.of(encoder.getPosition()).in(Units.Degrees) );
         angle = angle.times(encoderScale);
 
         if (invertEncoder) {

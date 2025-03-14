@@ -31,11 +31,11 @@ public class CoralWristSubsystem extends AbsoluteWristSubsystemCoral {
                 ENCODER_OFFSET,
                 REVERSE_LIMIT,
                 FORWARD_LIMIT,
-                true,
+                false,
                 new PID(P, I, D),
                 new TrapezoidProfile.Constraints(MAX_VEL, MAX_ACC),
                 CORAL_WRIST_CURRENT_STALL_LIMIT,
-                true);
+                false);
 
         pid.setTolerance(CORAL_WRIST_TOLERANCE);
 
