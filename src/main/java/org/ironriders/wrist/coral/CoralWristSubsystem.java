@@ -16,10 +16,11 @@ import static org.ironriders.wrist.coral.CoralWristConstants.SPROCKET_RATIO;
 
 import org.ironriders.lib.data.PID;
 import org.ironriders.wrist.AbsoluteWristSubsystem;
+import org.ironriders.wrist.AbsoluteWristSubsystemCoral;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
-public class CoralWristSubsystem extends AbsoluteWristSubsystem {
+public class CoralWristSubsystem extends AbsoluteWristSubsystemCoral {
     private final CoralWristCommands commands;
 
     public CoralWristSubsystem() {
