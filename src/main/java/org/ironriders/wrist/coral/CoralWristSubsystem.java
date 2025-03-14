@@ -15,7 +15,6 @@ import static org.ironriders.wrist.coral.CoralWristConstants.REVERSE_LIMIT;
 import static org.ironriders.wrist.coral.CoralWristConstants.SPROCKET_RATIO;
 
 import org.ironriders.lib.data.PID;
-import org.ironriders.wrist.AbsoluteWristSubsystem;
 import org.ironriders.wrist.AbsoluteWristSubsystemCoral;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
