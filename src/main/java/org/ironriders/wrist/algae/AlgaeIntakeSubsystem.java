@@ -29,7 +29,7 @@ public class AlgaeIntakeSubsystem extends IronSubsystem {
         algaeMotorConfig
                 .smartCurrentLimit(ALGAE_INTAKE_CURRENT_STALL_LIMIT)
                 .inverted(false)
-                .idleMode(IdleMode.kCoast);
+                .idleMode(IdleMode.kBrake);
         algaeLeftMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         algaeRightMotor.configure(algaeMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 

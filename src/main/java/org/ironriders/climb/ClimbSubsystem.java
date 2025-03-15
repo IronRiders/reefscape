@@ -2,6 +2,8 @@ package org.ironriders.climb;
 
 import org.ironriders.lib.IronSubsystem;
 
+import static org.ironriders.climb.ClimbConstants.*;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -66,6 +68,7 @@ public class ClimbSubsystem extends IronSubsystem {
 
         pidController.setTolerance(.01);
 
+        encoder.setPosition(STARTINGPOSTION / GEAR_RATIO);
         commands = new ClimbCommands(this);
     }
 
@@ -76,7 +79,7 @@ public class ClimbSubsystem extends IronSubsystem {
         publish("Climber set postion", periodicSetpoint.position);
         //publish("Climb Motor Val", getPostion());
         publish("Climb Motor Val", encoder.getPosition()); // for testing
-
+        publish("Climb Current Angle", getPostion());
         publish("Climber target pos", goalSetpoint.position);
         publish("Climber target velo", goalSetpoint.velocity);
         publish("Climber PID output", pidOutput);

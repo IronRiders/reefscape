@@ -127,10 +127,12 @@ public class RobotContainer {
 		primaryController.leftTrigger().onTrue(driveCommands.setDriveTrainSpeed(true)).onFalse(driveCommands.setDriveTrainSpeed(false));
 		// jog commands on pov buttons
 		for (var angle = 0; angle < 360; angle += 45) {
-			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
+			primaryController.pov(angle).onTrue(driveCommands.jog(angle));
 		}
 		// y vision align station not implmented yet //TODO
+		primaryController.x().onTrue(Commands.sequence(targetingCommands.targetReefPole(Side.Left),driveCommands.pathfindToTarget()));
 		// x vision align reef not implmented yet //TODO
+		primaryController.y().onTrue(Commands.sequence(targetingCommands.targetReefPole(Side.Left),driveCommands.pathfindToTarget()));
 
 		//Secondary Driver left side buttons
 		secondaryController.button(1).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
