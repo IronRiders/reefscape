@@ -107,24 +107,26 @@ public class DriveCommands {
 
 	public Command pathfindToPose(Pose2d targetPose) {
 		return driveSubsystem.defer(() -> {
+			//Pose2d targetPose = new Pose2d(new Translation2d(70.0,80.0), new Rotation2d());
+
 			List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-            	new Pose2d(driveSubsystem.getPose().getTranslation(), getPathVelocityHeading(driveSubsystem.getSwerveDrive().getFieldVelocity(), targetPose))
+            	new Pose2d(driveSubsystem.getPose().getTranslation(), getPathVelocityHeading(driveSubsystem.getSwerveDrive().getFieldVelocity(), targetPose)), targetPose
         	);
 
 			PathPlannerPath path = new PathPlannerPath(
             	waypoints, 
             	pathConstraints,
             	new IdealStartingState(getVelocityMagnitude(driveSubsystem.getSwerveDrive().getFieldVelocity()), driveSubsystem.getSwerveDrive().getPose().getRotation()), 
-            	new GoalEndState(0.0, targetPose.getRotation())
+            		new GoalEndState(0.0, targetPose.getRotation())
         	);
-
-			return (AutoBuilder.followPath(path)); // TODO: implement pid align
+			driveSubsystem.pathfindCommand = AutoBuilder.followPath(path);
+			return driveSubsystem.pathfindCommand; // TODO: implement pid align
 
 			//driveSubsystem.pathfindCommand = AutoBuilder.pathfindToPose(targetPose, new PathConstraints(
-			//		DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-			//		DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
-			//		DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
-			//		DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
+			//	DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+			//	DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
+			//	DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
+			//	DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
 			//return driveSubsystem.pathfindCommand;
 		});
 	}
