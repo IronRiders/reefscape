@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class ClimbConstants {
+    // Like half of these dont do anything anymore but im lazy
+
     public static final int CLIMBER_MOTOR_CAN_ID = 17;
     public static final int CURRENT_LIMIT = 40;
 
