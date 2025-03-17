@@ -1,6 +1,9 @@
 package org.ironriders.drive;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -13,9 +16,6 @@ import com.pathplanner.lib.path.IdealStartingState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
-
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static org.ironriders.elevator.ElevatorConstants.T;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -109,15 +109,23 @@ public class DriveCommands {
 		return driveSubsystem.defer(() -> {
 			//Pose2d targetPose = new Pose2d(new Translation2d(70.0,80.0), new Rotation2d());
 
+
 			List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-            	new Pose2d(driveSubsystem.getPose().getTranslation(), getPathVelocityHeading(driveSubsystem.getSwerveDrive().getFieldVelocity(), targetPose)), targetPose
+            	//new Pose2d(driveSubsystem.getPose().getTranslation(), getPathVelocityHeading(driveSubsystem.getSwerveDrive().getFieldVelocity(), driveSubsystem.getSwerveDrive().getPose())), 
+				new Pose2d(new Translation2d(0,0.0), new Rotation2d()),
+				targetPose
         	);
+
+			//System.out.println("waypoints: " + waypoints.toString());
+			System.out.println("target pos");
+			System.out.println(targetPose);
+			
 
 			PathPlannerPath path = new PathPlannerPath(
             	waypoints, 
             	pathConstraints,
             	new IdealStartingState(getVelocityMagnitude(driveSubsystem.getSwerveDrive().getFieldVelocity()), driveSubsystem.getSwerveDrive().getPose().getRotation()), 
-            		new GoalEndState(0.0, targetPose.getRotation())
+            	new GoalEndState(0.0, targetPose.getRotation())
         	);
 			driveSubsystem.pathfindCommand = AutoBuilder.followPath(path);
 			return driveSubsystem.pathfindCommand; // TODO: implement pid align
