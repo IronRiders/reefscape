@@ -8,22 +8,13 @@ public class ClimbCommands {
     public ClimbCommands(ClimbSubsystem climb) {
         this.climb = climb;
 
-        climb.publish("Climb to MAX", goTo(ClimbConstants.Targets.MAX));
-        climb.publish("Climb to HOME", goTo(ClimbConstants.Targets.HOME));
-        climb.publish("Climb to TARGET", goTo(ClimbConstants.Targets.TARGET));
-        climb.publish("Re-zero (TESTING ONLY)", reZero());
+        climb.publish("Climb Up", set(ClimbConstants.State.UP));
+        climb.publish("Climb Down", set(ClimbConstants.State.DOWN));
     }
 
-    public Command goTo(ClimbConstants.Targets limit) {
+    public Command set(ClimbConstants.State state) {
         return climb
-            .runOnce(() -> climb.goTo(limit));
+            .runOnce(() -> climb.set(state));
     }
 
-    private Command reZero() {
-        return climb.runOnce(() -> climb.reZero());
-    }
-
-    public Command getGoalpoint() {
-        return climb.runOnce(() -> climb.getGoal());
-    }
 }
