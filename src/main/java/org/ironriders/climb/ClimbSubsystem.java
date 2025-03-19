@@ -110,23 +110,11 @@ public class ClimbSubsystem extends IronSubsystem {
         climbMotor.set(pidOutput);
     }
 
-    public void stop(){
-        setGoal(getPostion());
-
-        pidOutput = pidController.calculate(getPostion() /* Encoder pos times motor gearing */,
-                periodicSetpoint.position);
-
-        if (pidOutput == 0) {
-            climbMotor.stopMotor();
-                return;
-        }
-                
-        climbMotor.set(pidOutput);
-    }
-
+    /*
     public void setGoal(double pos){
         this.goalSetpoint = new TrapezoidProfile.State(pos, 0d);
     }
+    */
 
     public double getGoal() {
         return goalSetpoint.position;

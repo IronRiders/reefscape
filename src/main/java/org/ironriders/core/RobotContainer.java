@@ -9,6 +9,7 @@ import static org.ironriders.wrist.coral.CoralWristConstants.FORWARD_LIMIT;
 import org.ironriders.climb.ClimbCommands;
 import org.ironriders.climb.ClimbConstants;
 import org.ironriders.climb.ClimbSubsystem;
+import org.ironriders.climb.ClimbConstants.State;
 import org.ironriders.drive.DriveCommands;
 import org.ironriders.drive.DriveConstants;
 import org.ironriders.drive.DriveSubsystem;
@@ -148,10 +149,12 @@ public class RobotContainer {
 		//right side buttons
 		secondaryController.button(11).onTrue(algaeWristCommands.set(AlgaeWristState.EXTENDED));
 		secondaryController.button(12).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
-		//secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
-		primaryController.a().whileTrue(climbCommands.goTo(ClimbConstants.Targets.MAX)).onFalse(climbCommands.stop());
-		primaryController.b().whileTrue(climbCommands.goTo(ClimbConstants.Targets.HOME)).onFalse(climbCommands.stop()); //newly added
-		//secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
+		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
+		secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
+
+		// the code that I've added. 
+		primaryController.a().whileTrue(climbCommands.move(State.UP));
+		primaryController.b().whileTrue(climbCommands.move(State.DOWN));
 	}
 
 	/**
