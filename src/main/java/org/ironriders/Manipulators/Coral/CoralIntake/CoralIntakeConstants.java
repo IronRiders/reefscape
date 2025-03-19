@@ -1,4 +1,4 @@
-package org.ironriders.Manipulators.Coral;
+package org.ironriders.Manipulators.Coral.CoralIntake;
 
 public class CoralIntakeConstants {
 

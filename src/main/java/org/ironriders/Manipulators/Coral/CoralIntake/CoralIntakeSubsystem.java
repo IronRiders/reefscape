@@ -1,9 +1,9 @@
-package org.ironriders.Manipulators.Coral;
+package org.ironriders.Manipulators.Coral.CoralIntake;
 
-import static org.ironriders.Manipulators.Coral.CoralIntakeConstants.CORAL_INTAKE_CURRENT_STALL_LIMIT;
-import static org.ironriders.Manipulators.Coral.CoralIntakeConstants.CORAL_INTAKE_MOTOR;
+import static org.ironriders.Manipulators.Coral.CoralIntake.CoralIntakeConstants.CORAL_INTAKE_CURRENT_STALL_LIMIT;
+import static org.ironriders.Manipulators.Coral.CoralIntake.CoralIntakeConstants.CORAL_INTAKE_MOTOR;
 
-import org.ironriders.Manipulators.Coral.CoralIntakeConstants.CoralIntakeState;
+import org.ironriders.Manipulators.Coral.CoralIntake.CoralIntakeConstants.CoralIntakeState;
 import org.ironriders.lib.IronSubsystem;
 
 import com.revrobotics.spark.SparkBase.PersistMode;

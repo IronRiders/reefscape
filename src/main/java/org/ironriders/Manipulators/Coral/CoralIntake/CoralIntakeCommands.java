@@ -1,9 +1,9 @@
-package org.ironriders.Manipulators.Coral;
+package org.ironriders.Manipulators.Coral.CoralIntake;
 
-import static org.ironriders.Manipulators.Coral.CoralIntakeConstants.DISCHARGE_TIMEOUT;
-import static org.ironriders.Manipulators.Coral.CoralIntakeConstants.INTAKE_IMPATIENCE;
+import static org.ironriders.Manipulators.Coral.CoralIntake.CoralIntakeConstants.DISCHARGE_TIMEOUT;
+import static org.ironriders.Manipulators.Coral.CoralIntake.CoralIntakeConstants.INTAKE_IMPATIENCE;
 
-import org.ironriders.Manipulators.Coral.CoralIntakeConstants.CoralIntakeState;
+import org.ironriders.Manipulators.Coral.CoralIntake.CoralIntakeConstants.CoralIntakeState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;

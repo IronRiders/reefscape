@@ -1,4 +1,4 @@
-package org.ironriders.Manipulators.Coral;
+package org.ironriders.Manipulators.Coral.CoralWrist;
 
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
