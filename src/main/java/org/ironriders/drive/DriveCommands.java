@@ -112,7 +112,8 @@ public class DriveCommands {
 
 			List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
             	//new Pose2d(driveSubsystem.getPose().getTranslation(), getPathVelocityHeading(driveSubsystem.getSwerveDrive().getFieldVelocity(), driveSubsystem.getSwerveDrive().getPose())), 
-				new Pose2d(new Translation2d(0,0.0), new Rotation2d()),
+				new Pose2d(driveSubsystem.getPose().getTranslation(), new Rotation2d(0)),
+				//new Pose2d(new Translation2d(0,0.0), new Rotation2d()),
 				targetPose
         	);
 
