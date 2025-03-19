@@ -148,8 +148,10 @@ public class RobotContainer {
 		//right side buttons
 		secondaryController.button(11).onTrue(algaeWristCommands.set(AlgaeWristState.EXTENDED));
 		secondaryController.button(12).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
-		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
-		secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
+		//secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
+		primaryController.a().whileTrue(climbCommands.goTo(ClimbConstants.Targets.MAX)).onFalse(climbCommands.stop());
+		primaryController.b().whileTrue(climbCommands.goTo(ClimbConstants.Targets.HOME)).onFalse(climbCommands.stop()); //newly added
+		//secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
 	}
 
 	/**

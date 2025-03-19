@@ -19,6 +19,10 @@ public class ClimbCommands {
             .runOnce(() -> climb.goTo(limit));
     }
 
+    public Command stop(){
+        return climb.runOnce(() -> climb.stop());
+    }
+
     private Command reZero() {
         return climb.runOnce(() -> climb.reZero());
     }
