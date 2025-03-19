@@ -4,8 +4,6 @@
 
 package org.ironriders.core;
 
-import static org.ironriders.wrist.coral.CoralWristConstants.FORWARD_LIMIT;
-
 import org.ironriders.climb.ClimbCommands;
 import org.ironriders.climb.ClimbConstants;
 import org.ironriders.climb.ClimbSubsystem;
@@ -15,17 +13,12 @@ import org.ironriders.drive.DriveSubsystem;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.elevator.ElevatorSubsystem;
-import org.ironriders.lib.GameState;
 import org.ironriders.lib.RobotUtils;
-import org.ironriders.lib.field.FieldElement.ElementType;
-import org.ironriders.lib.field.FieldPose.Side;
 import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.targeting.TargetingSubsystem;
 import org.ironriders.wrist.algae.AlgaeIntakeCommands;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants;
 import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
 import org.ironriders.wrist.algae.AlgaeWristCommands;
-import org.ironriders.wrist.algae.AlgaeWristConstants;
 import org.ironriders.wrist.algae.AlgaeWristSubsystem;
 import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
@@ -40,7 +33,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -81,11 +73,17 @@ public class RobotContainer {
 	public final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 	public final ClimbCommands climbCommands = climbSubsystem.getCommands();
 
+	/**
+	 * A chooser for selecting autonomous commands.
+	 * This allows the user to select different autonomous routines
+	 * from the dashboard.
+	 */
 	private final SendableChooser<Command> autoChooser;
 
 	private final CommandXboxController primaryController = new CommandXboxController(
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
-	private final CommandGenericHID secondaryController = new CommandJoystick(DriveConstants.KEYPAD_CONTROLLER_PORT);
+	private final CommandGenericHID secondaryController = new CommandJoystick(
+			DriveConstants.KEYPAD_CONTROLLER_PORT);
 
 	public final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, targetingCommands, elevatorCommands,
@@ -97,6 +95,7 @@ public class RobotContainer {
 	/**
 	 * The container for the robot. Contains subsystems, IO devices, and commands.
 	 */
+
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
@@ -124,19 +123,43 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
 		// slows down drivetrain when pressed
-		primaryController.leftTrigger().onTrue(driveCommands.setDriveTrainSpeed(true)).onFalse(driveCommands.setDriveTrainSpeed(false));
+		primaryController.leftTrigger().onTrue(driveCommands.setDriveTrainSpeed(true))
+				.onFalse(driveCommands.setDriveTrainSpeed(false));
+
+		// elevator commands via bumpers TODO: ask how to make the bumper commands cleaner
+
+		// sets the elevator command to 0.1 when the right bumper is pressed and the left bumper is not pressed.
+		primaryController.rightBumper().and(() -> !primaryController.leftBumper().getAsBoolean())
+				.whileTrue(climbCommands.setMotor(DriveConstants.MOTOR_DOWN_SPEED));
+		
+		// sets the elevator command to -0.1 when the left bumper is pressed and the right bumper is not pressed.
+		primaryController.leftBumper().and(() -> !primaryController.rightBumper().getAsBoolean())
+				.whileTrue(climbCommands.setMotor(DriveConstants.MOTOR_UP_SPEED));
+		
+		// sets the elevator command to 0.0 when both bumpers are pressed.
+		primaryController.rightBumper().and(() -> primaryController.leftBumper().getAsBoolean())
+				.whileTrue(climbCommands.setMotor(0.0));
+		
+		// sets the elevator command to 0.0 when neither bumpers are not pressed.
+		primaryController.leftBumper().or(() -> primaryController.leftBumper().getAsBoolean())
+				.whileFalse(climbCommands.setMotor(0.0));
+
 		// jog commands on pov buttons
 		for (var angle = 0; angle < 360; angle += 45) {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
 		}
-		// y vision align station not implmented yet //TODO
-		// x vision align reef not implmented yet //TODO
 
-		//Secondary Driver left side buttons
-		secondaryController.button(1).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
-		secondaryController.button(2).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.GRAB)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
-		secondaryController.button(3).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
-		secondaryController.button(4).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.EJECT)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
+		// y vision align station not implimented yet //TODO
+		// x vision align reef not implimented yet //TODO
+		// Secondary Driver left side buttons
+		secondaryController.button(1).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT))
+				.whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
+		secondaryController.button(2).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.GRAB))
+				.whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
+		secondaryController.button(3).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB))
+				.whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
+		secondaryController.button(4).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.EJECT))
+				.whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
 
 		secondaryController.button(5).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L1));
 		secondaryController.button(6).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L2));
@@ -144,8 +167,8 @@ public class RobotContainer {
 		secondaryController.button(8).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L4));
 		secondaryController.button(9).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.CoralStation));
 		secondaryController.button(10).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.Down));
-		
-		//right side buttons
+
+		// right side buttons
 		secondaryController.button(11).onTrue(algaeWristCommands.set(AlgaeWristState.EXTENDED));
 		secondaryController.button(12).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
 		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));

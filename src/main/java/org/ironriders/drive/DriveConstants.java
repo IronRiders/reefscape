@@ -43,4 +43,7 @@ public class DriveConstants {
 
     public static final double JOG_DISTANCE_INCHES = 1;
     public static final double JOG_SPEED = .25;
+
+    public static final double MOTOR_UP_SPEED = 0.5;
+    public static final double MOTOR_DOWN_SPEED = -0.5;
 }

@@ -18,7 +18,10 @@ public class ClimbCommands {
         return climb
             .runOnce(() -> climb.goTo(limit));
     }
-
+    
+    public Command setMotor(double speed) {
+        return climb.runOnce(() -> climb.set(speed));
+    }
     private Command reZero() {
         return climb.runOnce(() -> climb.reZero());
     }
