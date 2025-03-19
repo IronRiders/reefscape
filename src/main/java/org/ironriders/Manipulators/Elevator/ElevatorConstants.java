@@ -1,4 +1,4 @@
-package org.ironriders.elevator;
+package org.ironriders.Manipulators.Elevator;
 
 public class ElevatorConstants {
 

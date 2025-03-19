@@ -1,6 +1,6 @@
-package org.ironriders.elevator;
+package org.ironriders.Manipulators.Elevator;
 
-import org.ironriders.elevator.ElevatorConstants.Level;
+import org.ironriders.Manipulators.Elevator.ElevatorConstants.Level;
 
 import edu.wpi.first.wpilibj2.command.Command;
 

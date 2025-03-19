@@ -1,4 +1,4 @@
-package org.ironriders.wrist.coral;
+package org.ironriders.Manipulators.Coral;
 
 public class CoralIntakeConstants {
 

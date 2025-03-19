@@ -1,4 +1,4 @@
-package org.ironriders.drive;
+package org.ironriders.Drive;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;

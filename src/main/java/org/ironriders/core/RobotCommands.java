@@ -1,21 +1,20 @@
-package org.ironriders.core;
+package org.ironriders.Core;
 
 import java.util.function.DoubleSupplier;
-
+import org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeConstants;
+import org.ironriders.Drive.DriveCommands;
+import org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeCommands;
+import org.ironriders.Manipulators.Algae.AlgaeWrist.AlgaeWristCommands;
+import org.ironriders.Manipulators.Algae.AlgaeWrist.AlgaeWristConstants;
+import org.ironriders.Manipulators.Algae.AlgaeWrist.AlgaeWristConstants.AlgaeWristState;
+import org.ironriders.Manipulators.Coral.*;
+import org.ironriders.Manipulators.Coral.CoralIntakeConstants;
+import org.ironriders.Manipulators.Coral.CoralWristCommands;
+import org.ironriders.Manipulators.Coral.CoralWristConstants;
+import org.ironriders.Manipulators.Elevator.ElevatorCommands;
+import org.ironriders.Manipulators.Elevator.ElevatorConstants;
 import org.ironriders.climb.ClimbCommands;
-import org.ironriders.drive.DriveCommands;
-import org.ironriders.elevator.ElevatorCommands;
-import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.targeting.TargetingCommands;
-import org.ironriders.wrist.algae.AlgaeIntakeCommands;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants;
-import org.ironriders.wrist.algae.AlgaeWristCommands;
-import org.ironriders.wrist.algae.AlgaeWristConstants;
-import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
-import org.ironriders.wrist.coral.CoralIntakeCommands;
-import org.ironriders.wrist.coral.CoralIntakeConstants;
-import org.ironriders.wrist.coral.CoralWristCommands;
-import org.ironriders.wrist.coral.CoralWristConstants;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;

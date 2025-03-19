@@ -1,6 +1,6 @@
-package org.ironriders.wrist.coral;
+package org.ironriders.Manipulators.Coral;
 
-import org.ironriders.wrist.coral.CoralWristConstants.CoralWristState;
+import org.ironriders.Manipulators.Coral.CoralWristConstants.CoralWristState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 

@@ -1,6 +1,6 @@
-package org.ironriders.wrist.algae;
+package org.ironriders.Manipulators.Algae.AlgaeWrist;
 
-import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
+import org.ironriders.Manipulators.Algae.AlgaeWrist.AlgaeWristConstants.AlgaeWristState;
 
 import edu.wpi.first.wpilibj2.command.Command;
 

@@ -2,38 +2,38 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package org.ironriders.core;
+package org.ironriders.Core;
 
-import static org.ironriders.wrist.coral.CoralWristConstants.FORWARD_LIMIT;
+import static org.ironriders.Manipulators.Coral.CoralWristConstants.FORWARD_LIMIT;
 
+import org.ironriders.Drive.DriveCommands;
+import org.ironriders.Drive.DriveConstants;
+import org.ironriders.Drive.DriveSubsystem;
+import org.ironriders.Manipulators.Coral.CoralIntakeCommands;
+import org.ironriders.Manipulators.Coral.CoralIntakeConstants;
+import org.ironriders.Manipulators.Coral.CoralIntakeSubsystem;
+import org.ironriders.Manipulators.Coral.CoralWristCommands;
+import org.ironriders.Manipulators.Coral.CoralWristSubsystem;
+import org.ironriders.Manipulators.Elevator.ElevatorCommands;
+import org.ironriders.Manipulators.Elevator.ElevatorConstants;
+import org.ironriders.Manipulators.Elevator.ElevatorSubsystem;
+import org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeCommands;
+import org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeConstants;
+import org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeSubsystem;
+import org.ironriders.Manipulators.Algae.AlgaeWrist.AlgaeWristCommands;
+import org.ironriders.Manipulators.Algae.AlgaeWrist.AlgaeWristConstants;
+import org.ironriders.Manipulators.Algae.AlgaeWrist.AlgaeWristSubsystem;
+import org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeConstants.AlgaeIntakeState;
+import org.ironriders.Manipulators.Algae.AlgaeWrist.AlgaeWristConstants.AlgaeWristState;
 import org.ironriders.climb.ClimbCommands;
 import org.ironriders.climb.ClimbConstants;
 import org.ironriders.climb.ClimbSubsystem;
-import org.ironriders.drive.DriveCommands;
-import org.ironriders.drive.DriveConstants;
-import org.ironriders.drive.DriveSubsystem;
-import org.ironriders.elevator.ElevatorCommands;
-import org.ironriders.elevator.ElevatorConstants;
-import org.ironriders.elevator.ElevatorSubsystem;
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.RobotUtils;
 import org.ironriders.lib.field.FieldElement.ElementType;
 import org.ironriders.lib.field.FieldPose.Side;
 import org.ironriders.targeting.TargetingCommands;
 import org.ironriders.targeting.TargetingSubsystem;
-import org.ironriders.wrist.algae.AlgaeIntakeCommands;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants;
-import org.ironriders.wrist.algae.AlgaeIntakeSubsystem;
-import org.ironriders.wrist.algae.AlgaeWristCommands;
-import org.ironriders.wrist.algae.AlgaeWristConstants;
-import org.ironriders.wrist.algae.AlgaeWristSubsystem;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
-import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
-import org.ironriders.wrist.coral.CoralIntakeCommands;
-import org.ironriders.wrist.coral.CoralIntakeConstants;
-import org.ironriders.wrist.coral.CoralIntakeSubsystem;
-import org.ironriders.wrist.coral.CoralWristCommands;
-import org.ironriders.wrist.coral.CoralWristSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 

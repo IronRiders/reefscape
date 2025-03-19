@@ -1,12 +1,12 @@
-package org.ironriders.elevator;
+package org.ironriders.Manipulators.Elevator;
 
-import static org.ironriders.elevator.ElevatorConstants.ELEVATOR_MOTOR_STALL_LIMIT;
-import static org.ironriders.elevator.ElevatorConstants.ELEVATOR_POSITION_TOLERANCE;
-import static org.ironriders.elevator.ElevatorConstants.FOLLOW_MOTOR_ID;
-import static org.ironriders.elevator.ElevatorConstants.INCHES_PER_ROTATION;
-import static org.ironriders.elevator.ElevatorConstants.PRIMARY_MOTOR_ID;
+import static org.ironriders.Manipulators.Elevator.ElevatorConstants.ELEVATOR_MOTOR_STALL_LIMIT;
+import static org.ironriders.Manipulators.Elevator.ElevatorConstants.ELEVATOR_POSITION_TOLERANCE;
+import static org.ironriders.Manipulators.Elevator.ElevatorConstants.FOLLOW_MOTOR_ID;
+import static org.ironriders.Manipulators.Elevator.ElevatorConstants.INCHES_PER_ROTATION;
+import static org.ironriders.Manipulators.Elevator.ElevatorConstants.PRIMARY_MOTOR_ID;
 
-import org.ironriders.elevator.ElevatorConstants.Level;
+import org.ironriders.Manipulators.Elevator.ElevatorConstants.Level;
 import org.ironriders.lib.IronSubsystem;
 
 import com.revrobotics.RelativeEncoder;

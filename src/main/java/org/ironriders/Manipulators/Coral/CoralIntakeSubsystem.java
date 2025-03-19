@@ -1,10 +1,10 @@
-package org.ironriders.wrist.coral;
+package org.ironriders.Manipulators.Coral;
 
-import static org.ironriders.wrist.coral.CoralIntakeConstants.CORAL_INTAKE_CURRENT_STALL_LIMIT;
-import static org.ironriders.wrist.coral.CoralIntakeConstants.CORAL_INTAKE_MOTOR;
+import static org.ironriders.Manipulators.Coral.CoralIntakeConstants.CORAL_INTAKE_CURRENT_STALL_LIMIT;
+import static org.ironriders.Manipulators.Coral.CoralIntakeConstants.CORAL_INTAKE_MOTOR;
 
+import org.ironriders.Manipulators.Coral.CoralIntakeConstants.CoralIntakeState;
 import org.ironriders.lib.IronSubsystem;
-import org.ironriders.wrist.coral.CoralIntakeConstants.CoralIntakeState;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;

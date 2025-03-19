@@ -1,4 +1,4 @@
-package org.ironriders.wrist.algae;
+package org.ironriders.Manipulators.Algae.AlgaeIntake;
 
 public class AlgaeIntakeConstants {
 

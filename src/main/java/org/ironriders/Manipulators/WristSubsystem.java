@@ -1,4 +1,4 @@
-package org.ironriders.wrist;
+package org.ironriders.Manipulators;
 
 import org.ironriders.lib.IronSubsystem;
 import org.ironriders.lib.data.PID;

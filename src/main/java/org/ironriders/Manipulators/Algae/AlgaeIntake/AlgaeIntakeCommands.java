@@ -1,6 +1,7 @@
-package org.ironriders.wrist.algae;
+package org.ironriders.Manipulators.Algae.AlgaeIntake;
 
-import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
+import org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeConstants.AlgaeIntakeState;
+
 
 import edu.wpi.first.wpilibj2.command.Command;
 

@@ -1,11 +1,11 @@
-package org.ironriders.wrist.algae;
+package org.ironriders.Manipulators.Algae.AlgaeIntake;
 
-import static org.ironriders.wrist.algae.AlgaeIntakeConstants.ALGAE_INTAKE_CURRENT_STALL_LIMIT;
-import static org.ironriders.wrist.algae.AlgaeIntakeConstants.ALGAE_LEFT_ID;
-import static org.ironriders.wrist.algae.AlgaeIntakeConstants.ALGAE_RIGHT_ID;
+import static org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeConstants.ALGAE_INTAKE_CURRENT_STALL_LIMIT;
+import static org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeConstants.ALGAE_LEFT_ID;
+import static org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeConstants.ALGAE_RIGHT_ID;
 
+import org.ironriders.Manipulators.Algae.AlgaeIntake.AlgaeIntakeConstants.AlgaeIntakeState;
 import org.ironriders.lib.IronSubsystem;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants.AlgaeIntakeState;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
