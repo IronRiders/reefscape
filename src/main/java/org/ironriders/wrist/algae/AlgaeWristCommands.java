@@ -17,18 +17,18 @@ public class AlgaeWristCommands extends Command {
     }
 
     public Command home() {
-        //return algaeWrist.homeCmd();
-        return Commands.none();
+        return algaeWrist.homeCmd();
+        //return Commands.none();
     }
 
     public Command set(AlgaeWristState state) {
-        //return algaeWrist.moveToCmd(state.getAngle());
-        return Commands.none();
+        return algaeWrist.moveToCmd(state.getAngle());
+        //return Commands.none();
     }
 
     public Command reset() {
-        //return algaeWrist.runOnce(algaeWrist::reset);
-        return Commands.none();
+        return algaeWrist.runOnce(algaeWrist::reset);
+        //return Commands.none();
     }
 
     public AlgaeWristSubsystem getAlgaeWrist() {
