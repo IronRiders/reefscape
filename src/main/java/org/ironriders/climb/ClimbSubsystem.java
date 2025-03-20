@@ -48,7 +48,7 @@ public class ClimbSubsystem extends IronSubsystem {
                 .forwardSoftLimitEnabled(true)
                 .forwardSoftLimit(ClimbConstants.Targets.HOME.pos); // Home is also the minimum position
 
-        climbMotorConfig.idleMode(IdleMode.kCoast); // for testing set to coast 
+        climbMotorConfig.idleMode(IdleMode.kBrake); // for testing set to coast 
         climbMotorConfig.smartCurrentLimit(ClimbConstants.CURRENT_LIMIT);
         climbMotor.configure(climbMotorConfig.apply(softLimitConfig), ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
@@ -94,6 +94,12 @@ public class ClimbSubsystem extends IronSubsystem {
         System.out.println(
                 "(Climber) Warning! Someone directly set the climber speed. This can (and has) broken the climber! Use goTo() if possible!");
         climbMotor.set(state.speed);
+    }
+
+    public void set(double speed) {
+        System.out.println(
+                "(Climber) Warning! Someone directly set the climber speed. This can (and has) broken the climber! Use goTo() if possible!");
+        climbMotor.set(speed);
     }
 
     public void goTo(ClimbConstants.Targets limit) {
