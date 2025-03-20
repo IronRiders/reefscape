@@ -135,8 +135,7 @@ public class RobotContainer {
 		//Secondary Driver left side buttons
 		secondaryController.button(1).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
 		secondaryController.button(2).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.GRAB)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
-		secondaryController.button(15).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
-		secondaryController.button(16).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.EJECT)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
+
 
 		secondaryController.button(5).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L1));
 		secondaryController.button(6).onTrue(robotCommands.moveElevatorAndWrist(ElevatorConstants.Level.L2));
@@ -150,6 +149,9 @@ public class RobotContainer {
 		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
 		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
 		secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
+		
+		secondaryController.axisGreaterThan(1, .1).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.EJECT)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
+		secondaryController.axisLessThan(1, .1).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
 	}
 
 	/**
