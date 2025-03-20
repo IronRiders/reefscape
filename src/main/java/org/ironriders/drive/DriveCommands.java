@@ -164,4 +164,10 @@ public class DriveCommands {
 			driveSubsystem.setSpeed(slow);
 		});
 	}
+	
+	public Command resetOdemetry(){
+		return driveSubsystem.runOnce(() -> {
+			driveSubsystem.resetOdometry(driveSubsystem.getPose());
+		});
+	}
 }
