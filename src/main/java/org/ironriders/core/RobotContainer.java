@@ -154,6 +154,9 @@ public class RobotContainer {
 		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
 		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
 		secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
+		
+		secondaryController.axisGreaterThan(1, .1).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.EJECT)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
+		secondaryController.axisLessThan(1, .1).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
 	}
 
 	/**
