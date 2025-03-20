@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
 
 	public Robot() {
 		robotContainer = new RobotContainer();
+		WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
 	}
 
 	@Override
