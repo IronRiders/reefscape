@@ -17,4 +17,8 @@ public class ClimbCommands {
             .runOnce(() -> climb.set(state));
     }
 
+    public Command rezero(){
+        return climb.runOnce(() -> climb.rezero());
+    }
+
 }

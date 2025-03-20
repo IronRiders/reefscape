@@ -20,6 +20,9 @@ public class ClimbConstants {
 
     public static final double T = .02;
 
+    public static double ROTATIONHOLDINGPOINT = -30;
+    public static double ROTATION_MAXUP = 150;
+
     public enum State {
         UP(-0.3),
         STOP(0),
