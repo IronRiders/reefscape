@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathConstraints;
 
 import edu.wpi.first.wpilibj.Filesystem;
 
@@ -22,10 +23,11 @@ public class DriveConstants {
 
     public static final File SWERVE_JSON_DIRECTORY = new File(Filesystem.getDeployDirectory(), "swerve");
 
-    public static final PPHolonomicDriveController HOLONOMIC_CONFIG = new PPHolonomicDriveController(
-            new PIDConstants(10.0, 0.05, 0.0), // Translation PID
-            new PIDConstants(10.0, 0.2, 0.0) // Rotation PID
-    );
+	public static final PathConstraints PATH_CONSTRAINTS = new PathConstraints(
+		DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
+		DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
+		DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
+		DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO);
 
     // Mathematical Constants
     public static final double TRANSLATION_CONTROL_EXPONENT = 3.0;
@@ -40,6 +42,9 @@ public class DriveConstants {
     public static final double SWERVE_MAXIMUM_ACCELERATION_AUTO = SWERVE_MAXIMUM_SPEED_AUTO / 2; // m/s^2
     public static final double SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO = Math.PI * 4; // rad/s
     public static final double SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO = SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO / 2; // rad/s^2
+
+    public static final double AUTO_TOLERANCE_POSITION = 0.1; // meters
+    public static final double AUTO_TOLERANCE_ROTATION = Math.toDegrees(1); // degrees
 
     public static final double JOG_DISTANCE_INCHES = 1;
     public static final double JOG_SPEED = .25;

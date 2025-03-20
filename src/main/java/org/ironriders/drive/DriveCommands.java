@@ -3,7 +3,6 @@ package org.ironriders.drive;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -13,11 +12,10 @@ import org.ironriders.lib.GameState;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.IdealStartingState;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.trajectory.PathPlannerTrajectoryState;
 
-import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -28,16 +26,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
-@Logged
 public class DriveCommands {
-	private final DriveSubsystem driveSubsystem;
 
-	private final PathConstraints pathConstraints = new PathConstraints(
-		DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-		DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
-		DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
-		DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO);
-	
+	private final DriveSubsystem driveSubsystem;
 
 	public DriveCommands(DriveSubsystem driveSubsystem) {
 		this.driveSubsystem = driveSubsystem;
@@ -107,36 +98,38 @@ public class DriveCommands {
 
 	public Command pathfindToPose(Pose2d targetPose) {
 		return driveSubsystem.defer(() -> {
-			//Pose2d targetPose = new Pose2d(new Translation2d(70.0,80.0), new Rotation2d());
-
-
 			List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
-            	//new Pose2d(driveSubsystem.getPose().getTranslation(), getPathVelocityHeading(driveSubsystem.getSwerveDrive().getFieldVelocity(), driveSubsystem.getSwerveDrive().getPose())), 
-				new Pose2d(driveSubsystem.getPose().getTranslation(), new Rotation2d(0)),
-				//new Pose2d(new Translation2d(0,0.0), new Rotation2d()),
+            	new Pose2d(driveSubsystem.getPose().getTranslation(), getPathVelocityHeading(driveSubsystem.getSwerveDrive().getFieldVelocity(), driveSubsystem.getSwerveDrive().getPose())),
 				targetPose
-        	);
-
-			//System.out.println("waypoints: " + waypoints.toString());
-			System.out.println("target pos");
-			System.out.println(targetPose);
-			
+        	);	
 
 			PathPlannerPath path = new PathPlannerPath(
             	waypoints, 
-            	pathConstraints,
+            	DriveConstants.PATH_CONSTRAINTS,
             	new IdealStartingState(getVelocityMagnitude(driveSubsystem.getSwerveDrive().getFieldVelocity()), driveSubsystem.getSwerveDrive().getPose().getRotation()), 
             	new GoalEndState(0.0, targetPose.getRotation())
         	);
-			driveSubsystem.pathfindCommand = AutoBuilder.followPath(path);
-			return driveSubsystem.pathfindCommand; // TODO: implement pid align
+			Command pathfindCommand = AutoBuilder.followPath(path);
 
-			//driveSubsystem.pathfindCommand = AutoBuilder.pathfindToPose(targetPose, new PathConstraints(
-			//	DriveConstants.SWERVE_MAXIMUM_SPEED_AUTO,
-			//	DriveConstants.SWERVE_MAXIMUM_ACCELERATION_AUTO,
-			//	DriveConstants.SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO,
-			//	DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
-			//return driveSubsystem.pathfindCommand;
+
+			PathPlannerTrajectoryState trajectoryState = new PathPlannerTrajectoryState();
+			trajectoryState.pose = targetPose;
+
+			Command adjustmentCommand = new Command() {
+				public void execute() {
+					ChassisSpeeds test = driveSubsystem.holonomic.calculateRobotRelativeSpeeds(driveSubsystem.getPose(), trajectoryState);
+					driveSubsystem.getSwerveDrive().drive(test);
+				}
+				
+				public boolean isFinished() {
+					return 
+						driveSubsystem.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DriveConstants.AUTO_TOLERANCE_POSITION && 
+						driveSubsystem.getPose().getRotation().getDegrees() - targetPose.getRotation().getDegrees() <= DriveConstants.AUTO_TOLERANCE_ROTATION;
+				}
+			};
+
+			driveSubsystem.pathfindCommand = AutoBuilder.followPath(path);
+			return driveSubsystem.pathfindCommand;
 		});
 	}
 

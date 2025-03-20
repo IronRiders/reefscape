@@ -8,7 +8,9 @@ import org.ironriders.lib.IronSubsystem;
 import static org.ironriders.drive.DriveConstants.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -33,12 +35,13 @@ public class DriveSubsystem extends IronSubsystem {
 	private SwerveDrive swerveDrive;
 	private Vision vision;
 
+	public PPHolonomicDriveController holonomic;
 	public Command pathfindCommand;
 
 	public DriveSubsystem() throws RuntimeException {
 		try {
 			swerveDrive = new SwerveParser(SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
-																					// directory.
+																	// directory.
 					.createSwerveDrive(SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
@@ -46,6 +49,11 @@ public class DriveSubsystem extends IronSubsystem {
 
 		commands = new DriveCommands(this);
 		this.vision = new Vision(swerveDrive);
+
+		holonomic = new PPHolonomicDriveController(
+				new PIDConstants(10.0, 0.05, 0.0), // Translation PID
+				new PIDConstants(10.0, 0.2, 0.0) // Rotation PID
+		);
 
 		swerveDrive.setHeadingCorrection(false);
 		SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
@@ -62,7 +70,7 @@ public class DriveSubsystem extends IronSubsystem {
 				swerveDrive::resetOdometry,
 				swerveDrive::getRobotVelocity,
 				(speeds, feedforwards) -> swerveDrive.setChassisSpeeds(speeds),
-				DriveConstants.HOLONOMIC_CONFIG,
+				holonomic,
 				robotConfig,
 				() -> {
 					var alliance = DriverStation.getAlliance();
@@ -121,13 +129,12 @@ public class DriveSubsystem extends IronSubsystem {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
 	}
 
-	public void setSpeed(boolean slow){
-		if(slow){
-			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED *.5 , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
+	public void setSpeed(boolean slow) {
+		if (slow) {
+			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED * .5, SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
+		} else {
+			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED, SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
 		}
-		else{
-			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
-		}
-		
+
 	}
 }
