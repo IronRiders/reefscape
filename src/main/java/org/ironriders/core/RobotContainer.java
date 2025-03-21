@@ -131,9 +131,14 @@ public class RobotContainer {
 		}
 		// y vision align station not implmented yet //TODO
 		// x vision align reef not implmented yet //TODO
+
+		primaryController.y().onTrue(targetingCommands.targetNearest(ElementType.STATION).andThen(driveCommands.pathfindToTarget()));
+		primaryController.x().onTrue(targetingCommands.targetNearest(ElementType.REEF).andThen(driveCommands.pathfindToTarget()));
+    
 		primaryController.button(1).onTrue(driveCommands.jog(90.0));
 		primaryController.button(2).onTrue(driveCommands.jog(270.0));
 		
+
 
 
 		//Secondary Driver left side buttons
@@ -152,11 +157,14 @@ public class RobotContainer {
 		//right side buttons
 		secondaryController.button(4).onTrue(algaeWristCommands.set(AlgaeWristState.EXTENDED));
 		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
-		secondaryController.button(13).onTrue(climbCommands.goTo(ClimbConstants.Targets.MAX));
-		secondaryController.button(14).onTrue(climbCommands.goTo(ClimbConstants.Targets.TARGET));
+
+		secondaryController.button(13).whileTrue(climbCommands.set(ClimbConstants.State.UP)).whileFalse(climbCommands.set(ClimbConstants.State.STOP));
+		secondaryController.button(14).whileTrue(climbCommands.set(ClimbConstants.State.DOWN)).whileFalse(climbCommands.set(ClimbConstants.State.STOP));
+
 		
 		secondaryController.axisGreaterThan(1, .1).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.EJECT)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
 		secondaryController.axisLessThan(1, .1).whileTrue(algaeIntakeCommands.set(AlgaeIntakeState.GRAB)).whileFalse(algaeIntakeCommands.set(AlgaeIntakeState.STOP));
+
 	}
 
 	/**
