@@ -78,7 +78,9 @@ public class RobotCommands {
 		return coralWristCommands.home()
 				.andThen(climbCommands.rezero())
 				.andThen(algaeWristCommands.home())
-				.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.STOWED))
+				//Not commenting the line below breaks elvator????? 
+				//This is new???
+				//.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED))
 				.andThen(elevatorCommands.home());
 	}
 
@@ -127,7 +129,7 @@ public class RobotCommands {
 					}
 				}));
 	}
-
+	
 	public Command scoreCoral() {
 		return Commands.sequence(
 				coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT),

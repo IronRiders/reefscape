@@ -27,17 +27,18 @@ public class CoralIntakeCommands {
         switch (state) {
             case GRAB:
                 // making an actual command override here, mostly for convenience
+            
                 return new Command() {
                     public void execute() {
                         intake.set(CoralIntakeState.GRAB);
                     }
 
-                    public boolean isFinished() {
-                        if (intake.getLimitSwitchTriggered()) {
-                            onSuccess.run();
-                        }
-                        return intake.getLimitSwitchTriggered();
-                    }
+                    // public boolean isFinished() {
+                    //     if (intake.getLimitSwitchTriggered()) {
+                    //         onSuccess.run();
+                    //     }
+                    //     return intake.getLimitSwitchTriggered();
+                    // }
                 }.withDeadline(Commands.waitSeconds(INTAKE_IMPATIENCE));
             case EJECT:
                 return command.withTimeout(DISCHARGE_TIMEOUT).finallyDo(() -> intake.set(CoralIntakeState.STOP));
