@@ -87,6 +87,13 @@ public class RobotContainer {
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandJoystick(DriveConstants.KEYPAD_CONTROLLER_PORT);
 
+	public double m_invertingDouble = 1.0;
+	public Command setInvertedBool()
+	{
+		m_invertingDouble *= -1;
+		return Commands.none();
+	}
+
 	public final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, targetingCommands, elevatorCommands,
 			coralWristCommands, coralIntakeCommands,
@@ -111,15 +118,15 @@ public class RobotContainer {
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> RobotUtils.controlCurve(
-								primaryController.getLeftY(),
+								m_invertingDouble * primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								primaryController.getLeftX(),
+								m_invertingDouble * primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								primaryController.getRightX(),
+								m_invertingDouble * primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
@@ -137,9 +144,7 @@ public class RobotContainer {
     
 		primaryController.button(1).onTrue(driveCommands.jog(90.0));
 		primaryController.button(2).onTrue(driveCommands.jog(270.0));
-		
-
-
+		primaryController.button(3).onTrue(setInvertedBool());
 
 		//Secondary Driver left side buttons
 		secondaryController.button(1).whileTrue(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT)).whileFalse(coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.STOP));
