@@ -46,9 +46,9 @@ public class Vision {
         cams.add(new VisionCamera("frontLeft",
                 createOffset(11.5, 11.5, 6.5, 15, 22.5),
                 VecBuilder.fill(0.5, 0.5, 1.0)));
-        cams.add(new VisionCamera("backLeft",
-                createOffset(11.5, -11.5, 6.5, 15, 157.5),
-                VecBuilder.fill(0.5, 0.5, 1.0)));
+       // cams.add(new VisionCamera("backLeft",
+        //        createOffset(11.5, -11.5, 6.5, 15, 157.5),
+         //       VecBuilder.fill(0.5, 0.5, 1.0)));
         // cams.add(new VisionCamera("backRight",
         // createOffset(-11.5, 11.5, 6.5, 15, -157.5),
         // VecBuilder.fill(0.5, 0.5, 1.0)));

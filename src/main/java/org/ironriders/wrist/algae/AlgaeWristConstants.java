@@ -17,7 +17,7 @@ public class AlgaeWristConstants {
     public static final double GEAR_RATIO = 1.0 / 64.0 * SPROCKET_RATIO;
     public static final double ENCODER_SCALE = SPROCKET_RATIO;
 
-    public static final Angle ENCODER_OFFSET = Units.Degrees.of(115);
+    public static final Angle ENCODER_OFFSET = Units.Degrees.of(150);
     public static final Angle REVERSE_LIMIT = Units.Degrees.of(-50);
     public static final Angle FORWARD_LIMIT = Units.Degrees.of(5);
 
@@ -28,9 +28,9 @@ public class AlgaeWristConstants {
     public static final double ALGAE_WRIST_TOLERANCE = 2; // tune me please
 
     public enum AlgaeWristState {
-        STARTING(-90), // Starting position is beyond lower limit, exact position unknownn
+        STARTING(-60), // Starting position is beyond lower limit, exact position unknownn
         STOWED(-40), // Computed home position
-        EXTENDED(10);
+        EXTENDED(0);
 
         final Angle angle;
 

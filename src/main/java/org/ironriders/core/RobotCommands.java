@@ -78,7 +78,7 @@ public class RobotCommands {
 		return coralWristCommands.home()
 				.andThen(climbCommands.rezero())
 				.andThen(algaeWristCommands.home())
-				.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED))
+				.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.STOWED))
 				.andThen(elevatorCommands.home());
 	}
 
