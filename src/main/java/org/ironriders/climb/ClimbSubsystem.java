@@ -2,7 +2,8 @@ package org.ironriders.climb;
 
 
 import org.ironriders.lib.IronSubsystem;
-import static org.ironriders.climb.ClimbConstants.ROTATIONHOLDINGPOINT;
+
+import static org.ironriders.climb.ClimbConstants.ROTATION_MAXDOWN;
 import static org.ironriders.climb.ClimbConstants.ROTATION_MAXUP;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -21,6 +22,8 @@ public class ClimbSubsystem extends IronSubsystem {
             SparkLowLevel.MotorType.kBrushless);
     private final SparkMaxConfig climbMotorConfig = new SparkMaxConfig();
     RelativeEncoder encoder = climbMotor.getEncoder();
+    boolean reachedTopLimit = false;
+    boolean reachedBottomLimit = false;
     
 
     private final ClimbCommands commands;
@@ -32,22 +35,37 @@ public class ClimbSubsystem extends IronSubsystem {
                 PersistMode.kPersistParameters);
                 
         commands = new ClimbCommands(this);
+
+
     }
 
     @Override
     public void periodic() {
         publish("Climber/encoder", encoder.getPosition());
-    }
+  
+            if(encoder.getPosition() < ROTATION_MAXUP){ 
+                reachedTopLimit = true;
+            } else {
+                reachedTopLimit = false;
+            }
+
+            if(encoder.getPosition() > ROTATION_MAXDOWN){
+                reachedBottomLimit = true;
+            } else {
+                reachedBottomLimit = false;
+            }
+        }
+    
 
     public void set(ClimbConstants.State state) {
         if(state.speed < 0){
-            if(encoder.getPosition() > ROTATIONHOLDINGPOINT){
+            if(reachedTopLimit){ 
                 climbMotor.set(state.speed);
             } else {
                 climbMotor.set(0);
             }
         } else {
-            if(encoder.getPosition() < ROTATION_MAXUP){
+            if(reachedBottomLimit){
                 climbMotor.set(state.speed);
             } else {
                 climbMotor.set(0);

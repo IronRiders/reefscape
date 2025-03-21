@@ -151,8 +151,8 @@ public class RobotContainer {
 		//right side buttons
 		secondaryController.button(4).onTrue(algaeWristCommands.set(AlgaeWristState.EXTENDED));
 		secondaryController.button(3).onTrue(algaeWristCommands.set(AlgaeWristState.STOWED));
-		secondaryController.button(13).onTrue(climbCommands.set(ClimbConstants.State.UP));
-		secondaryController.button(14).onTrue(climbCommands.set(ClimbConstants.State.DOWN));
+		secondaryController.button(13).whileTrue(climbCommands.set(ClimbConstants.State.UP)).whileFalse(climbCommands.set(ClimbConstants.State.STOP));
+		secondaryController.button(14).whileTrue(climbCommands.set(ClimbConstants.State.DOWN)).whileFalse(climbCommands.set(ClimbConstants.State.STOP));
 	}
 
 	/**
