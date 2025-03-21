@@ -60,17 +60,15 @@ public class ClimbSubsystem extends IronSubsystem {
     public void set(ClimbConstants.State state) {
         if(state.speed < 0){
             if(reachedTopLimit){ 
-                climbMotor.set(0);
-            } else {
                 climbMotor.set(state.speed);
-
-
+            } else {
+                climbMotor.set(0);
             }
         } else {
             if(reachedBottomLimit){
-                climbMotor.set(0);
+                climbMotor.set(state.speed);
             } else {
-                climbMotor.set(state.speed); 
+                climbMotor.set(0);
             }
         }
     }
