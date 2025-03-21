@@ -44,11 +44,14 @@ public class DriveCommands {
 						? -1
 						: 1;
 
+		int invertAgain = driveSubsystem.invert ? -1 : 1;
+
 		return drive(
 				() -> new Translation2d(inputTranslationX.getAsDouble(), inputTranslationY.getAsDouble())
 						.times(DriveConstants.SWERVE_DRIVE_MAX_SPEED)
+						.times(invertAgain)
 						.times(invert),
-				() -> inputRotation.getAsDouble() * DriveConstants.SWERVE_DRIVE_MAX_SPEED * invert,
+				() -> inputRotation.getAsDouble() * DriveConstants.SWERVE_DRIVE_MAX_SPEED * invert * invertAgain,
 				() -> fieldRelative);
 	}
 
@@ -110,5 +113,11 @@ public class DriveCommands {
 		return driveSubsystem.runOnce(() -> {
 			driveSubsystem.setSpeed(slow);
 		});
+	}
+
+	public Command toggleInvert() {
+		return Commands.runOnce(() -> { 
+			driveSubsystem.invert = !driveSubsystem.invert; 
+	});
 	}
 }

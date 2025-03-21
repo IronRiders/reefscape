@@ -35,6 +35,8 @@ public class DriveSubsystem extends IronSubsystem {
 
 	public Command pathfindCommand;
 
+	public boolean invert = false;
+
 	public DriveSubsystem() throws RuntimeException {
 		try {
 			swerveDrive = new SwerveParser(SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
