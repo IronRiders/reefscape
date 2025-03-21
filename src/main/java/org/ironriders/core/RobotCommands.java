@@ -77,7 +77,7 @@ public class RobotCommands {
 		algaeIntakeCommands.setOnSuccess(() -> rumble());
 		return coralWristCommands.home()
 				.andThen(algaeWristCommands.home())
-				.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED))
+				.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.STOWED))
 				.andThen(elevatorCommands.home());
 	}
 

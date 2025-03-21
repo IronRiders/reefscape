@@ -41,6 +41,6 @@ public class DriveConstants {
     public static final double SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO = Math.PI * 4; // rad/s
     public static final double SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO = SWERVE_MAXIMUM_ANGULAR_VELOCITY_AUTO / 2; // rad/s^2
 
-    public static final double JOG_DISTANCE_INCHES = 1;
-    public static final double JOG_SPEED = .25;
+    public static final double JOG_DISTANCE_INCHES = 0.5;
+    public static final double JOG_SPEED = .5;
 }
