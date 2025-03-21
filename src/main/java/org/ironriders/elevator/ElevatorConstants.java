@@ -28,6 +28,9 @@ public class ElevatorConstants {
 
     public static final double DOWN_HEIGHT = 0;
     public static final double CORAL_STATION_HEIGHT = 8.8;
+    public static final double ALGAE_PROCESSOR_HEIGHT = 0;
+    public static final double LOW_ALGAE_HEIGHT = 21;
+    public static final double HIGH_ALGAE_HEIGHT = 53;
     public static final double L1_HEIGHT = 4;
     public static final double L2_HEIGHT = 7.5;//untested
     public static final double L3_HEIGHT = 21; //tested (could be tested more)
@@ -39,6 +42,9 @@ public class ElevatorConstants {
     public enum Level {
         Down(DOWN_HEIGHT),
         CoralStation(CORAL_STATION_HEIGHT),
+        AlgaeProcessor(ALGAE_PROCESSOR_HEIGHT),
+        LowAlgae(LOW_ALGAE_HEIGHT),
+        HighAlgae(HIGH_ALGAE_HEIGHT),
         L1(L1_HEIGHT),
         L2(L2_HEIGHT),
         L3(L3_HEIGHT),
