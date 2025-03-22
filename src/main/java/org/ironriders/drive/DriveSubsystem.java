@@ -32,6 +32,7 @@ public class DriveSubsystem extends IronSubsystem {
 
 	private SwerveDrive swerveDrive;
 	private Vision vision;
+	private boolean invertStatus = false;
 
 	public Command pathfindCommand;
 	public double ControlSpeedMultipler = 1;
@@ -83,6 +84,7 @@ public class DriveSubsystem extends IronSubsystem {
 		vision.updateAll();
 		vision.addPoseEstimates();
 		publish("vision has pose", vision.hasPose);
+		publish("inversion status", invertStatus);
 	}
 
 	/**
@@ -120,6 +122,24 @@ public class DriveSubsystem extends IronSubsystem {
 	/** Resets the Odemetry to the current position */
 	public void resetOdometry(Pose2d pose2d) {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
+	}
+
+	public void switchInvertControl(){
+		if (invertStatus){
+			invertStatus = false;
+		}
+		else{
+			invertStatus = true;
+		}
+	}
+	
+	public int getinversionStatus(){
+		if(invertStatus){
+			return -1;
+		}
+		else{
+			return 1;
+		}
 	}
 
 	public void setSpeed(boolean slow) {

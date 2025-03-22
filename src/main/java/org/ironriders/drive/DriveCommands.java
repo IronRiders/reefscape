@@ -89,6 +89,13 @@ public class DriveCommands {
 		});
 	}
 
+	public Command invertControls(){
+		return driveSubsystem.runOnce(() ->{
+			driveSubsystem.switchInvertControl();
+		}
+		);
+	}
+
 	public Command pathfindToTarget() {
 		return driveSubsystem.defer(() -> {
 			var pose = GameState.getTargetRobotPose();
