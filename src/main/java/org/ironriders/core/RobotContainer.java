@@ -87,7 +87,7 @@ public class RobotContainer {
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandJoystick(DriveConstants.KEYPAD_CONTROLLER_PORT);
 	private double inversionCoeff = 1;
-	private double speed = 1;
+
 	public final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, targetingCommands, elevatorCommands,
 			coralWristCommands, coralIntakeCommands,
@@ -106,10 +106,6 @@ public class RobotContainer {
 		SmartDashboard.putData("Auto Select", autoChooser);
 	}
 
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
-
 
 	private void configureBindings() {
 
@@ -117,20 +113,17 @@ public class RobotContainer {
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> RobotUtils.controlCurve(
-								speed * inversionCoeff * primaryController.getLeftY(),
+								inversionCoeff * primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								speed * inversionCoeff * primaryController.getLeftX(),
+								inversionCoeff * primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								speed * inversionCoeff * primaryController.getRightX(),
+								inversionCoeff * primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
-
-		// slows down drivetrain when pressed
-		primaryController.leftTrigger().onTrue(Commands.runOnce(() -> this.setSpeed(0.5))).onFalse(Commands.runOnce(() -> this.setSpeed(1)));
 
 
 		// jog commands on pov buttons
