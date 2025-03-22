@@ -3,6 +3,8 @@ package org.ironriders.drive;
 import java.io.IOException;
 import java.util.Optional;
 
+import org.ironriders.core.RobotCommands;
+import org.ironriders.core.RobotContainer;
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.IronSubsystem;
 import static org.ironriders.drive.DriveConstants.*;
@@ -119,15 +121,5 @@ public class DriveSubsystem extends IronSubsystem {
 	/** Resets the Odemetry to the current position */
 	public void resetOdometry(Pose2d pose2d) {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
-	}
-
-	public void setSpeed(boolean slow){
-		if(slow){
-			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED *.5 , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
-		}
-		else{
-			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
-		}
-		
 	}
 }

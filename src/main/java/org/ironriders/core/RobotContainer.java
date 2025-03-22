@@ -87,6 +87,7 @@ public class RobotContainer {
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandJoystick(DriveConstants.KEYPAD_CONTROLLER_PORT);
 	private double inversionCoeff = 1;
+	private double speed = 1;
 	public final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, targetingCommands, elevatorCommands,
 			coralWristCommands, coralIntakeCommands,
@@ -105,26 +106,39 @@ public class RobotContainer {
 		SmartDashboard.putData("Auto Select", autoChooser);
 	}
 
+	public double getSpeed() {
+		return this.speed;
+	}
+
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+
 	private void configureBindings() {
 
 		// DRIVE CONTROLS
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> RobotUtils.controlCurve(
-								inversionCoeff*primaryController.getLeftY(),
+								getSpeed() * inversionCoeff * primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								inversionCoeff*primaryController.getLeftX(),
+								getSpeed() * inversionCoeff * primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								inversionCoeff*primaryController.getRightX(),
+								getSpeed() * inversionCoeff * primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
 		// slows down drivetrain when pressed
-		primaryController.leftTrigger().onTrue(driveCommands.setDriveTrainSpeed(true)).onFalse(driveCommands.setDriveTrainSpeed(false));
+		//primaryController.leftTrigger().onTrue(Commands.runOnce(() -> this.setSpeed(0.5))).onFalse(Commands.runOnce(() -> this.setSpeed(1)));
+		primaryController.a().onTrue(Commands.runOnce(() -> this.setSpeed(0.5))).onFalse(Commands.runOnce(() -> this.setSpeed(1)));
+
+
+
 		// jog commands on pov buttons
 		for (var angle = 0; angle < 360; angle += 45) {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
