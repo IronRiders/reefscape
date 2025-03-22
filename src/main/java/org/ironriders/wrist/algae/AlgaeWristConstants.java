@@ -19,7 +19,7 @@ public class AlgaeWristConstants {
     public static final double ENCODER_SCALE = SPROCKET_RATIO;
 
 
-    public static final Angle ENCODER_OFFSET = Units.Degrees.of(94);
+    public static final Angle ENCODER_OFFSET = Units.Degrees.of(23); //94
     public static final Angle REVERSE_LIMIT = Units.Degrees.of(-50);
     public static final Angle FORWARD_LIMIT = Units.Degrees.of(5);
 
