@@ -111,15 +111,15 @@ public class RobotContainer {
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> RobotUtils.controlCurve(
-								inversionCoeff*primaryController.getLeftY(),
+								inversionCoeff*primaryController.getLeftY()*driveSubsystem.ControlSpeedMultipler,
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								inversionCoeff*primaryController.getLeftX(),
+								inversionCoeff*primaryController.getLeftX()*driveSubsystem.ControlSpeedMultipler,
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								inversionCoeff*primaryController.getRightX(),
+								inversionCoeff*primaryController.getRightX()*driveSubsystem.ControlSpeedMultipler,
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
