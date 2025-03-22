@@ -3,8 +3,6 @@ package org.ironriders.drive;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.ironriders.core.RobotCommands;
-import org.ironriders.core.RobotContainer;
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.IronSubsystem;
 import static org.ironriders.drive.DriveConstants.*;
@@ -41,7 +39,7 @@ public class DriveSubsystem extends IronSubsystem {
 	public DriveSubsystem() throws RuntimeException {
 		try {
 			swerveDrive = new SwerveParser(SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
-																					// directory.
+																	// directory.
 					.createSwerveDrive(SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
@@ -124,13 +122,12 @@ public class DriveSubsystem extends IronSubsystem {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
 	}
 
-	public void setSpeed(boolean slow){
-		if(slow){
+	public void setSpeed(boolean slow) {
+		if (slow) {
 			ControlSpeedMultipler = .5;
-		}
-		else{
+		} else {
 			ControlSpeedMultipler = 1;
-		
-	}
+
+		}
 	}
 }

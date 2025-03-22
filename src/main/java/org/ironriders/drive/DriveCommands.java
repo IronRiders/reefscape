@@ -26,6 +26,8 @@ public class DriveCommands {
 		this.driveSubsystem = driveSubsystem;
 
 		this.driveSubsystem.publish("Drive to Target", pathfindToTarget());
+
+		this.driveSubsystem.publish("Invert", Commands.runOnce(() -> GameState.invertControl()));
 	}
 
 	public Command drive(Supplier<Translation2d> translation, DoubleSupplier rotation, BooleanSupplier fieldRelative) {
@@ -105,7 +107,7 @@ public class DriveCommands {
 			}
 		});
 	}
-	
+
 	public Command setDriveTrainSpeed(boolean slow){
 		return driveSubsystem.runOnce(() -> {
 			driveSubsystem.setSpeed(slow);
