@@ -3,6 +3,8 @@ package org.ironriders.drive;
 import java.io.IOException;
 import java.util.Optional;
 
+import org.ironriders.core.RobotCommands;
+import org.ironriders.core.RobotContainer;
 import org.ironriders.lib.GameState;
 import org.ironriders.lib.IronSubsystem;
 import static org.ironriders.drive.DriveConstants.*;
@@ -34,6 +36,7 @@ public class DriveSubsystem extends IronSubsystem {
 	private Vision vision;
 
 	public Command pathfindCommand;
+	public double ControlSpeedMultipler = 1;
 
 	public DriveSubsystem() throws RuntimeException {
 		try {
@@ -123,11 +126,11 @@ public class DriveSubsystem extends IronSubsystem {
 
 	public void setSpeed(boolean slow){
 		if(slow){
-			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED *.5 , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
+			ControlSpeedMultipler = .5;
 		}
 		else{
-			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
-		}
+			ControlSpeedMultipler = 1;
 		
+	}
 	}
 }
