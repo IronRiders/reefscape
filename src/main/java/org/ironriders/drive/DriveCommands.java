@@ -26,6 +26,7 @@ public class DriveCommands {
 		this.driveSubsystem = driveSubsystem;
 
 		this.driveSubsystem.publish("Drive to Target", pathfindToTarget());
+		this.driveSubsystem.publish("Toggle Invert Controls", toggleInvertControls());
 	}
 
 	public Command drive(Supplier<Translation2d> translation, DoubleSupplier rotation, BooleanSupplier fieldRelative) {
@@ -112,9 +113,9 @@ public class DriveCommands {
 		});
 	}
 
-	public Command setDriveTrainInvert(boolean invert){
+	public Command toggleDrivetrainInvert(){
 		return driveSubsystem.runOnce(() -> {
-			driveSubsystem.setInvert(invert);
+			driveSubsystem.setInvert(driveSubsystem.invertMultiplier == 1);
 		});
 	}
 }
