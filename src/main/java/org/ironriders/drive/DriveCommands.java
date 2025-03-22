@@ -111,4 +111,10 @@ public class DriveCommands {
 			driveSubsystem.setSpeed(slow);
 		});
 	}
+
+	public Command setDriveTrainInvert(boolean invert){
+		return driveSubsystem.runOnce(() -> {
+			driveSubsystem.setInvert(invert);
+		});
+	}
 }
