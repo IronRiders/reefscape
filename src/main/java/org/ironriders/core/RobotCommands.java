@@ -123,13 +123,14 @@ public class RobotCommands {
 					case L4 -> CoralWristConstants.CoralWristState.L4;
 					case CoralStation -> CoralWristConstants.CoralWristState.STATION;
 					case Down -> CoralWristConstants.CoralWristState.STOWED;
+					case HighAlgae -> CoralWristConstants.CoralWristState.L1toL3;
 					default -> {
 						throw new IllegalArgumentException(
 								"Cannot score coral to level: " + level);
 					}
 				}));
 	}
-	
+
 	public Command scoreCoral() {
 		return Commands.sequence(
 				coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.EJECT),
