@@ -106,10 +106,6 @@ public class RobotContainer {
 		SmartDashboard.putData("Auto Select", autoChooser);
 	}
 
-	public double getSpeed() {
-		return this.speed;
-	}
-
 	public void setSpeed(double speed) {
 		this.speed = speed;
 	}
@@ -121,15 +117,15 @@ public class RobotContainer {
 		driveSubsystem.setDefaultCommand(
 				robotCommands.driveTeleop(
 						() -> RobotUtils.controlCurve(
-								getSpeed() * inversionCoeff * primaryController.getLeftY(),
+								speed * inversionCoeff * primaryController.getLeftY(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								getSpeed() * inversionCoeff * primaryController.getLeftX(),
+								speed * inversionCoeff * primaryController.getLeftX(),
 								DriveConstants.TRANSLATION_CONTROL_EXPONENT,
 								DriveConstants.TRANSLATION_CONTROL_DEADBAND),
 						() -> RobotUtils.controlCurve(
-								getSpeed() * inversionCoeff * primaryController.getRightX(),
+								speed * inversionCoeff * primaryController.getRightX(),
 								DriveConstants.ROTATION_CONTROL_EXPONENT,
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
