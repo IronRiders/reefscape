@@ -134,9 +134,7 @@ public class RobotContainer {
 								DriveConstants.ROTATION_CONTROL_DEADBAND)));
 
 		// slows down drivetrain when pressed
-		//primaryController.leftTrigger().onTrue(Commands.runOnce(() -> this.setSpeed(0.5))).onFalse(Commands.runOnce(() -> this.setSpeed(1)));
-		primaryController.a().onTrue(Commands.runOnce(() -> this.setSpeed(0.5))).onFalse(Commands.runOnce(() -> this.setSpeed(1)));
-
+		primaryController.leftTrigger().onTrue(Commands.runOnce(() -> this.setSpeed(0.5))).onFalse(Commands.runOnce(() -> this.setSpeed(1)));
 
 
 		// jog commands on pov buttons
