@@ -19,7 +19,7 @@ public class AlgaeWristConstants {
     public static final double ENCODER_SCALE = SPROCKET_RATIO;
 
 
-    public static final Angle ENCODER_OFFSET = Units.Degrees.of(110);
+    public static final Angle ENCODER_OFFSET = Units.Degrees.of(94);
     public static final Angle REVERSE_LIMIT = Units.Degrees.of(-50);
     public static final Angle FORWARD_LIMIT = Units.Degrees.of(5);
 
@@ -32,7 +32,7 @@ public class AlgaeWristConstants {
     public static final double MAX_VEL = 45;
 
     public static final int ALGAE_WRIST_CURRENT_STALL_LIMIT = 35;
-    public static final double ALGAE_WRIST_TOLERANCE = 1; // tune me please
+    public static final double ALGAE_WRIST_TOLERANCE = 3; // tune me please
 
     public enum AlgaeWristState {
         STARTING(-60), // Starting position is beyond lower limit, exact position unknownn

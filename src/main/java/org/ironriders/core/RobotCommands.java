@@ -80,7 +80,7 @@ public class RobotCommands {
 				.andThen(algaeWristCommands.home())
 				//Not commenting the line below breaks elvator????? 
 				//This is new???
-				//.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED))
+				.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.STOWED))
 				.andThen(elevatorCommands.home());
 	}
 

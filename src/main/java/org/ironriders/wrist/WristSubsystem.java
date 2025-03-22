@@ -131,7 +131,7 @@ public abstract class WristSubsystem extends IronSubsystem {
     }
 
     public boolean atPosition() {
-        return Math.abs(getCurrentAngle().in(Units.Degrees) - goalSetpoint.position) < 0.5;
+        return Math.abs(getCurrentAngle().in(Units.Degrees) - goalSetpoint.position) < 2;
     }
 
     public Command moveToCmd(Angle angle) {
