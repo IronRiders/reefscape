@@ -48,7 +48,7 @@ public class DriveCommands {
 				() -> new Translation2d(inputTranslationX.getAsDouble(), inputTranslationY.getAsDouble())
 						.times(DriveConstants.SWERVE_DRIVE_MAX_SPEED)
 						.times(invert),
-				() -> inputRotation.getAsDouble() * DriveConstants.SWERVE_DRIVE_MAX_SPEED * invert,
+				() -> inputRotation.getAsDouble() * DriveConstants.SWERVE_DRIVE_MAX_SPEED * invert * driveSubsystem.speedMultiplier * driveSubsystem.invertMultiplier,
 				() -> fieldRelative);
 	}
 
