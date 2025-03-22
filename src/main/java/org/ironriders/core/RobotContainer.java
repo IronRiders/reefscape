@@ -87,6 +87,7 @@ public class RobotContainer {
 			DriveConstants.PRIMARY_CONTROLLER_PORT);
 	private final CommandGenericHID secondaryController = new CommandJoystick(DriveConstants.KEYPAD_CONTROLLER_PORT);
 	private double inversionCoeff = 1;
+
 	public final RobotCommands robotCommands = new RobotCommands(
 			driveCommands, targetingCommands, elevatorCommands,
 			coralWristCommands, coralIntakeCommands,
@@ -104,6 +105,7 @@ public class RobotContainer {
 		autoChooser = AutoBuilder.buildAutoChooser();
 		SmartDashboard.putData("Auto Select", autoChooser);
 	}
+
 
 	private void configureBindings() {
 
@@ -125,6 +127,7 @@ public class RobotContainer {
 
 		// slows down drivetrain when pressed
 		primaryController.leftTrigger().onTrue(driveCommands.setDriveTrainSpeed(true)).onFalse(driveCommands.setDriveTrainSpeed(false));
+
 		// jog commands on pov buttons
 		for (var angle = 0; angle < 360; angle += 45) {
 			primaryController.pov(angle).onTrue(driveCommands.jog(-angle));
