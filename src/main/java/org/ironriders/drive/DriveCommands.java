@@ -26,7 +26,7 @@ public class DriveCommands {
 		this.driveSubsystem = driveSubsystem;
 
 		this.driveSubsystem.publish("Drive to Target", pathfindToTarget());
-		this.driveSubsystem.publish("Toggle Invert Controls", toggleInvertControls());
+		this.driveSubsystem.publish("Toggle Invert Controls", this.toggleDrivetrainInvert());
 	}
 
 	public Command drive(Supplier<Translation2d> translation, DoubleSupplier rotation, BooleanSupplier fieldRelative) {
