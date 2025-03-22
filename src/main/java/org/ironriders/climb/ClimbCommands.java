@@ -1,4 +1,6 @@
 package org.ironriders.climb;
+import org.ironriders.climb.ClimbConstants.State;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class ClimbCommands {
@@ -14,7 +16,7 @@ public class ClimbCommands {
 
     public Command set(ClimbConstants.State state) {
         return climb
-            .runOnce(() -> climb.set(state));
+            .runEnd(() -> climb.set(state), ()->climb.set(State.STOP));
     }
 
     public Command rezero(){
