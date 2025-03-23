@@ -8,7 +8,7 @@ public class CoralWristConstants {
     public static final int CORAL_WRIST_MOTOR = 13;
 
     // Need to tune
-    public static final double P = 0.002;
+    public static final double P = 0.01;
     public static final double I = 0.0;
     public static final double D = 0.0;
 
@@ -18,17 +18,17 @@ public class CoralWristConstants {
 
     public static final Angle ENCODER_OFFSET = Units.Degrees.of(-42.46);
     public static final Angle REVERSE_LIMIT = Units.Degrees.of(-35); // TODO: TUNE
-    public static final Angle FORWARD_LIMIT = Units.Degrees.of(50); // TODO: TUNE
+    public static final Angle FORWARD_LIMIT = Units.Degrees.of(55); // TODO: TUNE
 
     public static final double MAX_ACC = 90;
     public static final double MAX_VEL = 45;
 
-    public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 10;
-    public static final double CORAL_WRIST_TOLERANCE = 10; // tune me please
+    public static final int CORAL_WRIST_CURRENT_STALL_LIMIT = 20;
+    public static final double CORAL_WRIST_TOLERANCE = 1; // tune me please
 
     public enum CoralWristState {
         STATION(20),
-        STOWED(45), // Will stop at limit
+        STOWED(55), // Will stop at limit
         L1toL3(0),
         L4(-20);
 
