@@ -32,13 +32,15 @@ public class DriveSubsystem extends IronSubsystem {
 
 	private SwerveDrive swerveDrive;
 	private Vision vision;
+	private boolean invertStatus = false;
 
 	public Command pathfindCommand;
+	public double ControlSpeedMultipler = 1;
 
 	public DriveSubsystem() throws RuntimeException {
 		try {
 			swerveDrive = new SwerveParser(SWERVE_JSON_DIRECTORY) // YAGSL reads from the deply/swerve
-																					// directory.
+																	// directory.
 					.createSwerveDrive(SWERVE_DRIVE_MAX_SPEED);
 		} catch (IOException e) { // instancing SwerveDrive can throw an error, so we need to catch that.
 			throw new RuntimeException("Error configuring swerve drive", e);
@@ -79,9 +81,11 @@ public class DriveSubsystem extends IronSubsystem {
 
 	@Override
 	public void periodic() {
-		vision.updateAll();
-		vision.addPoseEstimates();
+		// vision.updateAll();
+		// vision.addPoseEstimates();
+
 		publish("vision has pose", vision.hasPose);
+		publish("inversion status", invertStatus);
 	}
 
 	/**
@@ -121,13 +125,30 @@ public class DriveSubsystem extends IronSubsystem {
 		swerveDrive.resetOdometry(new Pose2d(pose2d.getTranslation(), new Rotation2d(0)));
 	}
 
-	public void setSpeed(boolean slow){
-		if(slow){
-			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED *.5 , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
+	public void switchInvertControl(){
+		if (invertStatus){
+			invertStatus = false;
 		}
 		else{
-			swerveDrive.setMaximumAllowableSpeeds(SWERVE_DRIVE_MAX_SPEED , SWERVE_MAXIMUM_ANGULAR_VELOCITY_TELEOP);
+			invertStatus = true;
 		}
-		
+	}
+	
+	public int getinversionStatus(){
+		if(invertStatus){
+			return -1;
+		}
+		else{
+			return 1;
+		}
+	}
+
+	public void setSpeed(boolean slow) {
+		if (slow) {
+			ControlSpeedMultipler = .5;
+		} else {
+			ControlSpeedMultipler = 1;
+
+		}
 	}
 }
