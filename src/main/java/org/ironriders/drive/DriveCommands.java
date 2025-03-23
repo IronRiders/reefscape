@@ -26,7 +26,6 @@ public class DriveCommands {
 		this.driveSubsystem = driveSubsystem;
 
 		this.driveSubsystem.publish("Drive to Target", pathfindToTarget());
-
 		this.driveSubsystem.publish("Invert", Commands.runOnce(() -> GameState.invertControl()));
 	}
 
