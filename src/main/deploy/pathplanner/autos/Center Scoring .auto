@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Drive Station 1-Wall Leave"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Wrist L1-L3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Coral Intake Eject"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

@@ -11,8 +11,8 @@
       "style": "0",
       "userScale": "2",
       "width": "1203",
-      "xpos": "590",
-      "ypos": "402"
+      "xpos": "1208",
+      "ypos": "577"
     }
   },
   "Table": {
@@ -32,22 +32,22 @@
     "###/FMSInfo": {
       "Collapsed": "0",
       "Pos": "130,572",
-      "Size": "169,167"
+      "Size": "254,221"
     },
     "###Analog Inputs": {
       "Collapsed": "0",
       "Pos": "602,32",
-      "Size": "260,164"
+      "Size": "370,200"
     },
     "###FMS": {
       "Collapsed": "0",
       "Pos": "462,572",
-      "Size": "283,140"
+      "Size": "235,244"
     },
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "449,63",
-      "Size": "796,155"
+      "Size": "1156,202"
     },
     "###NetworkTables": {
       "Collapsed": "0",
@@ -72,12 +72,12 @@
     "###System Joysticks": {
       "Collapsed": "0",
       "Pos": "8,274",
-      "Size": "192,218"
+      "Size": "273,290"
     },
     "###Timing": {
       "Collapsed": "0",
       "Pos": "166,433",
-      "Size": "135,173"
+      "Size": "188,215"
     },
     "Debug##Default": {
       "Collapsed": "0",
@@ -87,7 +87,7 @@
     "Robot State": {
       "Collapsed": "0",
       "Pos": "15,96",
-      "Size": "99,116"
+      "Size": "137,152"
     }
   }
 }

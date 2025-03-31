@@ -32,6 +32,7 @@ public class ElevatorConstants {
     public static final double L2_HEIGHT = 7.5;//untested
     public static final double L3_HEIGHT = 21; //tested (could be tested more)
     public static final double L4_HEIGHT = 53;//tested
+    public static final double HighAlgae_HIEGHT = 33; // untested
 
     /**
      * This enum represents each specific/discrete position the elevator needs to go to.
@@ -42,7 +43,8 @@ public class ElevatorConstants {
         L1(L1_HEIGHT),
         L2(L2_HEIGHT),
         L3(L3_HEIGHT),
-        L4(L4_HEIGHT);
+        L4(L4_HEIGHT),
+        HighAlgae(HighAlgae_HIEGHT);
 
         public double positionInches;
 

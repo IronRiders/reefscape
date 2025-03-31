@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
  */
 public class GameState {
 
+    public static boolean controlInverted;
+
     static private Field2d field = new Field2d();
     static private Supplier<Optional<Pose2d>> robotPose = () -> Optional.empty();
     static private Supplier<Optional<FieldPose>> targetRobotPose = () -> Optional.empty();
@@ -62,5 +64,13 @@ public class GameState {
 
     public static void setAlgaeTarget(ElevatorConstants.Level algaeTarget) {
         GameState.algaeTarget = algaeTarget;
+    }
+
+    public static boolean getInvertControl() {
+        return controlInverted;
+    }
+
+    public static void invertControl() {
+        GameState.controlInverted = !GameState.controlInverted;
     }
 }

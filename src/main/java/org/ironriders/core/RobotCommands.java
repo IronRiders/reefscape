@@ -7,11 +7,6 @@ import org.ironriders.drive.DriveCommands;
 import org.ironriders.elevator.ElevatorCommands;
 import org.ironriders.elevator.ElevatorConstants;
 import org.ironriders.targeting.TargetingCommands;
-import org.ironriders.wrist.algae.AlgaeIntakeCommands;
-import org.ironriders.wrist.algae.AlgaeIntakeConstants;
-import org.ironriders.wrist.algae.AlgaeWristCommands;
-import org.ironriders.wrist.algae.AlgaeWristConstants;
-import org.ironriders.wrist.algae.AlgaeWristConstants.AlgaeWristState;
 import org.ironriders.wrist.coral.CoralIntakeCommands;
 import org.ironriders.wrist.coral.CoralIntakeConstants;
 import org.ironriders.wrist.coral.CoralWristCommands;
@@ -37,8 +32,6 @@ public class RobotCommands {
 	private final ElevatorCommands elevatorCommands;
 	private final CoralWristCommands coralWristCommands;
 	private final CoralIntakeCommands coralIntakeCommands;
-	private final AlgaeWristCommands algaeWristCommands;
-	private final AlgaeIntakeCommands algaeIntakeCommands;
 	private final ClimbCommands climbCommands;
 
 	private final GenericHID controller;
@@ -48,7 +41,6 @@ public class RobotCommands {
 			TargetingCommands targetingCommands,
 			ElevatorCommands elevatorCommands,
 			CoralWristCommands coralWristCommands, CoralIntakeCommands coralIntakeCommands,
-			AlgaeWristCommands algaeWristCommands, AlgaeIntakeCommands algaeIntakeCommands,
 			ClimbCommands climbCommands,
 			GenericHID controller) {
 
@@ -57,8 +49,6 @@ public class RobotCommands {
 		this.elevatorCommands = elevatorCommands;
 		this.coralWristCommands = coralWristCommands;
 		this.coralIntakeCommands = coralIntakeCommands;
-		this.algaeWristCommands = algaeWristCommands;
-		this.algaeIntakeCommands = algaeIntakeCommands;
 		this.climbCommands = climbCommands;
 		this.controller = controller;
 
@@ -74,11 +64,8 @@ public class RobotCommands {
 	 */
 	public Command startup() {
 		coralIntakeCommands.setOnSuccess(() -> rumble());
-		algaeIntakeCommands.setOnSuccess(() -> rumble());
 		return coralWristCommands.home()
 				.andThen(climbCommands.rezero())
-				.andThen(algaeWristCommands.home())
-				.andThen(algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.STOWED))
 				.andThen(elevatorCommands.home());
 	}
 
@@ -108,24 +95,26 @@ public class RobotCommands {
 
 	public Command toggleClimber() {
 		return Commands.none();
-		//return climbCommands.goTo(Targets.TARGET);
+		// return climbCommands.goTo(Targets.TARGET); 
 	}
+
 
 	public Command moveElevatorAndWrist(ElevatorConstants.Level level) {
 		return Commands.sequence(
 				elevatorCommands.set(level),
-				Commands.parallel(
-				algaeWristCommands.set(AlgaeWristState.STOWED),
+				// Commands.parallel(
+				// algaeWristCommands.set(AlgaeWristState.STOWED),
 				coralWristCommands.set(switch (level) {
 					case L1, L2, L3 -> CoralWristConstants.CoralWristState.L1toL3;
 					case L4 -> CoralWristConstants.CoralWristState.L4;
 					case CoralStation -> CoralWristConstants.CoralWristState.STATION;
 					case Down -> CoralWristConstants.CoralWristState.STOWED;
+					case HighAlgae -> CoralWristConstants.CoralWristState.STOWED;
 					default -> {
 						throw new IllegalArgumentException(
 								"Cannot score coral to level: " + level);
 					}
-				})));
+				}));
 	}
 
 	public Command scoreCoral() {
@@ -147,24 +136,5 @@ public class RobotCommands {
 				coralIntakeCommands.set(CoralIntakeConstants.CoralIntakeState.GRAB),
 				coralWristCommands.set(CoralWristConstants.CoralWristState.STOWED),
 				elevatorCommands.set(ElevatorConstants.Level.Down));
-	}
-
-	public Command scoreAlgae() {
-		// TODO: option to grab coral in parallel
-		return Commands.sequence(
-				Commands.parallel(
-						elevatorCommands.set(ElevatorConstants.Level.Down),
-						algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED)),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.EJECT),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.STOP));
-	}
-
-	public Command grabAlgae(ElevatorConstants.Level level) {
-		return Commands.sequence(
-				Commands.parallel(
-						elevatorCommands.set(level),
-						algaeWristCommands.set(AlgaeWristConstants.AlgaeWristState.EXTENDED),
-						algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB)),
-				algaeIntakeCommands.set(AlgaeIntakeConstants.AlgaeIntakeState.GRAB));
 	}
 }

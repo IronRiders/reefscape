@@ -26,6 +26,7 @@ public class DriveCommands {
 		this.driveSubsystem = driveSubsystem;
 
 		this.driveSubsystem.publish("Drive to Target", pathfindToTarget());
+		this.driveSubsystem.publish("Invert", Commands.runOnce(() -> GameState.invertControl()));
 	}
 
 	public Command drive(Supplier<Translation2d> translation, DoubleSupplier rotation, BooleanSupplier fieldRelative) {
@@ -41,8 +42,8 @@ public class DriveCommands {
 
 		double invert = DriverStation.getAlliance().isEmpty()
 				|| DriverStation.getAlliance().get() == DriverStation.Alliance.Blue
-						? -1
-						: 1;
+						? 1
+						: -1;
 
 		return drive(
 				() -> new Translation2d(inputTranslationX.getAsDouble(), inputTranslationY.getAsDouble())
@@ -85,6 +86,13 @@ public class DriveCommands {
 					DriveConstants.SWERVE_MAXIMUM_ANGULAR_ACCELERATION_AUTO));
 			return driveSubsystem.pathfindCommand;
 		});
+	}
+
+	public Command invertControls(){
+		return driveSubsystem.runOnce(() ->{
+			driveSubsystem.switchInvertControl();
+		}
+		);
 	}
 
 	public Command pathfindToTarget() {
