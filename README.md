@@ -1,6 +1,6 @@
 [![CI](https://github.com/IronRiders/reefscape/actions/workflows/gradle.yml/badge.svg)](https://github.com/IronRiders/reefscape/actions/workflows/gradle.yml)
 ![8x2 Banner](https://github.com/user-attachments/assets/ca7bddfc-8815-40c6-bc6c-3a8b020dff7a)
-
+<b>THIS CODE IS NO LONGER FUNCTIONAL AND ALL DEVELOPMENT HAS MOVED TO THE OFF SEASON REPO. GO THERE</b><br>
 ## Our Design
 <img width="333" alt="Screenshot 2025-02-20 at 10 26 24 AM" src="https://github.com/user-attachments/assets/25f614d0-6132-49de-bf14-9df33aab691e" />
 
